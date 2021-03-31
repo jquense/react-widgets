@@ -1,0 +1,31 @@
+.invert {
+  flex-direction: column-reverse;
+}
+
+.preview {
+  font-size: initial;
+}
+.preview > * > *:global(.rw-widget) {
+  max-width: 300px;
+  width: 100%;
+}
+
+.preview *:global(.rw-widget) + *:global(.rw-widget):not(:global(.mt-0)) {
+  margin-top: 1rem;
+}
+
+.preview > * > label {
+  font-weight: bold;
+  max-width: 300px;
+  display: block;
+}
+
+.preview > * > * + label {
+  margin-top: 1rem;
+}
+
+.preview > * > * {
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+}

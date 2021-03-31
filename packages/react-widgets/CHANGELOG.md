@@ -79,13 +79,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 <a name="4.4.4"></a>
-## [4.4.4](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.3...react-widgets@4.4.4) (2018-09-20)
+## [4.4.4](https://github.com/jquense/react-widgets/compare/react-widgets@4.4.3...react-widgets@4.4.4) (2018-08-11)
 
 
 ### Bug Fixes
 
-* dropdown initial focus with selected items ([f17bb54](https://github.com/jquense/react-widgets/commit/f17bb54))
 * focus mgmt for dropdowns ([f150993](https://github.com/jquense/react-widgets/commit/f150993)), closes [#830](https://github.com/jquense/react-widgets/issues/830) [#831](https://github.com/jquense/react-widgets/issues/831)
+
 
 
 

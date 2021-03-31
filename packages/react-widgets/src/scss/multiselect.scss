@@ -1,0 +1,137 @@
+@use './variables.scss' as *;
+@use './mixins.scss';
+
+$gutter-pt: 0.115 !default;
+$tag-padding-left: 0.35em !default;
+$tag-padding-right: 0.35em !default;
+
+$tag-color: null !default;
+$tag-border-color: $gray-300 !default;
+$tag-bg: $gray-300 !default;
+
+$tag-height-pt: 1 - ($gutter-pt * 2) !default;
+$tag-gutter: calc(
+  #{$input-height} * #{$gutter-pt} - #{$input-border-width}
+) !default;
+$tag-height: calc(#{$input-height} * #{$tag-height-pt}) !default;
+$tag-border-radius: 3px !default;
+
+$tag-btn-padding-y: 0 !default;
+$tag-btn-padding-x: 0.35em !default;
+
+$tag-btn-bg: null !default;
+$tag-btn-border-color: null !default;
+$tag-btn-color: null !default;
+
+$tag-btn-hover-bg: null !default;
+$tag-btn-hover-border-color: null !default;
+$tag-btn-hover-color: null !default;
+
+$tag-btn-active-bg: null !default;
+$tag-btn-active-border-color: null !default;
+$tag-btn-active-color: null !default;
+
+@mixin Multiselect() {
+  .rw-multiselect {
+  }
+
+  .rw-multiselect-input {
+    @include mixins.btn-input-reset;
+    @include mixins.input-base;
+
+    height: calc(#{$input-height} - #{$input-border-width} * 2);
+    padding: 0 $input-padding-x;
+    max-width: 100%; // breaks to a new line but doesn't stop growing
+
+    &:disabled,
+    &:read-only {
+      // use parent style
+      cursor: inherit;
+    }
+  }
+
+  .rw-multiselect-taglist {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    width: 100%;
+    outline: none;
+    cursor: text;
+
+    .rw-state-disabled & {
+      cursor: unset;
+    }
+  }
+
+  .rw-multiselect-tag {
+    display: inline-flex;
+    color: $tag-color;
+    margin-left: $tag-gutter;
+    margin-top: $tag-gutter;
+    min-height: $tag-height;
+    border-radius: $tag-border-radius;
+    background-color: $tag-bg;
+    border: if($tag-border-color, 1px solid $tag-border-color, null);
+    // reset the text selection cursor on the parent
+    cursor: default;
+    max-width: 100%;
+    align-items: center;
+    // border radius clipping when there are background colors, e.g. hover/active
+    // easier than rtl border radius'in
+    overflow: hidden;
+
+    &:focus {
+      outline: none;
+    }
+
+    [dir='rtl'] & {
+      margin-left: 0;
+      margin-right: $tag-gutter;
+      padding: 0 $tag-padding-left 0 $tag-padding-right;
+    }
+
+    &.rw-state-focus {
+      @include mixins.focus-ring();
+    }
+
+    &.rw-state-disabled,
+    fieldset[disabled] & {
+      opacity: 0.65;
+    }
+  }
+
+  .rw-multiselect-tag-label {
+    padding: 0 $tag-padding-right 0 $tag-padding-left;
+  }
+
+  .rw-multiselect-tag-btn {
+    @include mixins.btn-input-reset;
+
+    cursor: pointer;
+    align-self: stretch;
+
+    padding: $tag-btn-padding-y $tag-btn-padding-x;
+    color: $tag-btn-color;
+    border-color: $tag-btn-border-color;
+    background-color: $tag-btn-bg;
+
+    &:hover {
+      color: $tag-btn-hover-color;
+      border-color: $tag-btn-hover-border-color;
+      background-color: $tag-btn-hover-bg;
+    }
+    &:active {
+      color: $tag-btn-active-color;
+      background-color: $tag-btn-active-bg;
+      border-color: $tag-btn-active-border-color;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:disabled {
+      cursor: inherit;
+    }
+  }
+}

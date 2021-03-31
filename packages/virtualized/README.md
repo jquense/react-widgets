@@ -1,5 +1,4 @@
-`react-widgets-virtualized`
-===
+# `react-widgets-virtualized`
 
 Provides a Higher Order Function for adding virtualization to react-widgets inputs with lists. Under the hood it uses
 the excellent [`react-list`](https://github.com/orgsync/react-list).
@@ -13,21 +12,19 @@ the excellent [`react-list`](https://github.com/orgsync/react-list).
 ## Usage
 
 ```js
-import DropdownList from 'react-widgets/lib/DropdownList';
-import virtualize from 'react-widgets-virtualized';
-import "react-widgets-virtualized/lib/styles.css";
+import DropdownList from 'react-widgets/DropdownList'
+import virtualize from 'react-widgets-virtualized'
 
-let VirtualDropdownList = virtualize(DropdownList);
+let VirtualDropdownList = virtualize(DropdownList)
 
 function MyExample() {
   return (
     <div>
       Here is a dropdown!
-
       <VirtualDropdownList
         data={bigList}
         type="uniform"
-        itemSizeGetter={()=> 30}
+        itemSizeGetter={() => 30}
       />
     </div>
   )

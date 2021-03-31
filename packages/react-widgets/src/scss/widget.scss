@@ -1,0 +1,245 @@
+@use './variables.scss' as *;
+@use './mixins.scss';
+/* for debugging */
+// *:focus {
+//   outline: 1px red solid !important;
+// }
+
+@keyframes react-widgets-autofill-start {
+  from {
+    /**/
+  }
+  to {
+    /**/
+  }
+}
+
+@keyframes react-widgets-autofill-cancel {
+  from {
+    /**/
+  }
+  to {
+    /**/
+  }
+}
+
+.rw-btn {
+  @include mixins.btn-input-reset;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled,
+  fieldset[disabled] &,
+  // for picker-caret
+  .rw-state-disabled &,
+  .rw-state-readonly & {
+    cursor: inherit;
+  }
+  // easier to disable this way then check in each event handler
+  fieldset[disabled] & {
+    pointer-events: none;
+  }
+}
+
+// The Psuedo button on DropdownList and Multiselect
+// also composes rw-btn
+.rw-picker-caret,
+.rw-picker-btn {
+  color: $picker-btn-color;
+  align-items: $picker-btn-align-items;
+  justify-content: $picker-btn-justify-content;
+  padding-left: $picker-btn-padding-left;
+  padding-right: $picker-btn-padding-right;
+}
+
+.rw-picker-btn {
+  @include mixins.btn-input-reset;
+
+  background-color: $picker-btn-bg;
+  // border color doesn't make sense here
+  // since it's surrounded by the input border
+
+  &:hover {
+    color: $picker-btn-hover-color;
+    background-color: $picker-btn-hover-bg;
+  }
+  &:active {
+    color: $picker-btn-active-color;
+    background-color: $picker-btn-active-bg;
+  }
+
+  &:disabled,
+  fieldset[disabled] & {
+    background-color: $picker-btn-disabled-bg;
+  }
+}
+
+.rw-input-addon {
+  // The input border should be more important here
+  &,
+  &.rw-picker-btn {
+    border-left: $input-addon-border-color 1px solid;
+
+    [dir='rtl'] & {
+      border-right: $input-addon-border-color 1px solid;
+      border-left: none;
+    }
+  }
+}
+
+.rw-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.rw-widget {
+  border: none;
+  color: $widget-color;
+  font-weight: $widget-font-weight;
+  font-size: $widget-font-size;
+  font-family: $widget-font-family;
+  outline: none;
+  position: relative;
+
+  &,
+  & *,
+  &:after,
+  &:before,
+  & *:after,
+  & *:before {
+    box-sizing: border-box;
+  }
+}
+
+.rw-state-readonly,
+.rw-state-disabled,
+fieldset[disabled] .rw-widget {
+  cursor: not-allowed;
+}
+
+.rw-widget-picker {
+  display: grid;
+  overflow: hidden;
+  min-height: $input-height;
+  background-color: $input-bg;
+  border: $input-border-color $input-border-width solid;
+  border-radius: $input-border-radius;
+  outline: none;
+  grid-template: 1fr / 1fr $input-addon-width;
+  // ensure that the "chrome" is the same width as the actual container
+  width: 100%;
+
+  &.rw-hide-caret {
+    grid-template-columns: 1fr;
+  }
+
+  .rw-state-focus & {
+    color: $input-focus-color;
+    background-color: $input-focus-bg;
+    border-color: $input-focus-border-color;
+    box-shadow: $widget-focus-box-shadow;
+    transition: if($widget-focus-box-shadow, $widget-focus-transition, null);
+
+    &.rw-widget-input {
+      @if ($input-box-shadow) {
+        box-shadow: #{$widget-focus-box-shadow}, #{$input-box-shadow};
+      }
+    }
+  }
+}
+
+// This class represents the abstract container that is the "input" of any
+// given widget
+.rw-widget-input {
+  color: $input-color;
+  background-color: $input-bg;
+  box-shadow: $input-box-shadow;
+
+  // Listbox is also the rw-widget
+  &.rw-state-disabled,
+  .rw-state-disabled &,
+  fieldset[disabled] & {
+    color: $input-disabled-color;
+    background-color: $input-disabled-bg;
+    border-color: $input-disabled-border-color;
+  }
+}
+
+.rw-input {
+  @include mixins.btn-input-reset;
+  @include mixins.input-base;
+
+  padding: 0 $input-padding-x;
+
+  &[type='text']::-ms-clear {
+    display: none;
+  }
+
+  &:disabled,
+  &:read-only {
+    // use parent style
+    cursor: inherit;
+  }
+}
+
+.rw-placeholder,
+.rw-input::placeholder {
+  color: $input-placeholder-color;
+
+  .rw-state-disabled & {
+    color: $input-disabled-placeholder-color;
+  }
+}
+
+// https://github.com/klarna/ui/blob/master/Field/styles.scss
+.rw-detect-autofill {
+  @include mixins.btn-input-reset;
+  @include mixins.input-base;
+
+  // &:autofill,
+  // &:-webkit-autofill {
+  //   border-radius: 30px;
+  //   animation-name: react-widgets-autofill-start;
+
+  //   // Make the backgound color become yellow _really slowly_
+  //   transition: background-color 50000s ease-in-out 0s;
+  // }
+
+  // &:not(:autofill),
+  // &:not(:-webkit-autofill) {
+  //   animation-name: react-widgets-autofill-cancel;
+  // }
+}
+
+.rw-detect-autofill:-webkit-autofill {
+  // height: 50px;
+  animation-name: react-widgets-autofill-start;
+  animation-duration: 0.01ms;
+  // animation-delay: 0.01ms;
+  // transition: background-color 50000s ease-in-out 0s;
+}
+
+.rw-detect-autofill:not(:-webkit-autofill) {
+  animation-name: react-widgets-autofill-cancel;
+  animation-duration: 0.01ms;
+}
+
+.rw-webkit-autofill .rw-widget-container,
+.rw-input:-webkit-autofill {
+  background-color: $input-autofill-bg !important;
+  background-image: none !important;
+  color: $input-autofill-color !important;
+}

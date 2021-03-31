@@ -1,0 +1,6 @@
+@mixin Combobox() {
+  .rw-combobox-input {
+    background-color: transparent;
+    z-index: 1;
+  }
+}

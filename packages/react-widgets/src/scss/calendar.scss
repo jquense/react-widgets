@@ -1,0 +1,232 @@
+@use './variables.scss' as *;
+@use './mixins.scss';
+@use './list.scss' as list;
+
+$bg: $widget-bg !default;
+
+$btn-bg: #fff !default;
+$btn-color: $widget-color !default;
+$btn-border-color: null !default;
+$btn-muted-color: $gray-400;
+$btn-border-radius: $widget-border-radius !default;
+
+$btn-hover-bg: $widget-hover-bg !default;
+$btn-hover-border-color: $widget-hover-border-color !default;
+$btn-hover-color: $widget-hover-color !default;
+
+$btn-active-color: null !default;
+$btn-active-border-color: null !default;
+$btn-active-bg: $gray-300 !default;
+
+$btn-focus-color: null !default;
+$btn-focus-border-color: null !default;
+$btn-focus-bg: null !default;
+
+$cell-align: center !default;
+$cell-padding: 0.25em !default;
+$cell-color: $btn-color !default;
+$cell-border-color: null !default;
+$cell-border-radius: $btn-border-radius !default;
+
+$cell-select-color: list.$selected-color !default;
+$cell-select-border-color: list.$selected-border-color !default;
+$cell-select-bg: list.$selected-bg !default;
+
+@mixin _translate($x, $y) {
+  transform: translate(#{$x}, #{$y});
+
+  @supports (transform-style: preserve-3d) {
+    transform: translate3d(#{$x}, #{$y}, 0);
+  }
+}
+
+@mixin Calendar() {
+  .rw-calendar-popup {
+    right: auto;
+    min-width: 0;
+    width: 22em;
+  }
+
+  .rw-calendar {
+    overflow: hidden;
+  }
+
+  .rw-calendar-contained {
+    border-radius: $widget-border-radius;
+    background-color: $bg;
+    border: $widget-border-color 1px solid;
+  }
+
+  .rw-calendar-now {
+    font-weight: bold;
+  }
+  .rw-calendar-header {
+    display: flex;
+    padding: 0.8em;
+  }
+
+  .rw-cell,
+  .rw-calendar-btn {
+    line-height: 2em;
+    border-radius: $btn-border-radius;
+
+    @include mixins.focus();
+
+    &:hover {
+      background-color: $btn-hover-bg;
+    }
+    &:active {
+      background-color: $btn-active-bg;
+    }
+    // TODO: normal button disabled
+    &:disabled,
+    &.rw-state-disabled {
+      pointer-events: none;
+      opacity: 0.35;
+    }
+  }
+
+  .rw-calendar-btn {
+    border-color: $btn-border-color;
+  }
+
+  .rw-calendar-btn-left,
+  .rw-calendar-btn-today,
+  .rw-calendar-btn-right,
+  .rw-calendar-btn-view {
+    padding: 0.3em 0.6em;
+  }
+
+  .rw-calendar-btn-left,
+  .rw-calendar-btn-right {
+    [dir='rtl'] & {
+      transform: scale(-1, 1);
+    }
+  }
+  .rw-calendar-btn-view {
+    font-weight: bold;
+
+    & > :last-child {
+      margin: 0 0.5em;
+    }
+
+    & + * {
+      margin-left: auto;
+
+      [dir='rtl'] & {
+        margin-left: 0;
+        margin-right: auto;
+      }
+    }
+  }
+
+  .rw-calendar-grid {
+    display: table;
+    outline: none;
+    height: 14em;
+    padding: $widget-focus-width;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    background-color: $bg;
+  }
+  .rw-calendar-head {
+    display: table-header-group;
+  }
+  .rw-calendar-body {
+    display: table-row-group;
+  }
+
+  .rw-calendar-row {
+    display: table-row;
+  }
+
+  .rw-head-cell {
+    display: table-cell;
+    text-align: $cell-align;
+    border-bottom: 1px solid $input-border-color;
+    padding: $cell-padding;
+  }
+
+  .rw-cell {
+    display: table-cell;
+    color: $cell-color;
+    vertical-align: middle;
+    border-color: $cell-border-color;
+    border-radius: $cell-border-radius;
+    cursor: pointer;
+    line-height: normal;
+    text-align: center;
+    border: 1px solid transparent;
+    padding: $cell-padding;
+    outline: none;
+
+    &.rw-state-selected {
+      background-color: $cell-select-bg;
+      border-color: $cell-select-border-color;
+      color: $cell-select-color;
+    }
+
+    .rw-calendar-month & {
+      text-align: $cell-align;
+    }
+  }
+
+  .rw-cell-off-range {
+    color: $btn-muted-color;
+  }
+
+  .rw-calendar-transition-group {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rw-calendar-transition {
+    width: 100%;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out 0ms;
+    @include _translate(0, 0);
+  }
+
+  .rw-calendar-transition-next {
+    -webkit-backface-visibility: hidden;
+
+    .rw-calendar-transition-top & {
+      @include _translate(0, -100%);
+    }
+    .rw-calendar-transition-bottom & {
+      @include _translate(0, 100%);
+    }
+    .rw-calendar-transition-right & {
+      @include _translate(-100%, 0);
+    }
+    .rw-calendar-transition-left & {
+      @include _translate(100%, 0);
+    }
+
+    &.rw-calendar-transition-active {
+      @include _translate(0, 0);
+    }
+  }
+
+  .rw-calendar-transition-prev {
+    -webkit-backface-visibility: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    .rw-calendar-transition-top & {
+      @include _translate(0, 100%);
+    }
+    .rw-calendar-transition-bottom & {
+      @include _translate(0, -100%);
+    }
+    .rw-calendar-transition-right & {
+      @include _translate(100%, 0);
+    }
+    .rw-calendar-transition-left & {
+      @include _translate(-100%, 0);
+    }
+  }
+}

@@ -6,15 +6,14 @@
     "$": true,
     "sinon": true,
     "expect": true,
+    "jest": true,
     "__REACT_VERSION__": true
   },
-  "plugins": [
-    "mocha"
-  ],
+  "plugins": ["mocha"],
   "rules": {
     "mocha/no-exclusive-tests": 2,
     "no-console": 0,
     "global-require": 0,
-    "react/prop-types": 0,
+    "react/prop-types": 0
   }
 }

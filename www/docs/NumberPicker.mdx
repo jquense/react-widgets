@@ -1,0 +1,80 @@
+import KeyboardShortcuts from "@site/src/components/KeyboardShortcuts";
+import NumberPickerMetadata from "@react-metadata/NumberPicker";
+import PropsList from "@theme/PropsList";
+
+A locale aware number input
+
+```jsx live showImports
+import NumberPicker from "react-widgets/NumberPicker";
+
+<NumberPicker defaultValue={9000} />;
+```
+
+## Formatting
+
+The display format of the NumberPicker can be adjusted to provide more context
+for the value it represents, such as displaying currency. The type accepted by `format` is
+dependent on the configured [localizer](localization).
+
+```jsx live
+import NumberPicker from "react-widgets/NumberPicker";
+
+<NumberPicker
+  defaultValue={1.4}
+  format={{ style: "currency", currency: "EUR" }}
+/>;
+```
+
+## Controlling the step value
+
+Set the amount to increment or decrement the value when the spinner buttons are
+used with the `step` prop.
+
+```jsx live
+import NumberPicker from "react-widgets/NumberPicker";
+
+<NumberPicker defaultValue={0} step={10} />;
+```
+
+### Rounding errors
+
+Take care with decimal `step` values, JavaScript's floating point math can produce
+unexpected results when adding decimals together. The `NumberPicker` input will
+do it's best to avoid these errors, by rounding the result of a step increase to either
+the precision of the current value or `step` amount, depending on which is larger.
+You can also use the `precision` prop to manually control the precision used.
+
+```jsx live
+import NumberPicker from "react-widgets/NumberPicker";
+
+<>
+  <label>Increment to see rounding error</label>
+  <NumberPicker
+    defaultValue={3.2}
+    step={0.1}
+    precision={null}
+  />
+
+  <label>Decimal is rounded correctly</label>
+  <NumberPicker
+    precision={1}
+    defaultValue={3.2}
+    step={0.1}
+  />
+</>;
+```
+
+## Keyboard Shortcuts
+
+<KeyboardShortcuts
+  shortcuts={[
+    ["down arrow", "decrement value"],
+    ["up arrow", "increment value"],
+    ["home", "set value to minimum value, if finite"],
+    ["end", "set value to maximum value, if finite"],
+  ]}
+/>
+
+## API
+
+<PropsList props={NumberPickerMetadata.props} />

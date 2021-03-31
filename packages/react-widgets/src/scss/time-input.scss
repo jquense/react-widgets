@@ -1,0 +1,57 @@
+@use './variables.scss' as *;
+@use './mixins.scss';
+
+@mixin TimeInput() {
+  .rw-time-input {
+    display: inline-flex;
+    min-height: $input-height;
+    align-items: center;
+    background-color: $input-bg;
+    border: $input-border-color $input-border-width solid;
+    border-radius: $input-border-radius;
+    outline: none;
+    cursor: text;
+  }
+
+  .rw-time-part-input {
+    @include mixins.btn-input-reset;
+    @include mixins.input-base;
+
+    padding: 0 0.5em;
+    // min-height: $input-height;
+
+    &,
+    &::placeholder {
+      text-align: center;
+    }
+  }
+
+  .rw-time-part-meridiem {
+    @include mixins.btn-input-reset;
+
+    padding: 0 0.5em;
+    text-transform: lowercase;
+    font-variant: small-caps;
+
+    & :focus {
+      outline: none;
+    }
+  }
+
+  .rw-time-input-clear {
+    padding: 0 0.4em;
+    outline: none;
+    opacity: 0;
+    margin-left: auto;
+
+    [dir='rtl'] & {
+      margin-left: revert;
+      margin-right: auto;
+    }
+
+    .rw-time-input:hover &.rw-show,
+    .rw-time-input.rw-state-focus &.rw-show {
+      opacity: 1;
+    }
+  }
+}

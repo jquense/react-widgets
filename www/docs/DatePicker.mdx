@@ -1,0 +1,182 @@
+import KeyboardShortcuts from "@site/src/components/KeyboardShortcuts";
+import DatePickerMetadata from "@react-metadata/DatePicker";
+import PropsList from "@theme/PropsList";
+
+## Overview
+
+```jsx live showImports
+import DatePicker from "react-widgets/DatePicker";
+
+<DatePicker placeholder="m/dd/yy" />;
+```
+
+## Formatting
+
+The format of dates can be adjusted per component. The exact type of a format is
+dependent on the configured [localizer](localization). It may be a string, as is the
+case for Luxon or DateFns, an options object passed to `Intl` directly. The default
+case uses the built-in `Intl` APIs.
+
+```jsx live
+import DatePicker from "react-widgets/DatePicker";
+
+<>
+  <DatePicker
+    defaultValue={new Date()}
+    valueFormat={{ dateStyle: "medium" }}
+  />
+  <br />
+  <DatePicker
+    defaultValue={new Date()}
+    valueFormat={{ month: "short", year: "numeric" }}
+    calendarProps={{ views: ["year", "decade", "century"] }}
+  />
+</>;
+```
+
+### Editing format
+
+The best date format to read is not always the easier to input. You can provide differentiate
+between edit and display formats; the former is used while the input is focused.
+
+```jsx live
+import DatePicker from "react-widgets/DatePicker";
+
+<DatePicker
+  defaultValue={new Date()}
+  valueEditFormat={{ dateStyle: "short" }}
+  valueDisplayFormat={{ dateStyle: "medium" }}
+/>;
+```
+
+## Parsing date strings
+
+When a user types a value into the textbox it need's to parsed into a proper `Date`
+object. The built-in parsing logic simply passes the value to `new Date`. This often
+works fine, but can produce confusing results given how varied of an input the Date
+constructor will accept. Localizer's may provide more structured parsing,
+if the backing library supports it. The `parse` prop provides another escape hatch for per
+component parse tweaking.
+
+## I18n: locales
+
+The locale used by inputs is determined by the user's browser, you can manually
+configure it with the `<Localization>` Provider component.
+
+```jsx live renderAsComponent
+import Localization from "react-widgets/Localization";
+import { DateLocalizer } from "react-widgets/IntlLocalizer";
+import DatePicker from "react-widgets/DatePicker";
+import DropdownList from "react-widgets/DropdownList";
+
+const Locales = [
+  {
+    label: "English: USA",
+    culture: "en",
+    firstOfWeek: 0,
+  },
+  {
+    label: "English: Great Britain",
+    culture: "en-gb",
+    firstOfWeek: 1,
+  },
+  {
+    label: "Spanish",
+    culture: "es",
+    firstOfWeek: 1,
+  },
+  {
+    label: "French",
+    culture: "fr",
+    firstOfWeek: 1,
+  },
+  {
+    label: "Arabic: U.A.E",
+    culture: "ar-AE",
+    firstOfWeek: 0,
+  },
+];
+
+const [current, setCurrent] = useState(Locales[1]);
+
+<Localization date={new DateLocalizer(current)}>
+  <div className="mb-10 w-64">
+    <label>Select a locale:</label>
+    <DropdownList
+      textField="label"
+      data={Locales}
+      value={current}
+      onChange={setCurrent}
+    />
+  </div>
+  <DatePicker
+    defaultValue={new Date()}
+    valueEditFormat={{ dateStyle: "short" }}
+    valueDisplayFormat={{ dateStyle: "medium" }}
+  />
+</Localization>;
+```
+
+## Date and time input
+
+Date and time input is hard, and rarely does a single input meet all use cases
+well. To meet the variety of user needs, inputs can be combined and configured to
+support the input pattern that works best for your users.
+
+```jsx live
+import DatePicker from "react-widgets/DatePicker";
+import TimeInput from "react-widgets/TimeInput";
+import DropdownList from "react-widgets/DropdownList";
+import { getTimeList } from "@site/src/date-utils";
+
+<div className="flex flex-col items-start max-w-sm">
+  <label>A single "datetime" input</label>
+  <DatePicker defaultValue={new Date()} includeTime />
+  <br />
+
+  <label>Paired picker and dropdown</label>
+  <div className="flex space-x-2 w-full">
+    <DatePicker
+      defaultValue={new Date()}
+      className="w-3/5"
+    />
+    <DropdownList
+      data={getTimeList()}
+      textField="label"
+      className="w-2/5 mt-0"
+    />
+  </div>
+  <br />
+  <label>Paired picker and experimental time input</label>
+  <div className="flex space-x-2 w-full">
+    <DatePicker
+      defaultValue={new Date()}
+      className="w-3/5"
+    />
+    <TimeInput
+      defaultValue={new Date()}
+      className="w-2/5 mt-0"
+      use12HourClock
+    />
+  </div>
+</div>;
+```
+
+## Keyboard Shortcuts
+
+<KeyboardShortcuts
+  shortcuts={[
+    ["alt + down arrow", "open calendar or time"],
+    ["alt + up arrow", "close calendar or time"],
+    ["down arrow", "move focus to next item"],
+    ["up arrow", "move focus to previous item"],
+    ["home", "move focus to first item"],
+    ["end", "move focus to last item"],
+    ["enter", "select focused item"],
+    ["any key", "search list for item starting with key"],
+  ]}
+/>
+
+## API
+
+<PropsList props={DatePickerMetadata.props} />

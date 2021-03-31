@@ -1,0 +1,109 @@
+@forward './list.scss' as list-* hide List;
+@forward './multiselect.scss' as multiselect-* hide Multiselect;
+@forward './calendar.scss'  as calendar-* hide Calendar;
+@forward './popup.scss' as popup-* hide Popup;
+
+@use './variables.scss' as v;
+
+@use './widget.scss';
+@use './list.scss';
+@use './listbox.scss';
+@use './combobox.scss';
+@use './dropdown-list.scss';
+@use './number-picker.scss';
+@use './calendar.scss';
+@use './date-picker.scss';
+@use './time-input.scss';
+@use './multiselect.scss';
+@use './popup.scss';
+
+$_graph: (
+  'List': (),
+  'Popup': (),
+  'Listbox': (
+    'List',
+  ),
+  'DropdownList': (
+    'List',
+    'Popup',
+  ),
+  'Combobox': (
+    'List',
+    'Popup',
+  ),
+  'Autocomplete': (
+    'List',
+    'Popup',
+    'Combobox',
+  ),
+  'Multiselect': (
+    'List',
+    'Popup',
+  ),
+  'DatePicker': (
+    'Popup',
+    'Calendar',
+  ),
+  'Calendar': (),
+  'TimeInput': (),
+  'NumberPicker': (),
+);
+
+//
+// Largely unnecessary Toposort
+// --------------------------------
+$_visited: ();
+@function _sort($node) {
+  $result: ();
+  $deps: map-get($_graph, $node);
+
+  @each $dep in $deps {
+    @if not index($_visited, $dep) {
+      $result: join($result, _sort($dep));
+    }
+  }
+  $_visited: append($_visited, $node) !global;
+  @return append($result, $node);
+}
+
+$_components: ();
+@each $node, $_ in $_graph {
+  @if index(v.$components, $node) and not index($_visited, $node) {
+    $_components: join($_components, _sort($node));
+  }
+}
+
+// @debug 'Including: #{$_components}';
+
+@each $mod in $_components {
+  @if $mod == 'List' {
+    @include list.List();
+  }
+  @if $mod == 'Popup' {
+    @include popup.Popup();
+  }
+  @if $mod == 'Listbox' {
+    @include listbox.Listbox();
+  }
+  @if $mod == 'DropdownList' {
+    @include dropdown-list.DropdownList();
+  }
+  @if $mod == 'Combobox' {
+    @include combobox.Combobox();
+  }
+  @if $mod == 'Multiselect' {
+    @include multiselect.Multiselect();
+  }
+  @if $mod == 'NumberPicker' {
+    @include number-picker.NumberPicker();
+  }
+  @if $mod == 'Calendar' {
+    @include calendar.Calendar();
+  }
+  @if $mod == 'DatePicker' {
+    @include date-picker.DateTimePicker();
+  }
+  @if $mod == 'TimeInput' {
+    @include time-input.TimeInput();
+  }
+}

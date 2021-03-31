@@ -1,0 +1,98 @@
+@use './variables.scss' as *;
+
+$color: $widget-color !default;
+$font-size: $widget-font-size !default;
+$padding-y: 0.5em !default;
+
+$_hover-bg: $widget-hover-bg;
+$_hover-border-color: $widget-hover-border-color;
+$_hover-color: $widget-hover-color;
+
+$focus-bg: $_hover-bg !default;
+$focus-border-color: $_hover-border-color !default;
+$focus-color: $_hover-color !default;
+
+$selected-bg: #007bff !default;
+$selected-border-color: $selected-bg !default;
+$selected-color: #fff !default;
+
+$disabled-bg: transparent !default;
+$disabled-border-color: transparent !default;
+$disabled-color: $gray-300 !default;
+
+$option-padding-y: 0.25em !default;
+$option-padding-x: 1.5em !default;
+$option-muted-color: $gray-400 !default;
+
+$option-create-bg: $widget-bg !default;
+
+$optgroup-color: null !default;
+$optgroup-font-weight: bold !default;
+
+@mixin List() {
+  .rw-list {
+    // outline: 0;
+    font-size: $font-size;
+    overflow-x: visible;
+    overflow-y: auto;
+    padding-top: $padding-y;
+    padding-bottom: $padding-y;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .rw-list-option {
+    user-select: none;
+    color: $color;
+    cursor: pointer;
+    border: 1px solid transparent;
+
+    &:hover,
+    [data-intent='keyboard'] &.rw-state-focus:not(.rw-state-selected) {
+      background-color: $focus-bg;
+      border-color: $focus-border-color;
+      color: $focus-color;
+    }
+
+    &.rw-state-selected {
+      background-color: $selected-bg;
+      border-color: $selected-border-color;
+      color: $selected-color;
+    }
+
+    &.rw-state-disabled {
+      cursor: not-allowed; // required to override the cursor above
+      background-color: $disabled-bg;
+      border-color: $disabled-border-color;
+      color: $disabled-color;
+    }
+  }
+
+  .rw-list-empty,
+  .rw-list-option,
+  .rw-list-optgroup {
+    padding: $option-padding-y $option-padding-x;
+    outline: none;
+  }
+
+  .rw-list-empty {
+    text-align: center;
+    color: $option-muted-color;
+  }
+
+  .rw-list-optgroup {
+    color: $optgroup-color;
+    font-weight: $optgroup-font-weight;
+    padding-top: 7px;
+  }
+
+  .rw-list-option-create {
+    @extend .rw-list-option;
+
+    display: block;
+    font-size: $font-size;
+    padding: $option-padding-y $option-padding-x;
+  }
+}

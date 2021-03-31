@@ -1,6 +1,8 @@
-
 module.exports = {
   roots: ['<rootDir>/test'],
-  testRegex: '-test\\.js$',
-  setupTestFrameworkScriptFile: require.resolve('./test/index.js')
+  testRegex: '-test\\.(j|t)sx?$',
+  setupFilesAfterEnv: [require.resolve('./test/index.js')],
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { rootMode: 'upward' }],
+  },
 }

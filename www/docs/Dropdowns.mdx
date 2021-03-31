@@ -1,0 +1,213 @@
+---
+title: Dropdowns Components
+sidebar_label: Introduction
+---
+
+A set of `<select>` alternatives, and autocomplete components, Dropdowns map a
+selection from list of options or suggestions to a form value. These
+components may represent a single value or an array values. They may limit selection
+to only list options or allow free text.
+
+React widgets has three dropdown components: `<Combobox>`, `<DropdownList>`, and `<Multiselect>`
+each share a large amount of functionality but are designed to meet specific use-cases.
+
+`<Combobox>` is a traditional "autocomplete" or "type ahead" component. Its value
+may be any text but suggestions are provided for cases where a more structured option is available.
+
+The `<DropdownList>`, _only_ allows values selected from its
+options list. It's a direct alternative to the `<select>`. The `<Multiselect>` is similar but
+represents an array of values selected from the options list instead of one (like `<select multiple>`).
+
+## Overview
+
+Each dropdown component accepts accept a `data` prop for providing the dropdown options.
+
+```jsx live
+import DropdownList from "react-widgets/DropdownList";
+import Multiselect from "react-widgets/Multiselect";
+
+<>
+  <DropdownList
+    defaultValue="Yellow"
+    data={["Red", "Yellow", "Blue", "Orange"]}
+  />
+</>;
+```
+
+`data` items are not limited to strings or numbers. When an option is selected,
+or a typed value matches the text of a `data` item it will be used as the `value`
+of the input in order to provide richer context for the selection.
+
+```jsx
+<Multiselect
+  dataKey="id"
+  textField="color"
+  data={[
+    { id: 1, color: "Red" },
+    { id: 2, color: "Yellow" },
+    { id: 3, color: "Blue" },
+    { id: 4, color: "Orange" },
+  ]}
+/>
+```
+
+Note that `textField` tells the input how to display the selected item. `dataKey`
+can also be used to help differentiate values from each other and not rely on strict
+equality between `data` items.
+
+## Selecting a value
+
+Components share a similar API to native DOM inputs in React. They each
+accept a `value` prop as well as an `onChange` handler for listening to value changes.
+
+These props can be [controlled](controllables) in order to push state higher up the component
+tree.
+
+```jsx live renderAsComponent
+const [value, setValue] = useState("Red");
+
+return (
+  <>
+    <p>
+      Current Value: <strong>{value}</strong>
+    </p>
+    <DropdownList
+      value={value}
+      onChange={(nextValue) => setValue(nextValue)}
+      data={["Yellow", "Red", "Blue"]}
+    />
+  </>
+);
+```
+
+You can also leave the value _uncontrolled_, and provide an initial default with `defaultValue`.
+
+```jsx live
+<>
+  <Combobox defaultValue="Yellow" />
+  <DropdownList defaultValue="Yellow" />
+  <Multiselect defaultValue={["Yellow", "Red"]} />
+</>
+```
+
+## Mapping complex data to simple values
+
+The `value` prop can any item in `data` _or_ any `dataKey` for complex options.
+The component will automatically resolve a `value` to its data item if it exists.
+
+```jsx live renderAsComponent
+const [value, setValue] = useState(1);
+
+return (
+  <>
+    <p>
+      Current Value: <strong>{value}</strong>
+    </p>
+    <DropdownList
+      dataKey="id"
+      textField="color"
+      value={value}
+      onChange={(nextValue) => setValue(nextValue.id)}
+      data={[
+        { id: 1, color: "Red" },
+        { id: 2, color: "Yellow" },
+        { id: 3, color: "Blue" },
+      ]}
+    />
+  </>
+);
+```
+
+:::info Heads Up
+Regardless of whether `value` is a key or a data item, `onChange` will pass back
+the data item if it exists, **not** the value at `dataKey`.
+:::
+
+## Toggling the dropdown menu
+
+Like `value`, the `open` state of a dropdown component can be controlled by a
+parent component.
+
+```jsx live renderAsComponent
+const [open, setOpen] = useState(false);
+
+return (
+  <>
+    <button onClick={() => setOpen((prev) => !prev)}>
+      Toggle
+    </button>
+    <Multiselect
+      open={open}
+      onToggle={setOpen}
+      data={["Yellow", "Red", "Blue"]}
+    />
+  </>
+);
+```
+
+## Custom Rendering
+
+List options can customize how they are rendered via the `renderListItem` prop
+
+```jsx live
+const renderColor = ({ item }) => (
+  <>
+    <span
+      style={{
+        width: 18,
+        height: 18,
+        marginRight: 8,
+        display: "inline-block",
+        verticalAlign: "text-bottom",
+        backgroundColor: item.toLowerCase(),
+      }}
+    />
+    {item}
+  </>
+);
+
+<Combobox
+  defaultValue="Red"
+  renderListItem={renderColor}
+  data={["Red", "Yellow", "Blue", "Orange"]}
+/>;
+```
+
+The `<DropdownList>` and `<Multiselect>` also have props for customizing value
+or selected tags.
+
+## Asynchronous data fetching
+
+Actually fetching data is outside the scope of react widgets, but components
+provide simple hooks for loading data. The `busy` prop provides visual loading feedback,
+and can be customized with the `busySpinner` prop.
+
+```jsx live
+<Combobox busy />
+```
+
+Combine with the some React state to asynchronously load data to
+
+```jsx live
+import useStarWarsApi from "./_useStarWarsApi";
+
+function Example() {
+  const [person, setPerson] = useState(null);
+  const [people, loading] = useStarWarsApi(
+    typeof person === "string" ? person : ""
+  );
+
+  return (
+    <Combobox
+      busy={loading}
+      data={people}
+      textField="name"
+      value={person}
+      onChange={setPerson}
+      hideEmptyPopup
+    />
+  );
+}
+
+<Example />;
+```

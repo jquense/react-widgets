@@ -1,13 +1,12 @@
 {
   "name": "react-widgets-moment",
-  "version": "4.0.30",
+  "version": "5.0.0-beta.11",
   "description": "A moment.js localizer for react-widgets",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist/* ./index.js",
-    "dist": "node ../../tools/build-localizer.js '{\"moment\": \"window.moment\"}'",
-    "build": "babel localizer.js -o index.js",
-    "prepublishOnly": "npm run clean && npm run build && npm run dist"
+    "build": "babel localizer.ts -o index.js --root-mode upward",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "files": [
     "index.js",
@@ -28,14 +27,14 @@
   "homepage": "https://github.com/jquense/react-widgets#readme",
   "peerDependencies": {
     "moment": ">=2.2.0",
-    "react-widgets": "^4.2.2"
+    "react-widgets": "^5.0.0-0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.52",
-    "@babel/core": "^7.0.0-beta.52",
-    "cross-env": "^5.2.0",
-    "moment": "^2.21.0",
-    "react-widgets": "^4.6.1",
-    "rimraf": "^2.6.2"
+    "@babel/cli": "^7.12.13",
+    "@babel/core": "^7.12.13",
+    "cross-env": "^7.0.3",
+    "moment": "^2.29.1",
+    "react-widgets": "^5.0.0-beta.24",
+    "rimraf": "^3.0.2"
   }
 }

@@ -1,0 +1,65 @@
+@use './variables.scss' as *;
+
+@mixin border-box() {
+  background-clip: border-box;
+
+  &,
+  & * {
+    box-sizing: border-box;
+  }
+
+  &:before,
+  & *:before,
+  &:after,
+  & *:after {
+    box-sizing: border-box;
+  }
+}
+
+@mixin unstyled-list() {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@mixin focus-ring() {
+  z-index: 1;
+  box-shadow: $widget-focus-box-shadow;
+  transition: if($widget-focus-box-shadow, $widget-focus-transition, null);
+}
+
+@mixin focus() {
+  &:focus {
+    @include focus-ring();
+
+    [data-intent='mouse'] & {
+      z-index: auto;
+      box-shadow: none;
+    }
+  }
+}
+
+@mixin btn-input-reset {
+  padding: 0;
+  margin: 0;
+  border: none;
+  color: inherit;
+  box-shadow: none;
+  background: none;
+  font: inherit;
+  line-height: inherit;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  outline: 0;
+}
+
+@mixin input-base {
+  caret-color: $input-caret-color;
+
+  &:disabled {
+    // For safari, which seems to ignore color on disabled inputs
+    // opacity for IOS
+    -webkit-text-fill-color: $input-disabled-color;
+    opacity: 1;
+  }
+}

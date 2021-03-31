@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "react-widgets/*": ["../react-widgets/lib/*"]
+    }
+  },
+  "references": [
+    {
+      "path": "../react-widgets"
+    }
+  ],
+  "include": ["*.ts"]
+}

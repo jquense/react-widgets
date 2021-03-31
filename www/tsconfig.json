@@ -1,0 +1,17 @@
+{
+  "extends": "@tsconfig/docusaurus/tsconfig.json",
+  "include": ["src/"],
+  "compilerOptions": {
+    "composite": true,
+    "declarationMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "react-widgets/*": ["../packages/react-widgets/lib/*"]
+    }
+  },
+  "references": [
+    {
+      "path": "../packages/react-widgets"
+    }
+  ]
+}

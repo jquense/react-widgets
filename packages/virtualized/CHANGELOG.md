@@ -55,12 +55,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 <a name="4.0.20"></a>
-## [4.0.20](https://github.com/jquense/react-widgets/compare/react-widgets-virtualized@4.0.19...react-widgets-virtualized@4.0.20) (2018-09-20)
-
-
-
+## [4.0.20](https://github.com/jquense/react-widgets/compare/react-widgets-virtualized@4.0.19...react-widgets-virtualized@4.0.20) (2018-08-11)
 
 **Note:** Version bump only for package react-widgets-virtualized
+
+
+
+
 
 <a name="4.0.19"></a>
 ## [4.0.19](https://github.com/jquense/react-widgets/compare/react-widgets-virtualized@4.0.18...react-widgets-virtualized@4.0.19) (2018-07-13)

@@ -1,0 +1,72 @@
+import KeyboardShortcuts from "@site/src/components/KeyboardShortcuts";
+import ListboxMetadata from "@react-metadata/Listbox";
+import PropsList from "@theme/PropsList";
+
+A `<Listbox>` represents a list of selectable options. Single or multiple options can
+be selected based on the situation.
+
+## Overview
+
+The `<Listbox>` component is visually similar to the native `<select>` element with a
+`size` attribute provided. Like the native element, it can be used to select a single
+option from a list or multiple.
+
+For single options, selection follows the `<select>` behavior of not allowing deselection
+once an item is chosen, only switching to another item.
+
+```jsx live showImports
+import Listbox from "react-widgets/Listbox";
+
+<Listbox
+  defaultValue={["Yellow", "Orange"]}
+  data={["Red", "Yellow", "Blue", "Orange"]}
+/>;
+```
+
+## Multiple selections
+
+Add the `multiple` prop to allow toggling more than one item. In multiselect mode
+items default to toggling their selected state on click, or keyboard selection.
+Selected values are represented as an `Array`.
+
+```jsx live showImports
+import Listbox from "react-widgets/Listbox";
+
+<Listbox
+  multiple
+  defaultValue={["Yellow", "Orange"]}
+  data={["Red", "Yellow", "Blue", "Orange"]}
+/>;
+```
+
+## Complex data
+
+Like the dropdown components the `<Listbox>` can accept complex data items. Configure
+`dataKey` and `textField` to resolve values and display text to the correct places.
+
+```jsx live renderAsComponent
+const [value, setValue] = useState(1);
+
+return (
+  <>
+    <p>
+      Current Value: <strong>{value}</strong>
+    </p>
+    <Listbox
+      dataKey="id"
+      textField="color"
+      value={value}
+      onChange={(nextValue) => setValue(nextValue.id)}
+      data={[
+        { id: 1, color: "Red" },
+        { id: 2, color: "Yellow" },
+        { id: 3, color: "Blue" },
+      ]}
+    />
+  </>
+);
+```
+
+## API
+
+<PropsList props={ListboxMetadata.props} />

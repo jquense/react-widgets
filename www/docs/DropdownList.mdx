@@ -1,0 +1,39 @@
+import KeyboardShortcuts from "@site/src/components/KeyboardShortcuts";
+import DropdownListMetadata from "@react-metadata/DropdownList";
+import PropsList from "@theme/PropsList";
+
+A `<select>` element alternative for single value lists, with filtering. The `<DropdownList>` renders an array of `data` and manages the selection, filtering and value state.
+
+```jsx live showImports
+import DropdownList from "react-widgets/DropdownList";
+
+<DropdownList
+  defaultValue="Yellow"
+  data={["Red", "Yellow", "Blue", "Orange"]}
+/>;
+```
+
+## Keyboard Shortcuts
+
+DropdownList implements many keyboard shortcuts for power or keyboard only users.
+
+<KeyboardShortcuts
+  shortcuts={[
+    ["alt + down arrow", "open dropdown"],
+    ["alt + up arrow", "close dropdown"],
+    ["down arrow", "move focus to next item"],
+    ["up arrow", "move focus to previous item"],
+    ["home", "move focus to first item"],
+    ["end", "move focus to last item"],
+    ["enter", "select focused item"],
+    [
+      "ctrl + enter",
+      "create new option from current searchTerm",
+    ],
+    ["any key", "search list for item starting with key"],
+  ]}
+/>
+
+## API
+
+<PropsList props={DropdownListMetadata.props} />

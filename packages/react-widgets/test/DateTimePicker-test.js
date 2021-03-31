@@ -1,66 +1,51 @@
+import { mount } from 'enzyme'
 import React from 'react'
-import Globalize from 'globalize'
-import { mount, shallow } from 'enzyme'
+import DatePicker from '../src/DatePicker'
+import { DateLocalizer } from '../src/IntlLocalizer'
 
-import DateTimePicker from '../src/DateTimePicker'
-import TimeList from '../src/TimeList'
-import Calendar from '../src/Calendar'
-
-let ControlledDateTimePicker = DateTimePicker.ControlledComponent
-
-describe('DateTimePicker', () => {
+describe('DatePicker', () => {
   it('should set initial values', () => {
     var date = new Date()
+    const intl = new DateLocalizer()
 
     expect(
-      mount(<DateTimePicker defaultValue={date} format="MM-dd-yyyy" />)
-        .find('.rw-input')
-        .getDOMNode().value
-    ).to.equal(Globalize.format(date, 'MM-dd-yyyy'))
+      mount(
+        <DatePicker
+          defaultValue={date}
+          formats={{ datetime: { date: 'short' } }}
+        />,
+      )
+        .find('DatePickerInput')
+        .getDOMNode().value,
+    ).to.equal(intl.date(date))
   })
 
   it('should start closed', () => {
-    let inst = shallow(<ControlledDateTimePicker />)
+    let inst = mount(<DatePicker />)
+
+    expect(inst.find('Popup').prop('open')).to.not.equal(true)
 
     expect(inst.prop('open')).to.not.equal(true)
 
-    expect(
-      inst
-        .find('Popup')
-        .first()
-        .prop('open')
-    ).to.not.equal(true)
-
     inst.assertNone('.rw-open')
-    inst.assertSingle('DateTimePickerInput[aria-expanded=false]')
+    inst.assertSingle(`DatePickerInput[aria-expanded=false]`)
   })
 
   it('should open when clicked', () => {
-    var onOpen = sinon.spy()
+    let onOpen = sinon.spy()
+    let wrapper = mount(<DatePicker onToggle={onOpen} />)
 
-    let wrapper = shallow(<ControlledDateTimePicker onToggle={onOpen} />)
+    wrapper.find('button.rw-picker-btn').simulate('click')
 
-    wrapper
-      .find('Button')
-      .first()
-      .simulate('click')
-
-    wrapper
-      .find('Button')
-      .last()
-      .simulate('click')
-
-    expect(onOpen.calledTwice).to.equal(true)
+    expect(onOpen.getCalls().length).to.equal(1)
   })
 
   it('passes default props to calendar', () => {
     let wrapper = mount(
-      <ControlledDateTimePicker open="date" defaultView="year" />
+      <DatePicker open calendarProps={{ defaultView: 'year' }} />,
     )
 
-    expect(wrapper.find(Calendar.ControlledComponent).props().view).to.equal(
-      'year'
-    )
+    expect(wrapper.find('Calendar').props().defaultView).to.equal('year')
   })
 
   it('sets aria-owns relationship for Calendar', () => {
@@ -78,100 +63,54 @@ describe('DateTimePicker', () => {
   it('should change when selecting a date', () => {
     let change = sinon.spy()
 
-    shallow(
-      <ControlledDateTimePicker
-        open="date"
-        onChange={change}
-        onToggle={() => {}}
-      />
-    )
-      .assertSingle(Calendar)
-      .simulate('change', new Date())
+    mount(<DatePicker open onChange={change} onToggle={() => {}} />)
+      .find('.rw-cell')
+      .first()
+      .simulate('click')
 
     expect(change.calledOnce).to.equal(true)
   })
 
-  it('should change when selecting a time', () => {
+  xit('should change when selecting a time', () => {
     let change = sinon.spy(),
       select = sinon.spy()
 
-    shallow(
-      <ControlledDateTimePicker
-        open="date"
+    mount(
+      <DatePicker
+        open
         onChange={change}
         onSelect={select}
         onToggle={() => {}}
-      />
+      />,
     )
-      .assertSingle(TimeList)
-      .simulate('select', { date: new Date() })
+      .find('li.rw-list-option')
+      .first()
+      .simulate('click')
 
     expect(select.calledOnce).to.equal(true)
     expect(change.calledAfter(select)).to.equal(true)
     expect(change.calledOnce).to.equal(true)
   })
 
-  it('should change when selecting a time', () => {
-    let change = sinon.spy(),
-      select = sinon.spy()
-
-    shallow(
-      <ControlledDateTimePicker
-        open="date"
-        onChange={change}
-        onSelect={select}
-        onToggle={() => {}}
-      />
-    )
-      .assertSingle(TimeList)
-      .simulate('select', { date: new Date() })
-
-    expect(select.calledOnce).to.equal(true)
-    expect(change.calledAfter(select)).to.equal(true)
-    expect(change.calledOnce).to.equal(true)
-  })
-
-  it('should set id on list', () => {
-    expect(
-      mount(<DateTimePicker />)
-        .find('ul')
-        .getDOMNode()
-        .hasAttribute('id')
-    ).to.equal(true)
-  })
-
-  it('should not show time button when not selected', () => {
+  xit('should not show time button when not selected', () => {
     var spy = sinon.spy()
 
-    mount(<DateTimePicker time={false} date={false} onToggle={spy} />)
-      .tap(_ => _.assertNone('.rw-btn-time'))
-      .tap(_ => _.assertNone('.rw-btn-calendar'))
+    mount(<DatePicker includeTime={false} date={false} onToggle={spy} />)
+      .tap((_) => _.assertNone('.rw-btn-time'))
+      .tap((_) => _.assertNone('.rw-btn-calendar'))
       .simulate('keyDown', { altKey: true })
       .simulate('keyDown', { altKey: true })
 
     expect(spy.callCount).to.equal(0)
   })
 
-  it('should simulate focus/blur events', done => {
+  it('should simulate focus/blur events', () => {
     let blur = sinon.spy()
     let focus = sinon.spy()
 
-    let inst = mount(<DateTimePicker onBlur={blur} onFocus={focus} />)
-
-    expect(focus.calledOnce).to.equal(false)
-    expect(blur.calledOnce).to.equal(false)
-
-    inst.simulate('focus')
-
-    setTimeout(() => {
-      expect(focus.calledOnce).to.equal(true)
-      inst.simulate('blur')
-
-      setTimeout(() => {
-        expect(blur.calledOnce).to.equal(true)
-        done()
-      })
-    })
+    mount(<DatePicker onBlur={blur} onFocus={focus} />)
+      .simulateWithTimers('focus')
+      .simulateWithTimers('blur')
   })
 
   it('should simulate key events', () => {
@@ -179,8 +118,8 @@ describe('DateTimePicker', () => {
       kd = sinon.spy(),
       ku = sinon.spy()
 
-    mount(<DateTimePicker onKeyPress={kp} onKeyUp={ku} onKeyDown={kd} />)
-      .find('.rw-input')
+    mount(<DatePicker onKeyPress={kp} onKeyUp={ku} onKeyDown={kd} />)
+      .find('input.rw-input')
       .simulate('keyPress')
       .simulate('keyDown')
       .simulate('keyUp')
@@ -190,147 +129,35 @@ describe('DateTimePicker', () => {
     expect(ku.calledOnce).to.equal(true)
   })
 
-  it('should do nothing when disabled', done => {
-    let open = false,
-      toggle = sinon.spy()
-    let wrapper = mount(<DateTimePicker defaultValue={new Date()} disabled open={open} onToggle={toggle} />)
+  it('should do nothing when disabled', () => {
+    let spy = sinon.spy()
+    let wrapper = mount(
+      <DatePicker defaultValue={new Date()} disabled onToggle={spy} />,
+    )
 
-    let input = wrapper.find('.rw-input').getDOMNode()
+    let input = wrapper.find('input.rw-input').getDOMNode()
 
     expect(input.hasAttribute('disabled')).to.equal(true)
     expect(input.getAttribute('aria-owns')).to.equal('')
 
-    wrapper.find('.rw-i-calendar').simulate('click')
+    wrapper.find('.rw-i-calendar').simulate('click').update()
 
-    setTimeout(() => {
-      expect(toggle.notCalled).to.equal(true);
-      done()
-    }, 0)
+    expect(spy.called).to.equal(false)
   })
 
-  it('should do nothing when readonly', done => {
-    let open = false,
-      toggle = sinon.spy()
-    let wrapper = mount(<DateTimePicker defaultValue={new Date()} readOnly open={open} onToggle={toggle} />)
+  it('should do nothing when readonly', () => {
+    let spy = sinon.spy()
+    let wrapper = mount(
+      <DatePicker defaultValue={new Date()} readOnly onToggle={spy} />,
+    )
 
-    let input = wrapper.find('.rw-input').getDOMNode()
+    let input = wrapper.find('input.rw-input').getDOMNode()
 
     expect(input.hasAttribute('readonly')).to.equal(true)
     expect(input.getAttribute('aria-owns')).to.equal('')
 
-    wrapper.find('.rw-i-calendar').simulate('click')
+    wrapper.find('.rw-i-calendar').simulate('click').update()
 
-    setTimeout(() => {
-      expect(toggle.notCalled).to.equal(true)
-      done()
-    })
-  })
-
-  it('should change values on key down', () => {
-    let change = sinon.spy(),
-      open = false,
-      toggle = sinon.fake(_open => {
-        open = _open
-      })
-
-    let wrapper = mount(<DateTimePicker onChange={change} open={open} onToggle={toggle} />)
-
-    let options = wrapper.find('li').map(n => n.getDOMNode())
-
-    wrapper.simulate('keyDown', { key: 'ArrowDown', altKey: true })
-
-    expect(toggle.called).to.equal(true)
-    expect(open).to.equal('date')
-    toggle.resetHistory()
-    wrapper.setProps({ onChange: change, open, onToggle: toggle })
-
-    wrapper.simulate('keyDown', { key: 'ArrowDown', altKey: true })
-
-    expect(toggle.called).to.equal(true)
-    expect(open).to.equal('time')
-    toggle.resetHistory()
-    wrapper.setProps({ onChange: change, open, onToggle: toggle })
-
-    wrapper.simulate('keyDown', { key: 'Home' })
-
-    expect(options[0].className).to.match(/\brw-state-focus\b/)
-
-    wrapper.simulate('keyDown', { key: 'End' })
-
-    expect(options[options.length - 1].className).to.match(/\brw-state-focus\b/)
-
-    wrapper.simulate('keyDown', { key: 'ArrowUp' })
-
-    expect(options[options.length - 2].className).to.match(/\brw-state-focus\b/)
-
-    wrapper.simulate('keyDown', { key: 'ArrowDown' })
-
-    expect(options[options.length - 1].className).to.match(/\brw-state-focus\b/)
-  })
-
-  describe('TimeList', () => {
-    it('should render max correctly', () => {
-      let date = new Date(2014, 0, 16, 9, 30)
-      let inst = mount(
-        <TimeList value={new Date(2014, 0, 16, 8)} max={date} preserveDate />
-      )
-
-      let dates = inst.state('data')
-      let time = dates[dates.length - 1]
-
-      expect(time.date.getHours()).to.eql(9)
-      expect(time.date.getMinutes()).to.eql(30)
-      expect(time.date.getSeconds()).to.eql(0)
-
-      inst.setProps({ value: new Date(2014, 0, 15, 8) })
-
-      dates = inst.state('data')
-      time = dates[dates.length - 1]
-
-      expect(time.date.getHours()).to.eql(23)
-      expect(time.date.getMinutes()).to.eql(30)
-      expect(time.date.getSeconds()).to.eql(0)
-    })
-
-    it('should render min correctly', () => {
-      let date = new Date(2014, 0, 16, 9, 30)
-
-      let inst = mount(
-        <TimeList value={new Date(2014, 0, 16, 12)} min={date} preserveDate />
-      )
-
-      let time = inst.state('data')[0]
-
-      expect(time.date.getHours()).to.eql(9)
-      expect(time.date.getMinutes()).to.eql(30)
-      expect(time.date.getSeconds()).to.eql(0)
-
-      inst = mount(
-        <TimeList value={new Date(2014, 0, 18, 8)} min={date} preserveDate />
-      )
-      time = inst.state('data')[0]
-
-      expect(time.date.getHours()).to.eql(0)
-      expect(time.date.getMinutes()).to.eql(0)
-      expect(time.date.getSeconds()).to.eql(0)
-    })
-
-    it('should set the step property', () => {
-      let dates = mount(<DateTimePicker step={60} />)
-        .find(TimeList)
-        .instance().state.data
-
-      expect(dates[0].date.getHours()).to.equal(0)
-      expect(dates[1].date.getHours()).to.equal(1)
-      expect(dates[2].date.getHours()).to.equal(2)
-
-      dates = mount(<DateTimePicker step={120} />)
-        .find(TimeList)
-        .instance().state.data
-
-      expect(dates[0].date.getHours()).to.equal(0)
-      expect(dates[1].date.getHours()).to.equal(2)
-      expect(dates[2].date.getHours()).to.equal(4)
-    })
+    expect(spy.called).to.equal(false)
   })
 })

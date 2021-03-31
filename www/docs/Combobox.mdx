@@ -1,0 +1,55 @@
+import KeyboardShortcuts from "@site/src/components/KeyboardShortcuts";
+import ComboboxMetadata from "@react-metadata/Combobox";
+import PropsList from "@theme/PropsList";
+
+Also called an autocomplete or autosuggest component. A "combobox" is a plain
+text input that can provide a list of suggestions. The `<Combobox>` allows any
+text `value` but also provides a list of auto complete options to select from.
+
+```jsx live showImports
+import Combobox from "react-widgets/Combobox";
+
+<Combobox
+  defaultValue="Yellow"
+  data={["Red", "Yellow", "Blue", "Orange"]}
+/>;
+```
+
+## Textbox with suggestions
+
+Mix and match props like `hideCaret` and `hideEmptyPopup` props to create a
+traditional autocomplete look.
+
+```jsx live
+<Combobox
+  hideCaret
+  hideEmptyPopup
+  data={["Red", "Yellow", "Blue", "Orange"]}
+  placeholder="Search for a color"
+/>
+```
+
+## Keyboard Shortcuts
+
+Combobox implements many keyboard shortcuts for power or keyboard only users.
+
+<KeyboardShortcuts
+  shortcuts={[
+    ["alt + down arrow", "open dropdown"],
+    ["alt + up arrow", "close dropdown"],
+    ["down arrow", "move focus to next item"],
+    ["up arrow", "move focus to previous item"],
+    ["home", "move focus to first item"],
+    ["end", "move focus to last item"],
+    ["enter", "select focused item"],
+    [
+      "ctrl + enter",
+      "create new option from current searchTerm",
+    ],
+    ["any key", "search list for item starting with key"],
+  ]}
+/>
+
+## API
+
+<PropsList props={ComboboxMetadata.props} />

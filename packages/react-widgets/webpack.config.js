@@ -1,28 +1,29 @@
 const path = require('path')
-const { plugins, rules } = require('webpack-atoms');
+const { plugins, rules } = require('webpack-atoms')
 
 module.exports = {
   devtool: 'source-map',
   entry: {
-    'react-widgets': './src/index.js'
+    'react-widgets': './src/index.ts',
   },
   output: {
-    path: path.join(__dirname, './dist'),
+    path: path.join(__dirname, './lib/umd'),
     filename: '[name].js',
-    library:  'ReactWidgets',
-    libraryTarget: 'umd'
+    library: 'ReactWidgets',
+    libraryTarget: 'umd',
   },
   module: {
-    rules: [
-      rules.js()
-    ]
+    rules: [{ ...rules.js({ rootMode: 'upward' }), test: /\.(j|t)sx?$/ }],
+  },
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx', '.json'],
   },
   externals: {
     react: {
       root: 'React',
       commonjs: 'react',
       commonjs2: 'react',
-      amd: 'react'
+      amd: 'react',
     },
     'react-dom': {
       root: 'ReactDOM',
@@ -35,14 +36,9 @@ module.exports = {
     plugins.define(),
     // plugins.uglify(),
     plugins.banner({
-      banner: '(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/LICENSE.md',
-      entryOnly : true
+      banner:
+        '(c) 2014 - present: Jason Quense | https://github.com/jquense/react-widgets/blob/master/LICENSE.md',
+      entryOnly: true,
     }),
   ],
-  node: {
-    Buffer: false,
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-  },
 }

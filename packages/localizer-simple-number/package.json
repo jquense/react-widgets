@@ -1,13 +1,12 @@
 {
   "name": "react-widgets-simple-number",
-  "version": "4.1.26",
+  "version": "5.0.0-beta.11",
   "description": "A globalize.js localizer for react-widgets",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist/* lib/*",
-    "dist": "node ../../tools/build-localizer.js",
-    "build": "babel localizer.js -o index.js",
-    "prepublishOnly": "npm run clean && npm run build && npm run dist"
+    "build": "babel localizer.ts -o index.js --root-mode upward",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "files": [
     "index.js",
@@ -27,17 +26,17 @@
   },
   "homepage": "https://github.com/jquense/react-widgets#readme",
   "peerDependencies": {
-    "react-widgets": "^4.2.2"
+    "react-widgets": "^5.0.0-0.0"
   },
   "dependencies": {
     "deconstruct-number-format": "^0.0.1",
     "format-number-with-string": "^0.0.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.52",
-    "@babel/core": "^7.0.0-beta.52",
-    "cross-env": "^5.2.0",
-    "react-widgets": "^4.6.1",
-    "rimraf": "^2.6.2"
+    "@babel/cli": "^7.12.13",
+    "@babel/core": "^7.12.13",
+    "cross-env": "^7.0.3",
+    "react-widgets": "^5.0.0-beta.24",
+    "rimraf": "^3.0.2"
   }
 }

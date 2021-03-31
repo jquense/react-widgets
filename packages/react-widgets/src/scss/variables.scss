@@ -1,0 +1,97 @@
+$components: (
+  'Listbox',
+  'DropdownList',
+  'Combobox',
+  'Autocomplete',
+  'Multiselect',
+  'DatePicker',
+  'Calendar',
+  'TimeInput',
+  'NumberPicker'
+) !default;
+
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+
+//
+// Widget States
+//
+$widget-font-weight: null !default; // TODO
+$widget-font-size: 1em !default;
+$widget-font-family: inherit !default;
+
+$widget-border-radius: 4px !default;
+
+$widget-bg: #fff !default;
+$widget-color: $gray-900;
+$widget-border-color: #ccc !default;
+$widget-disabled-bg: $gray-200 !default;
+
+$widget-hover-bg: $gray-200 !default;
+$widget-hover-border-color: $widget-hover-bg !default;
+$widget-hover-color: null !default;
+
+$widget-focus-width: 3px !default;
+$widget-focus-color: rgba(0, 123, 255, 0.25) !default;
+$widget-focus-box-shadow: 0 0 0 $widget-focus-width $widget-focus-color !default;
+$widget-focus-transition: box-shadow 0.15s ease-in-out !default;
+
+//
+// Buttons
+//
+$picker-btn-align-items: null !default; // TD
+$picker-btn-justify-content: null !default; // TD
+
+$picker-btn-padding-left: null !default;
+$picker-btn-padding-right: null !default;
+$picker-btn-color: $widget-color !default;
+$picker-btn-border-color: null !default;
+$picker-btn-bg: null !default;
+$picker-btn-disabled-bg: $widget-disabled-bg !default;
+
+$picker-btn-hover-color: null !default;
+$picker-btn-hover-border-color: null !default;
+$picker-btn-hover-bg: $widget-hover-bg !default;
+
+$picker-btn-active-color: null !default;
+$picker-btn-active-border-color: null !default;
+$picker-btn-active-bg: $gray-300 !default;
+
+//
+// Picker inputs
+//
+
+$input-height: 38px !default; // 2.5em is good for 16px roots
+$input-color: $gray-700 !default;
+$input-caret-color: null !default;
+$input-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075) !default;
+$input-padding-x: 0.857em !default;
+
+$input-bg: $widget-bg !default;
+$input-placeholder-color: #999 !default;
+
+$input-border-color: $widget-border-color !default;
+$input-border-width: 1px !default;
+$input-border-radius: $widget-border-radius !default;
+
+$input-disabled-bg: $widget-disabled-bg !default;
+$input-disabled-border-color: null !default;
+$input-disabled-color: null !default;
+$input-disabled-placeholder-color: #999 !default;
+
+$input-focus-bg: null !default;
+$input-focus-border-color: #80bdff !default; // 25% lighter active-bg
+$input-focus-color: null !default;
+
+$input-autofill-bg: rgb(232, 240, 254) !default;
+$input-autofill-color: rgb(0, 0, 0) !default;
+
+$input-addon-width: 1.9em !default;
+$input-addon-border-color: $input-border-color !default;

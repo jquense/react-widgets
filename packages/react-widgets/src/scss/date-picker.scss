@@ -1,0 +1,11 @@
+@mixin DateTimePicker() {
+  .rw-popup {
+    display: flex;
+    flex-direction: column;
+
+    & > .rw-time-input {
+      align-self: center;
+      margin: 1em 0;
+    }
+  }
+}

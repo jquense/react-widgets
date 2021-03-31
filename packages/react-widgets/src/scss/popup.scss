@@ -1,0 +1,104 @@
+@use './variables.scss' as *;
+
+$widget-offset: 2px !default;
+$max-height: 250px;
+$bg: $widget-bg !default;
+$border: $widget-border-color !default;
+$border-radius: $widget-border-radius !default;
+$box-shadow-offset: 1em !default;
+$box-shadow: 0 0.5em 1em rgba(#000, 0.175) !default;
+$box-shadow-up: 0 0.5em 1em rgba(#000, 0.175) !default !default;
+
+$zindex: 1005 !default;
+$zindex-focused: $zindex + 1 !default;
+
+@mixin Popup() {
+  .rw-popup-container {
+    position: absolute;
+    z-index: $zindex;
+    top: 100%;
+    left: -$box-shadow-offset;
+    right: -$box-shadow-offset;
+    padding: 0 $box-shadow-offset;
+
+    &.rw-dropup {
+      top: auto;
+      bottom: 100%;
+    }
+
+    .rw-state-focus & {
+      z-index: $zindex-focused;
+    }
+  }
+
+  .rw-slide-transition {
+    // the offsets allows for drop shadow to not be clipped by the container
+    // width: 100%;
+    margin-bottom: $box-shadow-offset;
+    // margin: 0 $box-shadow-offset;
+
+    .rw-dropup > & {
+      margin-bottom: 0;
+      margin-top: $box-shadow-offset;
+    }
+  }
+
+  .rw-popup {
+    overflow: auto; // this is needed for some reason to clip scrollbar corners
+    -webkit-overflow-scrolling: touch;
+    margin-top: $widget-offset;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    border: $border 1px solid;
+    background: $bg;
+
+    & .rw-list {
+      max-height: $max-height;
+    }
+
+    .rw-dropup & {
+      margin-top: 0;
+      margin-bottom: $widget-offset;
+      box-shadow: $box-shadow-up;
+    }
+  }
+
+  .rw-slide-transition {
+    transition: transform 130ms, opacity 100ms;
+  }
+
+  .rw-slide-transition-entering {
+    overflow: hidden;
+
+    & .rw-slide-transition {
+      transform: translateY(0);
+      opacity: 1;
+      transition-timing-function: ease-out;
+    }
+  }
+
+  .rw-slide-transition-exiting {
+    & .rw-slide-transition {
+      transition-timing-function: ease-in;
+    }
+  }
+
+  .rw-slide-transition-exiting,
+  .rw-slide-transition-exited {
+    overflow: hidden;
+
+    & .rw-slide-transition {
+      opacity: 0;
+      transform: translateY(-10%);
+    }
+
+    &.rw-dropup .rw-slide-transition {
+      opacity: 0;
+      transform: translateY(10%);
+    }
+  }
+
+  .rw-slide-transition-exited {
+    display: none;
+  }
+}

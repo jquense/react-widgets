@@ -1,0 +1,79 @@
+---
+slug: /
+id: getting-started
+title: Getting Started
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+React widgets is a high quality suite of React inputs. Each component is built for ease of use,
+accessibility, and the practical needs of complex (or simple) forms. Get going quickly with
+the low friction setup.
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: 'npm', value: 'npm', },
+    { label: 'yarn', value: 'yarn', },
+  ]
+}>
+<TabItem value="npm">
+
+```bash
+  npm install react-widgets --save
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash
+  yarn add react-widgets
+```
+
+</TabItem>
+</Tabs>
+
+Import or link to the stylesheet. Icons and images are included as inline SVG's
+and don't require additional configuration.
+
+<Tabs
+  defaultValue="css"
+  values={[
+    { label: 'CSS', value: 'css' },
+    { label: 'Sass', value: 'scss', },
+  ]
+}>
+<TabItem value="css">
+
+```js
+import "react-widgets/styles.css";
+```
+
+</TabItem>
+<TabItem value="scss">
+
+```js
+import "react-widgets/scss/styles.scss";
+```
+
+</TabItem>
+</Tabs>
+
+Import your component or components of choice
+
+```jsx
+import DropdownList from "react-widgets/DropdownList";
+
+function App() {
+  return (
+    <>
+      {...}
+      <DropdownList />
+    </>
+  );
+}
+```
+
+Consult the input documentation for API details, or the styling guide for custimizing
+the look and feel of each input.

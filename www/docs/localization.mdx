@@ -1,0 +1,239 @@
+---
+title: Input I18n
+---
+
+Inputs all include robust multiple language support, with additional locale support
+for date, time, and number inputs. Complex locale supprt is abstracted into localizers,
+making it easy to use inputs with whichever date or i18n library you want.
+
+## Messages
+
+Most inputs include some amount natural language: button text, ARIA-labels, etc.
+Each string is customizable per component with their `messages` prop. They can also be
+configured for all components via a `Localization` Provider, rendered near your app's
+root.
+
+```jsx
+<Localization
+  messages={{
+    moveToday: "Today",
+    moveBack: "Navigate back",
+    moveForward: "Navigate forward",
+    emptyList: "There are no items in this list",
+    emptyFilter: "The filter returned no results",
+  }}
+>
+  {...}
+</Localization>
+```
+
+You can still override messages at the component level wih the messages prop.
+
+## Read direction
+
+Each input repects the `dir` attribute for controlling the read direction.
+
+```jsx live renderAsComponent
+import {
+  NumberPicker,
+  Calendar,
+  Multiselect,
+} from "react-widgets";
+
+const [direction, setDirection] = useState("rtl");
+
+<>
+  <div className="mb-10">
+    <label>
+      <input
+        type="radio"
+        value="rtl"
+        name="direction"
+        onChange={(e) => setDirection("rtl")}
+        defaultChecked
+      />
+      Right to left
+    </label>
+    <label>
+      <input
+        type="radio"
+        value="ltr"
+        name="direction"
+        onChange={(e) => setDirection("ltr")}
+      />
+      Left to right
+    </label>
+  </div>
+  <div dir={direction} className="flex space-y-4 max-w-xs">
+    <Calendar
+      defaultValue={new Date()}
+      valueFormat={{
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      }}
+    />
+    <NumberPicker
+      defaultValue={1305043}
+      format={{ style: "currency", currency: "USD" }}
+    />
+    <Multiselect
+      data={[
+        "JavaScript",
+        "ML",
+        "Scripting",
+        "CSS",
+        "HTML",
+      ]}
+      defaultValue={["CSS", "HTML"]}
+    />
+  </div>
+</>;
+```
+
+## Date and number formatting
+
+Locale specific date and number formatting handled using
+JavaScript's [`Intl`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) API. These
+localizers are enabled by default, but can be configured directly if needed.
+
+```jsx
+import { DateLocalizer, NumberLocalizer } from 'react-widgets/IntlLocalizer';
+
+<Localization
+  date={new DateLocalizer({ culture: 'en-BG', firstOfWeek: 1 })}
+  number={new NumberLocalizer({ culture: 'en-BG' })}
+  messages={...}
+>
+  {...}
+</Localization>
+```
+
+Note that the date localizer includes a `firstOfWeek` parameter. It's not currently
+possible to infer this value with the use of the Intl API, so needs to be provided
+seperately. Other localizers do not require this.
+
+:::info Heads up
+`Intl` provides robust date and number formatting API's but no control over locale
+based parsing. Instead, `new Date` and `parseFloat` are used to parse values back from
+string. If you need more control over parsing, consider another localizer or provide a
+custom `parse` prop
+:::
+
+## Other Localizers
+
+Additional localizers are supported as seperate package installs to not bloat
+the core library when not used.
+
+### Moment.js <small><code>date</code></small>
+
+```sh
+npm install moment react-widgets-moment --save
+```
+
+See the official [Moment docs](http://momentjs.com/) for information on integrating Moment into your build
+pipeline effectively.
+
+```tsx
+import moment from 'moment'
+import MomentLocalizer from 'react-widgets-moment';
+import DatePicker from 'react-widgets/DatePicker';
+
+moment.locale('en')
+
+const localizer = new MomentLocalizer(moment)
+
+<Localization date={momentLocalizer}>
+```
+
+Moment [format](http://momentjs.com/docs/#/displaying/format/) props accept `string`s
+
+```jsx
+<DatePicker format="mmm YYY" />
+```
+
+### date-fns <small><code>date</code></small>
+
+```sh
+npm install react-widgets-date-fns date-fns@2.0.0 --save
+```
+
+See the official [date-fns docs](https://date-fns.org/v2.0.0/docs/Getting-Started) for information
+on integrating date-fns.
+
+The `date-fns` localizer is a convenient option to get up and running quickly as it is ready-to-use with
+the `en-US` locale without any configuration, and includes only the `date-fns` bits that are used
+for formatting and parsing dates so the additional bundle size should be minimal.
+
+```tsx
+import DateFnsLocalizer from "react-widgets-date-fns";
+import DatePicker from "react-widgets/DatePicker";
+<Localization date={new DateFnsLocalizer()}>
+  ...
+</Localization>;
+```
+
+Additional locales can be included and date formats overridden by passing them as options to
+the localizer function.
+
+```jsx
+// Use custom date formats and include all date-fns locales
+import DateFnsLocalizer, {
+  defaultFormats,
+} from "react-widgets-date-fns";
+import locales from "date-fns/locale";
+
+const formats = Object.assign(defaultFormats, {
+  default: "mmm YY",
+});
+const localizer = new DateFnsLocalizer({
+  formats,
+  locales,
+});
+
+// Include only the locales you need to limit bundle size
+import enGB from "date-fns/locale/en-GB";
+import de from "date-fns/locale/de";
+
+new DateFnsLocalizer({
+  locales: { "en-GB": enGB, de: de },
+});
+```
+
+date-fns [format](https://date-fns.org/v1.29.0/docs/format) props accept `string`s
+
+```jsx
+<DatePicker format="mmm YYY" />
+```
+
+### Simple Number <small><code>number</code></small>
+
+The `simple-number` localizer provides a minimal token based number formatting and parsing strategy. Its best when you don't need
+robust locale support for currencies, and numbers;
+
+```jsx
+import SimpleNumberLocalizer from 'react-widgets-simple-number';
+import NumberPicker from 'react-widgets/NumberPicker';
+
+new SimpleNumberLocalizer()
+
+<Localization number={new SimpleNumberLocalizer()}>
+  ...
+</Localization>
+```
+
+Check out the documentation for [format-number-with-string](https://www.npmjs.com/package/format-number-with-string) for
+a complete guide to its format syntax.
+
+```jsx
+<NumberPicker format="-$#,###.00" />
+```
+
+## Creating a Localizer
+
+New localizers are easy to create, either by sub-classing an existing one
+to customize it or by creating a new one entirely by implementing the
+Localizer interface for either Dates or Numbers.
+
+Consult the source code and TypeScript types for details on what interface needs
+to be implemented.

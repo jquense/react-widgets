@@ -1,0 +1,36 @@
+@use './variables.scss' as *;
+@use './mixins.scss';
+
+@mixin DropdownList() {
+  .rw-dropdown-list {
+    width: 100%;
+  }
+
+  .rw-dropdownlist-search {
+    @include mixins.btn-input-reset;
+    @include mixins.input-base;
+  }
+
+  .rw-dropdown-list-value {
+  }
+
+  .rw-dropdown-list-input {
+    padding: 0 $input-padding-x;
+    align-self: center;
+    display: grid;
+    min-width: 0;
+    grid-template: 1fr / 1fr;
+
+    & > * {
+      grid-area: 1/1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    [dir='rtl'] & {
+      padding-right: $input-padding-x;
+      padding-left: 0;
+    }
+  }
+}
