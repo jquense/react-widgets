@@ -2,7 +2,7 @@ module.exports = {
   title: 'React Widgets',
   tagline: 'Build Beautiful Forms',
   url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/', //'/react-widgets/',
+  baseUrl: process.env.BASE_URL ?? '/', //'/react-widgets/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',

@@ -5,7 +5,8 @@ import Combobox from './Combobox'
 import DatePicker from './DatePicker'
 import DropdownList from './DropdownList'
 import Listbox from './Listbox'
-import Localization, {
+import Localization from './Localization'
+import type {
   DateFormats,
   DateLocalizer,
   FormatterOverrides,
@@ -19,7 +20,13 @@ import SlideDownTransition from './SlideDownTransition'
 import SlideTransitionGroup from './SlideTransitionGroup'
 import TimeInput from './TimeInput'
 
-export * from './types'
+export type {
+  DataItem,
+  Value,
+  RenderProp,
+  WidgetHandle,
+  SearchMetadata,
+} from './types'
 
 export {
   DropdownList,
