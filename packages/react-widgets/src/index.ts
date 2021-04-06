@@ -28,6 +28,14 @@ export type {
   SearchMetadata,
 } from './types'
 
+export type {
+  DateFormats,
+  FormatterOverrides,
+  DateLocalizer,
+  NumberLocalizer,
+  RequiredDateMethods,
+  Localizer,
+}
 export {
   DropdownList,
   Combobox,
@@ -41,10 +49,4 @@ export {
   SlideTransitionGroup,
   SlideDownTransition,
   Localization,
-  DateFormats,
-  DateLocalizer,
-  FormatterOverrides,
-  Localizer,
-  NumberLocalizer,
-  RequiredDateMethods,
 }

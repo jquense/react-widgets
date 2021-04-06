@@ -32,7 +32,7 @@ function MultiselectTag({
 }: MultiselectTagProps) {
   const [ref, focused, id] = useListOption<any, HTMLDivElement>(dataItem)
 
-  const handleRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleRemove = (event: any) => {
     if (!disabled) onRemove(dataItem, event)
   }
 
@@ -58,6 +58,7 @@ function MultiselectTag({
         // these should not be tabbable
         tabIndex={-1}
         onClick={handleRemove}
+        onTouchEnd={handleRemove}
         disabled={disabled || readOnly}
         className="rw-btn-input-reset rw-multiselect-tag-btn"
         aria-label={label || 'Remove item'}

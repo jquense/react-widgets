@@ -60,8 +60,6 @@
 }
 
 .rw-picker-btn {
-  @include mixins.btn-input-reset;
-
   background-color: $picker-btn-bg;
   // border color doesn't make sense here
   // since it's surrounded by the input border
@@ -161,23 +159,6 @@ fieldset[disabled] .rw-widget {
   }
 }
 
-// This class represents the abstract container that is the "input" of any
-// given widget
-.rw-widget-input {
-  color: $input-color;
-  background-color: $input-bg;
-  box-shadow: $input-box-shadow;
-
-  // Listbox is also the rw-widget
-  &.rw-state-disabled,
-  .rw-state-disabled &,
-  fieldset[disabled] & {
-    color: $input-disabled-color;
-    background-color: $input-disabled-bg;
-    border-color: $input-disabled-border-color;
-  }
-}
-
 .rw-input {
   @include mixins.btn-input-reset;
   @include mixins.input-base;
@@ -192,6 +173,23 @@ fieldset[disabled] .rw-widget {
   &:read-only {
     // use parent style
     cursor: inherit;
+  }
+}
+
+// This class represents the abstract container that is the "input" of any
+// given widget
+.rw-widget-input {
+  color: $input-color;
+  background-color: $input-bg;
+  box-shadow: $input-box-shadow;
+
+  // Listbox is also the rw-widget
+  &.rw-state-disabled,
+  .rw-state-disabled &,
+  fieldset[disabled] & {
+    color: $input-disabled-color;
+    background-color: $input-disabled-bg;
+    border-color: $input-disabled-border-color;
   }
 }
 

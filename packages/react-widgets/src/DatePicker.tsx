@@ -69,13 +69,6 @@ let propTypes = {
   max: PropTypes.instanceOf(Date),
 
   /**
-   * The amount of minutes between each entry in the time list.
-   *
-   * @example ['prop', { step: 90 }]
-   */
-  step: PropTypes.number,
-
-  /**
    * A formatting options used to display the date value. This is a shorthand for
    * setting both `valueDisplayFormat` and `valueEditFormat`.
    */

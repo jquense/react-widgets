@@ -1,4 +1,8 @@
-@import '~react-widgets/scss/styles.scss';
+@use '~react-widgets/scss/styles.scss';
+//  with (
+//   $picker-btn-color: red;
+//   $input-color: blue
+// );
 
 /**
  * Any CSS included here will be global. The classic template
