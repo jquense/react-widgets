@@ -289,7 +289,7 @@ export interface DatePickerProps<TLocalizer = unknown>
 
   formats?: DateFormats<InferFormat<TLocalizer>>
 
-  messages?: {
+  messages?: CalendarProps['messages'] & {
     dateButton?: string
   }
 }
@@ -588,6 +588,10 @@ const DatePicker = React.forwardRef(
               max={max}
               bordered={false}
               {...calendarProps}
+              messages={{
+                ...messages,
+                ...calendarProps?.messages,
+              }}
               tabIndex={-1}
               value={value}
               autoFocus={false}

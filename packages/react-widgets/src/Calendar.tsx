@@ -17,6 +17,7 @@ import dates from './dates'
 import useAutoFocus from './useAutoFocus'
 import useFocusManager from './useFocusManager'
 import { notify, useInstanceId } from './WidgetHelpers'
+import { Messages } from './messages'
 
 type Direction = 'DOWN' | 'UP' | 'LEFT' | 'RIGHT'
 
@@ -294,6 +295,12 @@ export interface CalendarProps<TLocalizer = unknown>
   ) => void
   renderDay?: RenderDayProp
   formats?: DateFormats<InferFormat<TLocalizer>>
+
+  messages?: {
+    moveBack?: string
+    moveForward?: string
+    moveToday?: string
+  }
 }
 
 /**
