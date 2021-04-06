@@ -100,7 +100,12 @@ export const autofill = () => (
     <div>
       <label>
         State
-        <DropdownList name="state" data={['NJ', 'MA', 'NY', 'AL', 'CA']} />
+        <DropdownList
+          name="state"
+          data={[{ id: 'NJ', label: 'New Jersey' }]}
+          textField="label"
+          dataKey="id"
+        />
         {/* <select>
               <option value=""> </option>
               <option value="NJ">New Jersey</option>

@@ -91,7 +91,7 @@ const DropdownListInput = React.forwardRef(function <TDataItem>(
   }))
 
   // There is some interaction between unmounting the search and value inputs
-  // that cancels autofilling in Chrome, it may be due to an inpu the browser
+  // that cancels autofilling in Chrome, it may be due to an input the browser
   // was considering suddenly disappeared. hiding it seems to avoid the issue
   const style = autofilling ? { display: 'none' } : undefined
 
@@ -107,7 +107,8 @@ const DropdownListInput = React.forwardRef(function <TDataItem>(
           autoComplete={autoComplete}
           onChange={handleAutofill}
           onAnimationStart={handleAutofillDetect}
-          className={cn('rw-detect-autofill')}
+          aria-hidden={!autofilling}
+          className={cn('rw-detect-autofill', !autofilling && 'rw-sr')}
         />
       )}
       <>

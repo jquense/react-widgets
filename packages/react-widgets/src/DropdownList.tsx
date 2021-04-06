@@ -446,9 +446,8 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
     if (filledValue === '') return void change(null)
 
     for (const item of rawData) {
-      let value = accessors.text(item)
       if (
-        String(value).toLowerCase() === filledValue ||
+        String(accessors.value(item)).toLowerCase() === filledValue ||
         accessors.text(item).toLowerCase() === filledValue
       ) {
         change(item, e)
