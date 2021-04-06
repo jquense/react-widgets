@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/jquense/react-widgets/compare/react-widgets@5.0.0...react-widgets@5.0.1) (2021-04-06)
+
+
+### Bug Fixes
+
+* CSS cascade ordering ([93709fa](https://github.com/jquense/react-widgets/commit/93709faad39d9105926783342d86621429d35951))
+* type imports in main export ([d53b7b3](https://github.com/jquense/react-widgets/commit/d53b7b3019237093ffde76a6b03d1c8abfbdfafb))
+
+
+
+
+
 <a name="4.6.1"></a>
 ## [4.6.1](https://github.com/jquense/react-widgets/compare/react-widgets@4.6.0...react-widgets@4.6.1) (2020-10-27)
 
