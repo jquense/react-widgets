@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.2](https://github.com/jquense/react-widgets/compare/react-widgets@5.0.1...react-widgets@5.0.2) (2021-04-06)
+
+
+### Bug Fixes
+
+* **DropdownList:** autofill capture doesn't show unless needed ([6be129a](https://github.com/jquense/react-widgets/commit/6be129a06d798cdd46266bb41196500747776dc6))
+
+
+
+
+
 ## [5.0.1](https://github.com/jquense/react-widgets/compare/react-widgets@5.0.0...react-widgets@5.0.1) (2021-04-06)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
