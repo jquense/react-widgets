@@ -50,11 +50,11 @@ const DatePickerInput = React.forwardRef(
       [value, formatter, localizer, displayFormat, editing, editFormat],
     )
 
-    const lastValueFromProps = useRef(nextTextValue)
+    const [prevValue, setPrevValue] = useState(nextTextValue)
     const [textValue, setTextValue] = useState(nextTextValue)
 
-    if (lastValueFromProps.current !== nextTextValue) {
-      lastValueFromProps.current = nextTextValue
+    if (prevValue !== nextTextValue) {
+      setPrevValue(nextTextValue)
       setTextValue(nextTextValue)
     }
 
