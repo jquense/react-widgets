@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.4](https://github.com/jquense/react-widgets/compare/react-widgets@5.0.3...react-widgets@5.0.4) (2021-04-26)
+
+
+### Bug Fixes
+
+* **DatePicker:** strictmode issue preventing value from updating ([fecbf4d](https://github.com/jquense/react-widgets/commit/fecbf4d49440f6349093b0043bb6e76cc623a5be)), closes [#1074](https://github.com/jquense/react-widgets/issues/1074)
+
+
+
+
+
 ## [5.0.3](https://github.com/jquense/react-widgets/compare/react-widgets@5.0.2...react-widgets@5.0.3) (2021-04-06)
 
 
