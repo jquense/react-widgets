@@ -26,6 +26,7 @@ export interface FocusProps {
 }
 
 export interface FocusList<TDataItem = unknown> {
+  size(): number;
   focus: (el: HTMLElement | null | undefined) => void
   first: () => HTMLElement | undefined
   last: () => HTMLElement | undefined
@@ -103,6 +104,10 @@ export const useFocusList = <TDataItem>({
 
   const list: any = useMemo(() => {
     return {
+      size() {
+        const [items] = get();
+        return items.length;
+      },
       get,
       toDataItem: (el: HTMLElement) => map.get(el),
 

@@ -383,7 +383,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
    */
 
   const handleDelete = (dataItem: TDataItem, event: React.SyntheticEvent) => {
-    if (isDisabled || readOnly) return
+    if (isDisabled || readOnly || tagList.size() === 0) return
     focus()
     change(dataItem, event, REMOVE)
   }
