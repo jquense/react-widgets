@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/jquense/react-widgets/compare/react-widgets@5.0.4...react-widgets@5.1.0) (2021-04-28)
+
+
+### Bug Fixes
+
+* Handle the case where the user deletes when there are no tags in a Multiselect ([#1075](https://github.com/jquense/react-widgets/issues/1075)) ([f28aba6](https://github.com/jquense/react-widgets/commit/f28aba63e8b519ed055fb6366f526a87b1c22cc7))
+
+
+### Features
+
+* expose a few more sass variables add background-clip ([5c0cd36](https://github.com/jquense/react-widgets/commit/5c0cd36fd0250329c1d9dd9b259c15cb197d8e5f))
+
+
+
+
+
 ## [5.0.4](https://github.com/jquense/react-widgets/compare/react-widgets@5.0.3...react-widgets@5.0.4) (2021-04-26)
 
 
