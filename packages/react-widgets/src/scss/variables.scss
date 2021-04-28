@@ -43,6 +43,8 @@ $widget-focus-color: rgba(0, 123, 255, 0.25) !default;
 $widget-focus-box-shadow: 0 0 0 $widget-focus-width $widget-focus-color !default;
 $widget-focus-transition: box-shadow 0.15s ease-in-out !default;
 
+$widget-background-clip: border-box;
+
 //
 // Buttons
 //

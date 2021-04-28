@@ -48,6 +48,7 @@ $optgroup-font-weight: bold !default;
     color: $color;
     cursor: pointer;
     border: 1px solid transparent;
+    background-clip: $widget-background-clip;
 
     &:hover,
     [data-intent='keyboard'] &.rw-state-focus:not(.rw-state-selected) {

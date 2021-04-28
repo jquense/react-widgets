@@ -28,6 +28,14 @@ $cell-color: $btn-color !default;
 $cell-border-color: null !default;
 $cell-border-radius: $btn-border-radius !default;
 
+$cell-hover-bg: $btn-hover-bg !default;
+$cell-hover-border-color: $btn-hover-border-color !default;
+$cell-hover-color: $btn-hover-color !default;
+
+$cell-active-bg: $btn-active-bg !default;
+$cell-active-border-color: $btn-active-border-color !default;
+$cell-active-color: $btn-active-color !default;
+
 $cell-select-color: list.$selected-color !default;
 $cell-select-border-color: list.$selected-border-color !default;
 $cell-select-bg: list.$selected-bg !default;
@@ -67,17 +75,10 @@ $cell-select-bg: list.$selected-bg !default;
 
   .rw-cell,
   .rw-calendar-btn {
-    line-height: 2em;
-    border-radius: $btn-border-radius;
+    background-clip: $widget-background-clip;
 
     @include mixins.focus();
 
-    &:hover {
-      background-color: $btn-hover-bg;
-    }
-    &:active {
-      background-color: $btn-active-bg;
-    }
     // TODO: normal button disabled
     &:disabled,
     &.rw-state-disabled {
@@ -87,7 +88,16 @@ $cell-select-bg: list.$selected-bg !default;
   }
 
   .rw-calendar-btn {
+    line-height: 2em;
+    border-radius: $btn-border-radius;
     border-color: $btn-border-color;
+
+    &:hover {
+      background-color: $btn-hover-bg;
+    }
+    &:active {
+      background-color: $btn-active-bg;
+    }
   }
 
   .rw-calendar-btn-left,
@@ -162,6 +172,13 @@ $cell-select-bg: list.$selected-bg !default;
     padding: $cell-padding;
     outline: none;
 
+    &:hover {
+      background-color: $cell-hover-bg;
+    }
+    &:active {
+      background-color: $cell-active-bg;
+    }
+
     &.rw-state-selected {
       background-color: $cell-select-bg;
       border-color: $cell-select-border-color;
@@ -191,6 +208,7 @@ $cell-select-bg: list.$selected-bg !default;
 
   .rw-calendar-transition-next {
     -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 
     .rw-calendar-transition-top & {
       @include _translate(0, -100%);
@@ -212,6 +230,7 @@ $cell-select-bg: list.$selected-bg !default;
 
   .rw-calendar-transition-prev {
     -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
     position: absolute;
     left: 0;
     top: 0;

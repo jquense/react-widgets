@@ -29,6 +29,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  background-clip: $widget-background-clip;
   cursor: pointer;
 
   &:focus {
@@ -182,6 +183,7 @@ fieldset[disabled] .rw-widget {
   color: $input-color;
   background-color: $input-bg;
   box-shadow: $input-box-shadow;
+  background-clip: $widget-background-clip;
 
   // Listbox is also the rw-widget
   &.rw-state-disabled,
@@ -206,28 +208,11 @@ fieldset[disabled] .rw-widget {
 .rw-detect-autofill {
   @include mixins.btn-input-reset;
   @include mixins.input-base;
-
-  // &:autofill,
-  // &:-webkit-autofill {
-  //   border-radius: 30px;
-  //   animation-name: react-widgets-autofill-start;
-
-  //   // Make the backgound color become yellow _really slowly_
-  //   transition: background-color 50000s ease-in-out 0s;
-  // }
-
-  // &:not(:autofill),
-  // &:not(:-webkit-autofill) {
-  //   animation-name: react-widgets-autofill-cancel;
-  // }
 }
 
 .rw-detect-autofill:-webkit-autofill {
-  // height: 50px;
   animation-name: react-widgets-autofill-start;
   animation-duration: 0.01ms;
-  // animation-delay: 0.01ms;
-  // transition: background-color 50000s ease-in-out 0s;
 }
 
 .rw-detect-autofill:not(:-webkit-autofill) {
