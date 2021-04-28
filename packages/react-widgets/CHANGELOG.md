@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.1](https://github.com/jquense/react-widgets/compare/react-widgets@5.1.0...react-widgets@5.1.1) (2021-04-28)
+
+
+### Bug Fixes
+
+* wrong clip ([c41ccc1](https://github.com/jquense/react-widgets/commit/c41ccc1493441a7dd7a08c7a0629b5e8c79c7216))
+
+
+
+
+
 # [5.1.0](https://github.com/jquense/react-widgets/compare/react-widgets@5.0.4...react-widgets@5.1.0) (2021-04-28)
 
 
