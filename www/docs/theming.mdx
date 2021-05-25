@@ -15,7 +15,9 @@ configuration syntax: https://sass-lang.com/documentation/at-rules/use#configura
 
 ```scss title="my-theme.scss"
 @use "react-widgets/styles.scss" with (
-  $input-height: 2.5em
+  $input-height: 2.5em,
+  // Most component variables are forwarded with a namespace
+  $list-selected-bg: #49c6de,
 );
 ```
 
