@@ -404,7 +404,10 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
   let completeType = filter ? ('list' as const) : ('none' as const)
 
   let popupOpen = currentOpen && (!hideEmptyPopup || !!data.length)
-
+  let inputReadOnly =
+  // @ts-ignore
+      inputProps?.readOnly != null ? inputProps?.readOnly : readOnly;
+      
   return (
     <Widget
       {...elementProps}
@@ -432,7 +435,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
           autoFocus={autoFocus}
           tabIndex={tabIndex}
           disabled={isDisabled}
-          readOnly={isReadOnly}
+          readOnly={inputReadOnly}
           aria-busy={!!busy}
           aria-owns={listId}
           aria-autocomplete={completeType}

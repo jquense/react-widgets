@@ -520,7 +520,7 @@ const DatePicker = React.forwardRef(
 
     let shouldRenderList = useFirstFocusedRender(focused, open!)
 
-    let inputReadOnly =
+    const inputReadOnly =
       inputProps?.readOnly != null ? inputProps?.readOnly : readOnly
     return (
       <Widget
