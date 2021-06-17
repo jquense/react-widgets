@@ -330,8 +330,9 @@ class Calendar extends React.Component {
     let { value, min, max } = this.props
     let { view } = this.state
     value = inRangeValue(value, min, max)
+    const oldValue = inRangeValue(prevProps.value, prevProps.min, prevProps.max); 
 
-    if (!dates.eq(value, dateOrNull(prevProps.value), VIEW_UNIT[view]))
+    if (!dates.eq(value, oldValue, VIEW_UNIT[view]))
       this.maybeSetCurrentDate(value)
   }
 
