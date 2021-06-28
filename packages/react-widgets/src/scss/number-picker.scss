@@ -1,8 +1,9 @@
+@use 'sass:math';
 @use './variables.scss' as *;
 
 @mixin NumberPicker() {
   .rw-number-picker {
-    $half-width: $input-height / 2;
+    $half-width: math.div($input-height, 2);
   }
 
   .rw-number-picker-spinners {
