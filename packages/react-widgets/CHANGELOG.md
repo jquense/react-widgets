@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/jquense/react-widgets/compare/react-widgets@5.1.1...react-widgets@5.2.0) (2021-07-07)
+
+
+### Bug Fixes
+
+* Combobox's input to use inputProps readOnly instead of Combobox's readOnly ([#1079](https://github.com/jquense/react-widgets/issues/1079)) ([3d21ebd](https://github.com/jquense/react-widgets/commit/3d21ebd7f23f26573473a614f471854c5cb9b59b))
+* division warning in number-picker.scss ([#1088](https://github.com/jquense/react-widgets/issues/1088)) ([780b24a](https://github.com/jquense/react-widgets/commit/780b24acf8213d8503eefebe3b641787f583e360))
+
+
+### Features
+
+* add low level List.renderList() ([459ab78](https://github.com/jquense/react-widgets/commit/459ab785c1db3f225ec0d6f8d40da4c5febe3fd8))
+
+
+
+
+
 ## [5.1.1](https://github.com/jquense/react-widgets/compare/react-widgets@5.1.0...react-widgets@5.1.1) (2021-04-28)
 
 
