@@ -208,6 +208,7 @@ const List: List = React.forwardRef(function List<TDataItem>(
     groupBy,
     elementRef,
     optionComponent: Option = ListOption,
+    renderList,
     // onKeyDown,
     ...props
   }: ListProps<TDataItem>,
@@ -263,7 +264,7 @@ const List: List = React.forwardRef(function List<TDataItem>(
     )
   }
 
-  const children = groupedData
+  const items = groupedData
     ? groupedData.map(([group, items], idx) => (
         <div role="group" key={`group_${idx}`}>
           <ListOptionGroup>
@@ -274,23 +275,22 @@ const List: List = React.forwardRef(function List<TDataItem>(
       ))
     : data.map(renderOption)
 
-  return (
-    <div
-      id={id}
-      tabIndex={0}
-      ref={divRef}
-      {...elementProps}
-      aria-multiselectable={!!multiple}
-      className={cn(className, 'rw-list')}
-      role={elementProps.role ?? 'listbox'}
-    >
-      {React.Children.count(children) ? (
-        children
-      ) : (
-        <div className="rw-list-empty">{emptyList()}</div>
-      )}
-    </div>
-  )
+  const rootProps = {
+    id,
+    tabIndex: 0,
+    ref: divRef,
+    ...elementProps,
+    'aria-multiselectable': !!multiple,
+    className: cn(className, 'rw-list'),
+    role: elementProps.role ?? 'listbox',
+    children: React.Children.count(items) ? (
+      items
+    ) : (
+      <div className="rw-list-empty">{emptyList()}</div>
+    ),
+  }
+
+  return renderList ? renderList(rootProps) : <div {...rootProps} />
 })
 
 List.displayName = 'List'
