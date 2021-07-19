@@ -58,11 +58,6 @@ const DateTimePartInput = React.forwardRef<HTMLInputElement, Props>(
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
       setIsFocused(false)
-      // debugger
-      // if (pad) {
-      //   e.target.value = e.target.value.padStart(size, '0')
-      //   onChange(e)
-      // }
       if (onBlur) onBlur(e)
     }
 
