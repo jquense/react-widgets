@@ -285,7 +285,6 @@ const defaultProps = {
 interface TimePartState {
   value: Date | null
   use12HourClock: boolean
-  timeParts: TimeParts
   rawTimeParts: RawTimeParts
 }
 
@@ -301,7 +300,6 @@ function useTimePartState(
   const [state, setState] = useState<TimePartState>(() => ({
     value,
     use12HourClock,
-    timeParts,
     rawTimeParts: convertTimePartsToRaw(timeParts, pad),
   }))
 
@@ -322,12 +320,11 @@ function useTimePartState(
     setState({
       value,
       use12HourClock,
-      timeParts,
       rawTimeParts: getRawValueParts(value, use12HourClock, pad),
     })
   }
 
-  return [state, setRawTimeParts] as const
+  return [state.rawTimeParts, setRawTimeParts] as const
 }
 
 function TimeInput(uncontrolledProps: TimeInputProps) {
@@ -380,7 +377,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     },
   )
 
-  const [{ timeParts, rawTimeParts }, setRawTimeParts] = useTimePartState(
+  const [rawTimeParts, setRawTimeParts] = useTimePartState(
     value ?? null,
     use12HourClock ?? false,
     precision,
@@ -558,7 +555,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
 
     onChange!(nextDate, {
       lastValue: value,
-      timeParts,
+      timeParts: convertRawToTimeParts(rawTimeParts),
     })
   }
 
