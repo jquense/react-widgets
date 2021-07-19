@@ -12,14 +12,6 @@ import useFocusManager from './useFocusManager'
 
 type Meridiem = 'AM' | 'PM'
 
-interface DateParts {
-  era: Meridiem
-  hours?: number
-  minutes?: number
-  seconds?: number
-  milliseconds?: number
-}
-
 interface TimeParts {
   meridiem: Meridiem
   hours?: number
@@ -29,6 +21,57 @@ interface TimeParts {
 }
 
 type TimePart = keyof TimeParts
+interface RawTimeParts {
+  meridiem: Meridiem
+  hours?: string
+  minutes?: string
+  seconds?: string
+  milliseconds?: string
+}
+
+type RawTimePart = keyof RawTimeParts
+
+const convertTimePartsToRaw = (
+  timeParts: TimeParts,
+  padValues?: boolean,
+): RawTimeParts => {
+  const isNumber = (val: string | number | null | undefined) =>
+    typeof val === 'number'
+
+  let hours = isNumber(timeParts.hours)
+    ? String(timeParts.hours).padStart(padValues ? 2 : 0, '0')
+    : '--'
+  let minutes = isNumber(timeParts.minutes)
+    ? String(timeParts.minutes).padStart(padValues ? 2 : 0, '0')
+    : '--'
+  let seconds = isNumber(timeParts.seconds)
+    ? String(timeParts.seconds).padStart(padValues ? 2 : 0, '0')
+    : '--'
+  let milliseconds = isNumber(timeParts.milliseconds)
+    ? String(timeParts.milliseconds).padStart(padValues ? 3 : 0, '0')
+    : '---'
+
+  return {
+    meridiem: timeParts.meridiem,
+    hours,
+    minutes,
+    seconds,
+    milliseconds,
+  }
+}
+
+const convertRawToTimeParts = (rawTimeParts: RawTimeParts): TimeParts => {
+  const getConvertedTimePart = (rawTimePart?: string): number =>
+    rawTimePart && !isNaN(Number(rawTimePart)) ? Number(rawTimePart) : 0
+
+  return {
+    meridiem: rawTimeParts.meridiem,
+    hours: getConvertedTimePart(rawTimeParts.hours),
+    minutes: getConvertedTimePart(rawTimeParts.minutes),
+    seconds: getConvertedTimePart(rawTimeParts.seconds),
+    milliseconds: getConvertedTimePart(rawTimeParts.milliseconds),
+  }
+}
 
 const selectTextRange = (el: HTMLInputElement | HTMLDivElement) => {
   if (el instanceof HTMLInputElement) return el.select()
@@ -42,18 +85,32 @@ const selectTextRange = (el: HTMLInputElement | HTMLDivElement) => {
 }
 
 // prettier-ignore
-const isEmptyValue = (p: TimeParts, precision: TimePart) =>
+const isEmptyValue = (p: RawTimeParts, precision: TimePart) =>
   p.hours == null &&
   p.minutes == null &&
   ((precision != 'seconds' && precision !== 'milliseconds') || p.seconds == null) &&
   (precision !== 'milliseconds' || p.milliseconds == null);
 
 // prettier-ignore
-const isPartialValue = (p: TimeParts, precision: TimePart) =>
+const isPartialValue = (p: RawTimeParts, precision: TimePart) =>
   p.hours == null ||
   p.minutes == null ||
   ((precision === 'seconds' || precision === 'milliseconds') && p.seconds == null) ||
   (precision === 'milliseconds' && p.milliseconds == null);
+
+const isCompleteValue = (
+  p: RawTimeParts,
+  precision: TimePart,
+  use12HourClock: boolean,
+) =>
+  isComplete(p.hours!, 'hours', use12HourClock) &&
+  isComplete(p.minutes!, 'minutes', use12HourClock) &&
+  (precision === 'seconds' || precision === 'milliseconds'
+    ? isComplete(p.seconds!, 'seconds', use12HourClock)
+    : true) &&
+  (precision === 'milliseconds'
+    ? isComplete(p.milliseconds!, 'milliseconds', use12HourClock)
+    : true)
 
 const getValueParts = (
   value?: Date | null,
@@ -77,8 +134,17 @@ const getValueParts = (
   return { hours, minutes, seconds, milliseconds, meridiem }
 }
 
+const getRawValueParts = (
+  value?: Date | null,
+  use12HourClock?: boolean,
+  padValues?: boolean,
+): RawTimeParts => {
+  const timeParts = getValueParts(value, use12HourClock)
+  return convertTimePartsToRaw(timeParts, padValues)
+}
+
 const TEST_VALID = {
-  hours: /^([1]?[0-9]|2[0-3])$/,
+  hours: /^([0-1]?[0-9]|2[0-3])$/,
   hours12: /^(1[0-2]|0?[1-9])$/,
   minutes: /^([0-5]?\d)$/,
   seconds: /^([0-5]?\d)$/,
@@ -86,11 +152,11 @@ const TEST_VALID = {
 }
 
 const TEST_COMPLETE = {
-  hours: /^([3-9]|\d{2})$/,
-  hours12: /^(\d{2}|[2-9])$/,
-  minutes: /^(d{2}|[6-9])$/,
-  seconds: /^(d{2}|[6-9])$/,
-  milliseconds: /^(\d{3})$/,
+  hours: /^\d{2}$/,
+  hours12: /^\d{2}$/,
+  minutes: /^\d{2}$/,
+  seconds: /^\d{2}$/,
+  milliseconds: /^\d{3}$/,
 }
 
 function testPart(
@@ -177,25 +243,25 @@ const propTypes = {
   precision: PropTypes.oneOf(['minutes', 'seconds', 'milliseconds']).isRequired,
 
   /**
-   * The seperator between hours and minutes
+   * The separator between hours and minutes
    * @default ':'
    */
   hoursAddon: PropTypes.node,
 
   /**
-   * The seperator between hours and minutes
+   * The separator between hours and minutes
    * @default ':'
    */
   minutesAddon: PropTypes.node,
 
   /**
-   * The seperator between hours and minutes
+   * The separator between hours and minutes
    * @default ':'
    */
   secondsAddon: PropTypes.node,
 
   /**
-   * The seperator between hours and minutes
+   * The separator between hours and minutes
    * @default '.'
    */
   millisecondsAddon: PropTypes.node,
@@ -212,32 +278,49 @@ interface TimePartState {
   value: Date | null
   use12HourClock: boolean
   timeParts: TimeParts
+  rawTimeParts: RawTimeParts
 }
 
 // let count = 0
-function useTimePartState(value: Date | null, use12HourClock: boolean) {
+function useTimePartState(
+  value: Date | null,
+  use12HourClock: boolean,
+  precision: TimePart,
+  pad?: boolean,
+) {
+  const timeParts = getValueParts(value, use12HourClock)
+
   const [state, setState] = useState<TimePartState>(() => ({
     value,
     use12HourClock,
-    timeParts: getValueParts(value, use12HourClock),
+    timeParts,
+    rawTimeParts: convertTimePartsToRaw(timeParts, pad),
   }))
 
-  const setTimeParts = useCallback(
-    (timeParts: TimeParts) => setState((s) => ({ ...s, timeParts })),
+  const setRawTimeParts = useCallback(
+    (rawTimeParts: RawTimeParts) => setState((s) => ({ ...s, rawTimeParts })),
     [setState],
   )
 
-  if (state.value !== value || state.use12HourClock !== use12HourClock) {
+  if (
+    state.value !== value ||
+    state.use12HourClock !== use12HourClock ||
+    (isCompleteValue(state.rawTimeParts, precision, use12HourClock) &&
+      JSON.stringify(state.rawTimeParts) !==
+        JSON.stringify(getRawValueParts(value, use12HourClock, pad)))
+  ) {
     // count++
     // if (count < 100)
     setState({
       value,
       use12HourClock,
-      timeParts: getValueParts(value, use12HourClock),
+      timeParts,
+      // rawTimeParts: convertTimePartsToRaw(timeParts, pad),
+      rawTimeParts: getRawValueParts(value, use12HourClock, pad),
     })
   }
 
-  return [state.timeParts, setTimeParts] as const
+  return [state, setRawTimeParts] as const
 }
 
 function TimeInput(uncontrolledProps: TimeInputProps) {
@@ -290,9 +373,11 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     },
   )
 
-  const [timeParts, setTimeParts] = useTimePartState(
+  const [{ timeParts, rawTimeParts }, setRawTimeParts] = useTimePartState(
     value ?? null,
     use12HourClock ?? false,
+    precision,
+    pad,
   )
 
   function getDatePart() {
@@ -323,18 +408,16 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     hourRef.current?.focus()
 
     if (value) onChange!(null)
-    else setTimeParts(getValueParts(null))
+    else setRawTimeParts(getRawValueParts(null, use12HourClock, pad))
   }
 
   const handleChange = (
-    part: TimePart,
+    part: RawTimePart,
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const currentValue = timeParts[part]
-
     const { target } = event
     const rawValue = target.value
-    let strValue = `${currentValue || ''}${rawValue}`
+    let strValue = rawValue
     let numValue = +strValue
 
     if (
@@ -343,19 +426,20 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     ) {
       // the combined value is now past the max or invalid so try the single
       // digit and "start over" filling the value
-      if (
-        isValid(rawValue, part, use12HourClock ?? false) &&
-        !isNaN(+rawValue)
-      ) {
-        // change the effective current value
-        strValue = rawValue
-        numValue = +rawValue
-      } else {
-        return event.preventDefault()
-      }
+      // if (
+      //   isValid(rawValue, part, use12HourClock ?? false) &&
+      //   !isNaN(+rawValue)
+      // ) {
+      //   // change the effective current value
+      //   strValue = rawValue
+      //   numValue = +rawValue
+      // } else {
+      select(event.target)
+      return
+      // }
     }
 
-    const nextValue = target.value ? numValue : null
+    const nextValue = target.value ? strValue : null
 
     notifyChange({ [part]: nextValue })
 
@@ -364,8 +448,23 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
       isComplete(strValue, part, use12HourClock ?? false)
     ) {
       focusNext(event.currentTarget, +1)
-    } else {
-      select(target)
+      // } else {
+      //   select(target)
+    }
+  }
+
+  const handleBlur = (
+    part: RawTimePart,
+    event: React.FocusEvent<HTMLInputElement>,
+  ) => {
+    if (pad) {
+      let nextValue = event.target.value
+      nextValue = nextValue.padStart(part === 'milliseconds' ? 3 : 2, '0')
+      setRawTimeParts({
+        ...rawTimeParts,
+        [part]: nextValue,
+      })
+      notifyChange({ [part]: nextValue })
     }
   }
 
@@ -419,27 +518,34 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
   }
 
   const increment = (part: TimePart, inc: number) => {
-    let nextPart = timeParts[part]
+    let nextPart = rawTimeParts[part]
     if (part === 'meridiem') {
       nextPart = nextPart === 'AM' ? 'PM' : 'AM'
     } else {
-      nextPart = ((nextPart as number) || 0) + inc
-      if (!isValid(String(nextPart), part, use12HourClock ?? false)) return
+      nextPart = String((Number(nextPart) || 0) + inc).padStart(
+        part === 'milliseconds' ? 3 : 2,
+        '0',
+      )
+      if (!isValid(nextPart, part, use12HourClock ?? false)) return
     }
 
     notifyChange({ [part]: nextPart })
     select()
   }
 
-  function notifyChange(updates: Partial<TimeParts>) {
-    const nextTimeParts: TimeParts = { ...timeParts, ...updates }
+  function notifyChange(updates: Partial<RawTimeParts>) {
+    const nextRawTimeParts: RawTimeParts = { ...rawTimeParts, ...updates }
+    const nextTimeParts: TimeParts = convertRawToTimeParts(nextRawTimeParts)
 
-    if (value && isEmptyValue(nextTimeParts, precision)) {
+    if (value && isEmptyValue(nextRawTimeParts, precision)) {
       return onChange!(null)
     }
 
-    if (isPartialValue(nextTimeParts, precision))
-      return setTimeParts(nextTimeParts)
+    if (
+      isPartialValue(nextRawTimeParts, precision) ||
+      !isCompleteValue(nextRawTimeParts, precision, use12HourClock ?? false)
+    )
+      return setRawTimeParts(nextRawTimeParts)
 
     let { hours, minutes, seconds, milliseconds, meridiem } = nextTimeParts
     let nextDate = new Date(value || getDatePart())
@@ -464,12 +570,18 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
   function focusNext(input: HTMLInputElement, delta: number) {
     let nodes = qsa(ref.current!, '* [data-focusable]')
     let next = nodes[nodes.indexOf(input) + delta]
+    const isCurrentNodeFirst = nodes.indexOf(input) === 0
+    const isCurrentNodeLast = nodes.indexOf(input) === nodes.length - 1
+    if ((isCurrentNodeLast && delta > 0) || (isCurrentNodeFirst && delta < 0)) {
+      next = input
+      next.blur()
+    }
     next?.focus()
     select(next as HTMLInputElement)
   }
 
-  const { hours, minutes, seconds, milliseconds, meridiem } = timeParts
-  const showClear = !isEmptyValue(timeParts, precision)
+  const { hours, minutes, seconds, milliseconds, meridiem } = rawTimeParts
+  const showClear = !isEmptyValue(rawTimeParts, precision)
 
   return (
     <Widget
@@ -496,6 +608,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
         onSelect={handleSelect}
         onChange={(e) => handleChange('hours', e)}
         onKeyDown={(e) => handleKeyDown('hours', e)}
+        onBlur={(e) => handleBlur('hours', e)}
       />
 
       {hoursAddon && <span>{hoursAddon}</span>}
@@ -512,6 +625,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
         onSelect={handleSelect}
         onChange={(e) => handleChange('minutes', e)}
         onKeyDown={(e) => handleKeyDown('minutes', e)}
+        onBlur={(e) => handleBlur('minutes', e)}
       />
 
       {minsAddon && <span>{minsAddon}</span>}
@@ -530,6 +644,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
             onSelect={handleSelect}
             onChange={(e) => handleChange('seconds', e)}
             onKeyDown={(e) => handleKeyDown('seconds', e)}
+            onBlur={(e) => handleBlur('seconds', e)}
           />
           {secsAddon && <span>{secsAddon}</span>}
         </>
@@ -549,6 +664,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
             onSelect={handleSelect}
             onChange={(e) => handleChange('milliseconds', e)}
             onKeyDown={(e) => handleKeyDown('milliseconds', e)}
+            onBlur={(e) => handleBlur('milliseconds', e)}
           />
           {millisecondsAddon && <span>{millisecondsAddon}</span>}
         </>

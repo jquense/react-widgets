@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React, { useState } from 'react'
 import DatePicker from '../src/DatePicker'
 
@@ -34,5 +35,27 @@ export const Current_date = () => {
       <DatePicker value={value} onChange={(d) => setValue(d)} />
       <button onClick={() => setValue(new Date())}>change date</button>
     </>
+  )
+}
+
+export const Min_withTimePicker = () => {
+  const minDate = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    new Date().getDate(),
+    10,
+    10,
+  )
+  const [value, setValue] = useState<Date>(
+    minDate > new Date() ? minDate : new Date(),
+  )
+
+  return (
+    <DatePicker
+      includeTime
+      min={minDate}
+      value={value}
+      onChange={(e) => setValue(e)}
+    />
   )
 }
