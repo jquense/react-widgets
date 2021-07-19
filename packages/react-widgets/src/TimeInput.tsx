@@ -37,8 +37,6 @@ interface RawTimeParts {
   milliseconds?: string
 }
 
-type RawTimePart = keyof RawTimeParts
-
 const convertRawToTimeParts = (rawTimeParts: RawTimeParts): TimeParts => {
   const getConvertedTimePart = (rawTimePart?: string): number =>
     rawTimePart && !isNaN(Number(rawTimePart)) ? Number(rawTimePart) : 0
@@ -399,7 +397,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
   }
 
   const handleChange = (
-    part: RawTimePart,
+    part: TimePart,
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { target } = event
@@ -429,7 +427,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
   }
 
   const handleBlur = (
-    part: RawTimePart,
+    part: TimePart,
     event: React.FocusEvent<HTMLInputElement>,
   ) => {
     if (pad) {
