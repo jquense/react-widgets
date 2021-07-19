@@ -315,7 +315,6 @@ function useTimePartState(
       value,
       use12HourClock,
       timeParts,
-      // rawTimeParts: convertTimePartsToRaw(timeParts, pad),
       rawTimeParts: getRawValueParts(value, use12HourClock, pad),
     })
   }
