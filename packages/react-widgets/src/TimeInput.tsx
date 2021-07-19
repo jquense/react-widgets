@@ -415,8 +415,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { target } = event
-    const rawValue = target.value
-    let strValue = rawValue
+    let strValue = target.value
     let numValue = +strValue
 
     if (
@@ -425,17 +424,8 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     ) {
       // the combined value is now past the max or invalid so try the single
       // digit and "start over" filling the value
-      // if (
-      //   isValid(rawValue, part, use12HourClock ?? false) &&
-      //   !isNaN(+rawValue)
-      // ) {
-      //   // change the effective current value
-      //   strValue = rawValue
-      //   numValue = +rawValue
-      // } else {
       select(event.target)
       return
-      // }
     }
 
     const nextValue = target.value ? strValue : null
@@ -447,8 +437,6 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
       isComplete(strValue, part, use12HourClock ?? false)
     ) {
       focusNext(event.currentTarget, +1)
-      // } else {
-      //   select(target)
     }
   }
 
