@@ -12,6 +12,14 @@ import useFocusManager from './useFocusManager'
 
 type Meridiem = 'AM' | 'PM'
 
+interface DateParts {
+  era: Meridiem
+  hours?: number
+  minutes?: number
+  seconds?: number
+  milliseconds?: number
+}
+
 interface TimeParts {
   meridiem: Meridiem
   hours?: number
