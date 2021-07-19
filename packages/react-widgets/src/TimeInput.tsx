@@ -120,10 +120,11 @@ const isCompleteValue = (
     ? isComplete(p.milliseconds!, 'milliseconds', use12HourClock)
     : true)
 
-const getValueParts = (
+const getRawValueParts = (
   value?: Date | null,
   use12HourClock?: boolean,
-): TimeParts => {
+  padValues?: boolean,
+): RawTimeParts => {
   let hours, minutes, seconds, milliseconds
   let meridiem: Meridiem = 'AM'
 
@@ -138,17 +139,10 @@ const getValueParts = (
     seconds = value.getSeconds()
     milliseconds = value.getMilliseconds()
   }
-
-  return { hours, minutes, seconds, milliseconds, meridiem }
-}
-
-const getRawValueParts = (
-  value?: Date | null,
-  use12HourClock?: boolean,
-  padValues?: boolean,
-): RawTimeParts => {
-  const timeParts = getValueParts(value, use12HourClock)
-  return convertTimePartsToRaw(timeParts, padValues)
+  return convertTimePartsToRaw(
+    { hours, minutes, seconds, milliseconds, meridiem },
+    padValues,
+  )
 }
 
 const TEST_VALID = {
@@ -295,12 +289,10 @@ function useTimePartState(
   precision: TimePart,
   pad?: boolean,
 ) {
-  const timeParts = getValueParts(value, use12HourClock)
-
   const [state, setState] = useState<TimePartState>(() => ({
     value,
     use12HourClock,
-    rawTimeParts: convertTimePartsToRaw(timeParts, pad),
+    rawTimeParts: getRawValueParts(value, use12HourClock, pad),
   }))
 
   const setRawTimeParts = useCallback(
