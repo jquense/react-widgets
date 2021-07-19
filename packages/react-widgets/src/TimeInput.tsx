@@ -39,35 +39,6 @@ interface RawTimeParts {
 
 type RawTimePart = keyof RawTimeParts
 
-const convertTimePartsToRaw = (
-  timeParts: TimeParts,
-  padValues?: boolean,
-): RawTimeParts => {
-  const isNumber = (val: string | number | null | undefined) =>
-    typeof val === 'number'
-
-  let hours = isNumber(timeParts.hours)
-    ? String(timeParts.hours).padStart(padValues ? 2 : 0, '0')
-    : '--'
-  let minutes = isNumber(timeParts.minutes)
-    ? String(timeParts.minutes).padStart(padValues ? 2 : 0, '0')
-    : '--'
-  let seconds = isNumber(timeParts.seconds)
-    ? String(timeParts.seconds).padStart(padValues ? 2 : 0, '0')
-    : '--'
-  let milliseconds = isNumber(timeParts.milliseconds)
-    ? String(timeParts.milliseconds).padStart(padValues ? 3 : 0, '0')
-    : '---'
-
-  return {
-    meridiem: timeParts.meridiem,
-    hours,
-    minutes,
-    seconds,
-    milliseconds,
-  }
-}
-
 const convertRawToTimeParts = (rawTimeParts: RawTimeParts): TimeParts => {
   const getConvertedTimePart = (rawTimePart?: string): number =>
     rawTimePart && !isNaN(Number(rawTimePart)) ? Number(rawTimePart) : 0
@@ -125,6 +96,9 @@ const getRawValueParts = (
   use12HourClock?: boolean,
   padValues?: boolean,
 ): RawTimeParts => {
+  const isNumber = (val: string | number | null | undefined) =>
+    typeof val === 'number'
+
   let hours, minutes, seconds, milliseconds
   let meridiem: Meridiem = 'AM'
 
@@ -139,10 +113,27 @@ const getRawValueParts = (
     seconds = value.getSeconds()
     milliseconds = value.getMilliseconds()
   }
-  return convertTimePartsToRaw(
-    { hours, minutes, seconds, milliseconds, meridiem },
-    padValues,
-  )
+
+  hours = isNumber(hours)
+    ? String(hours).padStart(padValues ? 2 : 0, '0')
+    : '--'
+  minutes = isNumber(minutes)
+    ? String(minutes).padStart(padValues ? 2 : 0, '0')
+    : '--'
+  seconds = isNumber(seconds)
+    ? String(seconds).padStart(padValues ? 2 : 0, '0')
+    : '--'
+  milliseconds = isNumber(milliseconds)
+    ? String(milliseconds).padStart(padValues ? 3 : 0, '0')
+    : '---'
+
+  return {
+    meridiem,
+    hours,
+    minutes,
+    seconds,
+    milliseconds,
+  }
 }
 
 const TEST_VALID = {
