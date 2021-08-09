@@ -222,7 +222,7 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
     data: rawData = [],
     messages: userMessages,
     ...elementProps
-  }: DropdownProps<TDataItem>,
+  }: DropdownProps<TDataItem | null>,
   outerRef: React.RefObject<DropdownHandle>,
 ) {
   const [currentValue, handleChange] = useUncontrolledProp(
@@ -391,6 +391,9 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
       if (altKey) return closeWithFocus()
 
       list.focus(list.prev())
+    } else if (key === 'Backspace' && currentValue && !currentSearch) {
+      e.preventDefault();
+      notify(onChange, [null, { originalEvent: e, lastValue: currentValue, source: 'input' }]);
     }
   }
 
