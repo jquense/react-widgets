@@ -195,7 +195,7 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
     allowCreate = false,
     delay = 500,
 
-    allowClear = true,
+    allowClear = false,
     clearTagIcon = times,
 
     focusFirstItem,
