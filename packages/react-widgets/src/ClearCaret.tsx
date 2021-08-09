@@ -1,22 +1,15 @@
 import cn from 'classnames'
 import * as React from 'react'
 import { ReactNode } from 'react'
-import { Spinner, caretDown } from './Icon'
+import { times } from './Icon'
 
 export interface Props extends React.HTMLProps<HTMLSpanElement> {
   icon?: ReactNode
-  spinner?: ReactNode
-  visible?: boolean
-  busy?: boolean
 }
 
-const PickerCaret = ({
+const ClearCaret = ({
   className,
-  busy,
-  visible,
-  icon = caretDown,
-  spinner = Spinner,
-
+  icon = times,
   ...props
 }: Props) => (
   <span
@@ -24,8 +17,8 @@ const PickerCaret = ({
     aria-hidden="true"
     className={cn(className, 'rw-btn rw-picker-caret')}
   >
-    {busy ? spinner : visible ? icon : null}
+    {icon}
   </span>
 )
 
-export default PickerCaret
+export default ClearCaret

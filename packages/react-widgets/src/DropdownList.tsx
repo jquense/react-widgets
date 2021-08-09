@@ -8,7 +8,7 @@ import DropdownListInput, {
   DropdownInputHandle,
   RenderValueProp,
 } from './DropdownListInput'
-import { caretDown } from './Icon'
+import { caretDown, times } from './Icon'
 import List, { ListHandle } from './List'
 import { FocusListContext, useFocusList } from './FocusListContext'
 import BasePopup from './Popup'
@@ -34,6 +34,7 @@ import useDropdownToggle from './useDropdownToggle'
 import useFocusManager from './useFocusManager'
 import { notify, useFirstFocusedRender, useInstanceId } from './WidgetHelpers'
 import PickerCaret from './PickerCaret'
+import ClearCaret from './ClearCaret'
 
 const propTypes = {
   value: PropTypes.any,
@@ -56,6 +57,9 @@ const propTypes = {
   dataKey: CustomPropTypes.accessor,
   textField: CustomPropTypes.accessor,
   allowCreate: PropTypes.oneOf([true, false, 'onFilter']),
+
+  allowClear: PropTypes.bool,
+  clearTagIcon: PropTypes.node,
 
   /**
    * A React render prop for customizing the rendering of the DropdownList
@@ -146,6 +150,9 @@ export interface DropdownProps<TDataItem>
   autoFocus?: boolean
   autoComplete?: 'on' | 'off'
 
+  allowClear?: boolean
+  clearTagIcon?: React.ReactNode
+
   onCreate?: (searchTerm: string) => void
   renderValue?: RenderValueProp<TDataItem>
 }
@@ -187,6 +194,9 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
     filter = true,
     allowCreate = false,
     delay = 500,
+
+    allowClear = true,
+    clearTagIcon = times,
 
     focusFirstItem,
 
@@ -391,11 +401,16 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
       if (altKey) return closeWithFocus()
 
       list.focus(list.prev())
-    } else if (key === 'Backspace' && currentValue && !currentSearch) {
-      e.preventDefault();
-      notify(onChange, [null, { originalEvent: e, lastValue: currentValue, source: 'input' }]);
+    } else if (key === 'Backspace' && allowClear && currentValue && !currentSearch) {
+      handleClear(e);
     }
   }
+
+  const handleClear = (e: React.MouseEvent<HTMLSpanElement> | React.KeyboardEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    return change(null, e);
+  };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (readOnly || isDisabled) return
@@ -570,12 +585,15 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
             placeholder={placeholder}
             renderValue={renderValue}
           />
-          <PickerCaret
-            visible
-            busy={busy}
-            icon={selectIcon}
-            spinner={busySpinner}
-          />
+          <div style={{ display: 'flex' }}>
+            {allowClear && <ClearCaret icon={clearTagIcon} onClick={handleClear} />}
+            <PickerCaret
+              visible
+              busy={busy}
+              icon={selectIcon}
+              spinner={busySpinner}
+            />
+          </div>
         </WidgetPicker>
         {shouldRenderPopup && (
           <Popup
