@@ -585,8 +585,8 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
             placeholder={placeholder}
             renderValue={renderValue}
           />
-          <div style={{ display: 'flex' }}>
-            {allowClear && <ClearCaret icon={clearTagIcon} onClick={handleClear} />}
+          <div className="rw-widget-actions">
+            {allowClear && currentValue && <ClearCaret icon={clearTagIcon} onClick={handleClear} />}
             <PickerCaret
               visible
               busy={busy}

@@ -58,8 +58,12 @@
   justify-content: $picker-btn-justify-content;
   padding-left: $picker-btn-padding-left;
   padding-right: $picker-btn-padding-right;
+}
 
-  &:not(:last-child) {
+.rw-widget-actions {
+  display: flex;
+
+  :not(:last-child) {
     margin-right: 0.3em;
   }
 }
