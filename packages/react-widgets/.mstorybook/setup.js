@@ -1,4 +1,4 @@
-import '../src/scss/styles.scss'
+// import '../src/scss/styles.scss'
 
 import faker from 'faker'
 

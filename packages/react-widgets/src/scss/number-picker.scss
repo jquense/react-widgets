@@ -1,10 +1,6 @@
 @use './variables.scss' as *;
 
 @mixin NumberPicker() {
-  .rw-number-picker {
-    $half-width: $input-height * 0.5;
-  }
-
   .rw-number-picker-spinners {
     display: flex;
     flex-direction: column;

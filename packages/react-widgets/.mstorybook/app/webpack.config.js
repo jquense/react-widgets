@@ -1,5 +1,8 @@
 const path = require('path')
-const { plugins, rules, loaders } = require('mini-storybook/webpack/utils')
+const { plugins, rules, loaders } =
+  require('mini-storybook/webpack/utils').createAtoms({
+    disableMiniExtractInDev: false,
+  })
 
 const tailwindConfig = require.resolve('../tailwind.config.js')
 
@@ -24,7 +27,7 @@ module.exports = {
       rules.audioVideo(),
     ],
   },
-  plugins: [plugins.html()],
+  plugins: [plugins.html(), plugins.extractCss()],
   resolve: {
     extensions: ['.mjs', '.js', '.ts', '.tsx', '.json'],
   },
