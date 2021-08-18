@@ -9,15 +9,15 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
 
   addComponents(css`
     .rw-listbox {
-      border-radius: ${core.borderRadius};
-      background-color: ${core.bg};
-      border: ${core.borderColor} 1px solid;
+      border-radius: ${input.borderRadius};
+      background-color: ${input.backgroundColor};
+      border: ${input.borderColor} 1px solid;
 
       &.rw-state-focus {
         @apply rw-focus-ring;
 
         color: ${input.focusColor};
-        background-color: ${input.focusBg};
+        background-color: ${input.focusBackgroundColor};
         border-color: ${input.focusBorderColor};
 
         box-shadow: ${input.boxShadow && core.focusShadow

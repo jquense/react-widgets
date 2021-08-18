@@ -7,7 +7,7 @@ export const plugin = ({ addComponents }: PluginApi) => {
   addComponents(css`
     .rw-popup > .rw-time-input {
       align-self: center;
-      margin: 1em 0;
+      margin: theme('margin.3') 0;
     }
   `)
 }

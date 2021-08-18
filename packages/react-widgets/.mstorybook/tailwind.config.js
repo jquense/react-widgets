@@ -20,7 +20,7 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [rwPlugin],
+  plugins: [rwPlugin()],
   corePlugins: {
     container: false,
   },

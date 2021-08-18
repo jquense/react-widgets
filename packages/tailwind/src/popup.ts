@@ -1,19 +1,14 @@
 import css from 'style-convert/macro'
 import { PluginApi } from 'tailwindcss/plugin'
 
-const opts = {
-  respectImportant: false,
-  respectPrefix: false,
-}
-
 export const theme = {
   rwPopup: (theme: any) => {
     const core = theme('rwCore')
 
     return {
-      offset: '2px',
-      maxHeight: '250px',
-      bg: core.bg,
+      offset: theme('margin[0.5]'),
+      maxHeight: theme('height.64'),
+      backgroundColor: core.backgroundColor,
       border: core.borderColor,
       borderRadius: core.borderRadius,
       boxShadowOffset: '1em',
@@ -112,7 +107,7 @@ export const plugin = ({ theme, addUtilities, addComponents }: PluginApi) => {
       box-shadow: ${popup.boxShadow};
       border: ${popup.border} 1px solid;
       background-clip: ${core.backgroundClip};
-      background: ${popup.bg};
+      background: ${popup.backgroundColor};
 
       & .rw-list {
         max-height: ${popup.maxHeight};

@@ -10,48 +10,50 @@ const opts = {
 export const theme = {
   rwCalendar: (theme: ThemeFn) => {
     const core = theme('rwCore')
+    const button = theme('rwButton')
     const selected = theme('colors.blue.500', colors.blue[500])
 
     return {
-      bg: core.bg,
+      backgroundColor: core.backgroundColor,
+      borderRadius: button.borderRadius,
 
-      btnBg: theme('colors.white', colors.white),
-      btnColor: core.color,
+      btnBackgroundColor: theme('colors.white', colors.white),
+      btnColor: button.color,
       btnBorderColor: null,
       btnMutedColor: theme('colors.gray.400', colors.gray[400]),
-      btnBorderRadius: core.borderRadius,
+      btnBorderRadius: button.borderRadius,
 
-      btnHoverBg: core.hoverBg,
-      btnHoverBorderColor: core.hoverBg,
-      btnHoverColor: core.hoverBg,
+      btnHoverBackgroundColor: button.hoverBackgroundColor,
+      btnHoverBorderColor: button.hoverBackgroundColor,
+      btnHoverColor: button.hoverBackgroundColor,
 
-      btnActiveBg: null,
+      btnActiveBackgroundColor: null,
       btnActiveBorderColor: null,
       btnActiveColor: null,
 
-      btnFocusBg: null,
+      btnFocusBackgroundColor: null,
       btnFocusBorderColor: null,
       btnFocusColor: null,
 
       cellAlign: 'center',
-      cellPadding: '0.25em',
-      cellColor: core.color,
+      cellPadding: theme('padding.2'),
+      cellColor: button.color,
       cellBorderColor: null,
-      cellBorderRadius: core.borderRadius,
+      cellBorderRadius: button.borderRadius,
 
-      cellHoverBg: core.hoverBg,
-      cellHoverBorderColor: core.hoverBg,
-      cellHoverColor: core.hoverBg,
+      cellHoverBackgroundColor: button.hoverBackgroundColor,
+      cellHoverBorderColor: button.hoverBackgroundColor,
+      cellHoverColor: button.hoverBackgroundColor,
 
-      cellActiveBg: null,
+      cellActiveBackgroundColor: null,
       cellActiveBorderColor: null,
       cellActiveColor: null,
 
-      cellFocusBg: null,
+      cellFocusBackgroundColor: null,
       cellFocusBorderColor: null,
       cellFocusColor: null,
 
-      cellSelectedBg: selected,
+      cellSelectedBackgroundColor: selected,
       cellSelectedBorderColor: selected,
       cellSelectedColor: theme('colors.white', colors.white),
     }
@@ -74,8 +76,8 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
     }
 
     .rw-calendar-contained {
-      border-radius: ${core.borderRadius};
-      background-color: ${cal.bg};
+      border-radius: ${cal.borderRadius};
+      background-color: ${cal.backgroundColor};
       border: ${core.borderColor} 1px solid;
     }
 
@@ -84,7 +86,7 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
     }
     .rw-calendar-header {
       display: flex;
-      padding: 0.8em;
+      padding: ${theme('padding.3')};
     }
 
     .rw-cell,
@@ -114,10 +116,10 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
       border-color: ${cal.btnBorderColor};
 
       &:hover {
-        background-color: ${cal.btnHoverBg};
+        background-color: ${cal.btnHoverBackgroundColor};
       }
       &:active {
-        background-color: ${cal.btnActiveBg};
+        background-color: ${cal.btnActiveBackgroundColor};
       }
     }
 
@@ -125,7 +127,7 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
     .rw-calendar-btn-today,
     .rw-calendar-btn-right,
     .rw-calendar-btn-view {
-      padding: 0.3em 0.6em;
+      padding: ${theme('padding.1', '4px')} ${theme('padding[2.5]', '10px')};
     }
 
     .rw-calendar-btn-left,
@@ -138,7 +140,7 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
       font-weight: bold;
 
       & > :last-child {
-        margin: 0 0.5em;
+        margin: 0 ${theme('margin.2')};
       }
 
       & + * {
@@ -154,13 +156,13 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
     .rw-calendar-grid {
       display: table;
       outline: none;
-      height: 14em;
+      height: ${theme('height.56')};
       padding: ${core.focusWidth};
       table-layout: fixed;
       border-collapse: separate;
       border-spacing: 0;
       width: 100%;
-      background-color: ${cal.bg};
+      background-color: ${cal.backgroundColor};
     }
     .rw-calendar-head {
       display: table-header-group;
@@ -194,14 +196,14 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
       outline: none;
 
       &:hover {
-        background-color: ${cal.cellHoverBg};
+        background-color: ${cal.cellHoverBackgroundColor};
       }
       &:active {
-        background-color: ${cal.cellActiveBg};
+        background-color: ${cal.cellActiveBackgroundColor};
       }
 
       &.rw-state-selected {
-        background-color: ${cal.cellSelectedBg};
+        background-color: ${cal.cellSelectedBackgroundColor};
         border-color: ${cal.cellSelectedBorderColor};
         color: ${cal.cellSelectedColor};
       }

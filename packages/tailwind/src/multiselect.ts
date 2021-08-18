@@ -13,8 +13,8 @@ export const theme = {
     const gutter = 0.115
 
     return {
-      tagPaddingInlineStart: '0.35em',
-      tagPaddingInlineEnd: '0.35em',
+      tagPaddingInlineStart: theme('padding[1.5]'),
+      tagPaddingInlineEnd: theme('padding[1.5]'),
 
       tagColor: null,
       tagBorderColor: theme('colors.gray.300', colors.gray[300]),
@@ -25,7 +25,7 @@ export const theme = {
       tagBorderRadius: theme('borderRadius.DEFAULT'),
 
       tagBtnPaddingY: 0,
-      tagBtnPaddingX: '0.35em',
+      tagBtnPaddingX: theme('padding[1.5]'),
 
       tagBtnBackgroundColor: null,
       tagBtnBorderColor: null,

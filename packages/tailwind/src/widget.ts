@@ -2,6 +2,8 @@ import css from 'style-convert/macro'
 import colors from 'tailwindcss/colors'
 // @ts-ignore
 import { withAlphaValue } from 'tailwindcss/lib/util/withAlphaVariable'
+// @ts-ignore
+import transformThemeValue from 'tailwindcss/lib/util/transformThemeValue'
 import { PluginApi } from 'tailwindcss/plugin'
 
 const opts = {
@@ -18,28 +20,30 @@ function hasAlpha(color: string) {
   )
 }
 
+theme: {
+}
+
 export const theme = {
   rwCore: (theme: any) => ({
     fontWeight: null,
-    fontSize: '1em',
+    fontSize: transformThemeValue('fontSize')(theme('fontSize.base', '1em')),
     backgroundClip: 'padding-box',
 
     borderRadius: theme('borderRadius.DEFAULT', '4px'),
 
-    bg: theme('colors.white', colors.white),
+    backgroundColor: theme('colors.white', colors.white),
     color: theme('textColor.DEFAULT', 'currentColor'),
     borderColor: theme('borderColor.DEFAULT', colors.gray[300]),
-    disabledBg: theme('colors.gray.200', colors.gray[200]),
 
-    hoverBg: theme('colors.gray.200', colors.gray[200]),
+    hoverBackgroundColor: theme('colors.gray.200', colors.gray[200]),
     hoverBorderColor: theme('colors.gray.200', colors.gray[200]),
-    hoverColor: 'null',
+    hoverColor: null,
 
     focusWidth: theme('ringWidth.DEFAULT', '3px'),
     focusColor: theme('ringColor.DEFAULT', 'rgba(0, 123, 255, 0.5)'),
     focusBoxShadow:
       '0 0 0 var(--rw-core-focus-width) var(--rw-core-focus-color)',
-    focusTransition: 'box-shadow 0.15s ease-in-out',
+    focusTransition: null, // 'box-shadow 0.15s ease-in-out',
   }),
 
   rwButton: (theme: any) => ({
@@ -50,47 +54,49 @@ export const theme = {
     paddingRight: null,
     color: theme('rwCore.color'),
     borderColor: null,
-    bg: null,
-    disabledBg: theme('rwCore.disabledBg'),
+    backgroundColor: null,
+
+    borderRadius: theme('borderRadius.DEFAULT', '4px'),
+    disabledBackgroundColor: theme('colors.gray.200', colors.gray[200]),
 
     hoverColor: null,
     hoverBorderColor: null,
-    hoverBg: theme('rwCore.hoverBg'),
+    hoverBackgroundColor: theme('colors.gray.200', colors.gray[200]),
 
     activeColor: null,
     activeBorderColor: null,
-    activeBg: theme('colors.gray.300', colors.gray[300]),
+    activebackgroundColor: theme('colors.gray.300', colors.gray[300]),
   }),
 
   rwInput: (theme: any) => ({
-    height: '38px', // 2.5em is good for 16px roots
-    color: '$gray-700',
-    caretColor: 'null',
+    height: theme('height.10'),
+    color: theme('colors.gray.700', colors.gray[700]),
+    caretColor: null,
     boxShadow: null, // 'inset 0 1px 1px rgba(0, 0, 0, 0.075)',
-    paddingX: '0.857em',
+    paddingX: theme('padding.4'),
 
-    bg: theme('rwCore.bg'),
+    backgroundColor: theme('rwCore.backgroundColor'),
     placeholderColor: '#999',
 
-    borderColor: theme('rwCore.borderColor'),
     borderWidth: '1px',
-    borderRadius: theme('rwCore.borderRadius'),
+    borderColor: theme('borderColor.DEFAULT', colors.gray[300]),
+    borderRadius: theme('borderRadius.DEFAULT', '4px'),
 
-    disabledBg: theme('rwCore.disabledBg'),
+    disabledBackgroundColor: theme('colors.gray.200', colors.gray[200]),
     disabledBorderColor: null,
     disabledColor: null,
     disabledPlaceholderColor: '#999',
 
-    focusBg: null,
-    focusBorderColor: '#80bdff', // 25% lighter activeBg
+    focusBackgroundColor: null,
+    focusBorderColor: null,
     focusColor: null,
 
-    autofillBg: 'rgb(232, 240, 254)',
+    autofillBackgroundColor: 'rgb(232, 240, 254)',
     autofillColor: 'rgb(0, 0, 0)',
   }),
   rwInputAddon: (theme: any) => ({
-    width: '1.9em',
-    addonBorderColor: theme('rwInput.borderColor'),
+    width: theme('width.10'),
+    borderColor: theme('rwInput.borderColor'),
   }),
 }
 
@@ -197,22 +203,22 @@ export const plugin = ({
     }
 
     .rw-picker-btn {
-      background-color: ${theme('rwButton.bg')};
+      background-color: ${theme('rwButton.backgroundColor')};
       // border color doesn't make sense here
       // since it's surrounded by the input border
 
       &:hover {
         color: ${theme('rwButton.hoverColor')};
-        background-color: ${theme('rwButton.hoverBg')};
+        background-color: ${theme('rwButton.hoverBackgroundColor')};
       }
       &:active {
         color: ${theme('rwButton.activeColor')};
-        background-color: ${theme('rwButton.activeBg')};
+        background-color: ${theme('rwButton.activeBackgroundColor')};
       }
 
       &:disabled,
       fieldset[disabled] & {
-        background-color: ${theme('rwButton.disabledBg')};
+        background-color: ${theme('rwButton.disabledBackgroundColor')};
       }
     }
 
@@ -220,10 +226,10 @@ export const plugin = ({
       // The input border should be more important here
       &,
       &.rw-picker-btn {
-        border-left: ${theme('rwInputAddon.addonBorderColor')} 1px solid;
+        border-left: ${theme('rwInputAddon.borderColor')} 1px solid;
 
         [dir='rtl'] & {
-          border-right: ${theme('rwButton.addonBorderColor')} 1px solid;
+          border-right: ${theme('rwButton.borderColor')} 1px solid;
           border-left: none;
         }
       }
@@ -253,7 +259,7 @@ export const plugin = ({
       display: grid;
       overflow: hidden;
       min-height: ${theme('rwInput.height')};
-      background-color: ${theme('rwInput.bg')};
+      background-color: ${theme('rwInput.backgroundColor')};
       border: ${theme('rwInput.borderColor')} ${theme('rwInput.borderWidth')}
         solid;
       border-radius: ${theme('rwInput.borderRadius')};
@@ -270,7 +276,7 @@ export const plugin = ({
         @apply rw-focus-ring;
 
         color: ${theme('rwInput.focusColor')};
-        background-color: ${theme('rwInput.focusBg')};
+        background-color: ${theme('rwInput.focusBackgroundColor')};
         border-color: ${theme('rwInput.focusBorderColor')};
 
         &.rw-widget-input {
@@ -301,7 +307,7 @@ export const plugin = ({
     // given widget
     .rw-widget-input {
       color: ${theme('rwInput.color')};
-      background-color: ${theme('rwInput.bg')};
+      background-color: ${theme('rwInput.backgroundColor')};
       box-shadow: ${theme('rwInput.boxShadow')};
       background-clip: ${theme('rwCore.backgroundClip')};
 
@@ -310,7 +316,7 @@ export const plugin = ({
       .rw-state-disabled &,
       fieldset[disabled] & {
         color: ${theme('rwInput.disabledColor')};
-        background-color: ${theme('rwInput.disabledBg')};
+        background-color: ${theme('rwInput.disabledBackgroundColor')};
         border-color: ${theme('rwInput.disabledBorderColor')};
       }
     }
@@ -341,7 +347,7 @@ export const plugin = ({
 
     .rw-webkit-autofill .rw-widget-container,
     .rw-input:-webkit-autofill {
-      background-color: ${theme('rwInput.autofillBg')} !important;
+      background-color: ${theme('rwInput.autofillBackgroundColor')} !important;
       background-image: none !important;
       color: ${theme('rwInput.autofillColor')} !important;
     }

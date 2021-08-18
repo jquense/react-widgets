@@ -11,15 +11,20 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
       @apply cursor-text outline-none inline-flex items-center;
 
       min-height: ${input.height};
-      background-color: ${input.bg};
-      border: $input-border-color ${input.borderWidth} solid;
+      background-color: ${input.backgroundColor};
+      border: ${input.borderColor} ${input.borderWidth} solid;
       border-radius: ${input.borderRadius};
+
+      &.rw-state-disabled {
+        @apply cursor-not-allowed;
+      }
     }
 
     .rw-time-part-input {
       @apply rw-btn-input-reset rw-input-base;
 
-      padding: 0 0.5em;
+      padding: 0 ${theme('padding.2')};
+      cursor: inherit;
 
       &,
       &::placeholder {
@@ -28,10 +33,9 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
     }
 
     .rw-time-part-meridiem {
-      @apply rw-btn-input-reset;
+      @apply rw-btn-input-reset lowercase;
 
-      padding: 0 0.5em;
-      text-transform: lowercase;
+      padding: 0 ${theme('padding.2')};
       font-variant: small-caps;
 
       & :focus {
@@ -42,7 +46,7 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
     .rw-time-input-clear {
       @apply opacity-0 outline-none ml-auto;
 
-      padding: 0 0.4em;
+      padding: 0 ${theme('padding.2')};
 
       [dir='rtl'] & {
         margin-left: revert;

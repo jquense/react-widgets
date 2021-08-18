@@ -6,8 +6,7 @@ export const theme = {}
 export const plugin = ({ addComponents }: PluginApi) => {
   addComponents(css`
     .rw-number-picker-spinners {
-      display: flex;
-      flex-direction: column;
+      @apply flex flex-col;
 
       .rw-btn {
         flex: 1 1 0;

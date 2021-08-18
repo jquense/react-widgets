@@ -14,25 +14,25 @@ export const theme = {
     return {
       color: core.color,
       fontSize: core.fontSize,
-      paddingY: '0.5em',
+      paddingY: theme('padding.2', '8px'),
 
-      focusBg: core.hoverBg,
+      focusBackgroundColor: core.hoverBackgroundColor,
       focusBorderColor: core.hoverBorderColor,
       focusColor: core.hoverColor,
 
-      selectedBg: selected,
+      selectedBackgroundColor: selected,
       selectedBorderColor: selected,
       selectedColor: theme('colors.white'),
 
-      disabledBg: 'transparent',
+      disabledBackgroundColor: 'transparent',
       disabledBorderColor: 'transparent',
       disabledColor: theme('colors.gray.300'),
 
-      optionPaddingY: '0.25em',
-      optionPaddingX: '1.5em',
-      optionMutedColor: theme('colors.gray.3400'),
+      optionPaddingY: theme('padding.1', '4px'),
+      optionPaddingX: theme('padding.4', '16px'),
+      optionMutedColor: theme('colors.gray.400'),
 
-      optionCreateBg: core.bg,
+      optionCreateBackgroundColor: core.backgroundColor,
 
       optgroupColor: null,
       optgroupFontWeight: theme('fontWeight.bold'),
@@ -46,16 +46,13 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
 
   addComponents(css`
     .rw-list {
-      // outline: 0;
+      @apply focus:outline-none;
+
       font-size: ${list.fontSize};
       overflow-x: visible;
       overflow-y: auto;
       padding-top: ${list.paddingY};
       padding-bottom: ${list.paddingY};
-
-      &:focus {
-        outline: none;
-      }
     }
 
     .rw-list-option {
@@ -67,20 +64,20 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
 
       &:hover,
       [data-intent='keyboard'] &.rw-state-focus:not(.rw-state-selected) {
-        background-color: ${list.focusBg};
+        background-color: ${list.focusBackgroundColor};
         border-color: ${list.focusBorderColor};
         color: ${list.focusColor};
       }
 
       &.rw-state-selected {
-        background-color: ${list.selectedBg};
+        background-color: ${list.selectedBackgroundColor};
         border-color: ${list.selectedBorderColor};
         color: ${list.selectedColor};
       }
 
       &.rw-state-disabled {
         cursor: not-allowed; // required to override the cursor above
-        background-color: ${list.disabledBg};
+        background-color: ${list.disabledBackgroundColor};
         border-color: ${list.disabledBorderColor};
         color: ${list.disabledColor};
       }
@@ -89,7 +86,7 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
     .rw-list-empty,
     .rw-list-option,
     .rw-list-optgroup,
-    .rw-list-option-create \ {
+    .rw-list-option-create {
       padding: ${list.optionPaddingY} ${list.optionPaddingX};
       outline: none;
     }
