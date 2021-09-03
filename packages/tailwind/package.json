@@ -1,0 +1,39 @@
+{
+  "name": "react-widgets-tailwind",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "module": "lib/es/index.js",
+  "repository": {
+    "directory": "packages/tailwind",
+    "type": "git",
+    "url": "https://github.com/jquense/react-widgets.git"
+  },
+  "author": "Jason Quense",
+  "license": "MIT",
+  "scripts": {
+    "build": "4c build src",
+    "prepublishOnly": "yarn run build",
+    "tdd": "jest --watch",
+    "test": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "jest": {
+    "preset": "@4c/jest-preset",
+    "testEnvironment": "jsdom"
+  },
+  "devDependencies": {
+    "@4c/jest-preset": "^1.4.5",
+    "jest": "^27.0.4",
+    "style-convert": "^1.0.1"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^2.2.7"
+  },
+  "dependencies": {
+    "@types/tailwindcss": "^2.2.1",
+    "tailwindcss": "^2.2.7"
+  }
+}

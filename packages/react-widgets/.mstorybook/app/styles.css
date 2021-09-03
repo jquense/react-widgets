@@ -2,16 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  text-rendering: optimizelegibility;
-  -webkit-font-smoothing: antialiased;
-  height: 100%;
-}
-body {
-  height: 100%;
-}
+@layer base {
+  html {
+    text-rendering: optimizelegibility;
+    -webkit-font-smoothing: antialiased;
+    height: 100%;
+  }
+  body {
+    height: 100%;
+  }
 
-#app {
-  min-height: 100%;
-  display: flex;
+  #app {
+    min-height: 100%;
+    display: flex;
+  }
 }

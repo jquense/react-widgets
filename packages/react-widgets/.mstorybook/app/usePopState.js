@@ -12,7 +12,6 @@ export default function usePopState() {
 
   useEffect(() => {
     const listener = (e) => {
-      debugger
       setLocation({
         pathname: window.location.pathname,
         query: new URLSearchParams(window.location.search),
