@@ -6,9 +6,9 @@ import React from 'react'
 const DirectionPropType = PropTypes.oneOf(['left', 'right', 'top', 'bottom'])
 
 const prefix = 'rw-calendar-transition'
-const active = `${prefix}-active`
-const next = `${prefix}-next`
-const prev = `${prefix}-prev`
+const active = 'rw-calendar-transition-active'
+const next = 'rw-calendar-transition-next'
+const prev = 'rw-calendar-transition-prev'
 
 const clone = (el: React.ReactElement | null | undefined, cls: string) =>
   el &&
@@ -120,7 +120,13 @@ class SlideTransitionGroup extends React.Component<
       <div
         {...props}
         ref={this.container}
-        className={cn(`${prefix}-group`, `${prefix}-${direction}`)}
+        className={cn(
+          `rw-calendar-transition-group`,
+          direction === 'top' && 'rw-calendar-transition-top',
+          direction === 'right' && 'rw-calendar-transition-right',
+          direction === 'bottom' && 'rw-calendar-transition-bottom',
+          direction === 'left' && 'rw-calendar-transition-left',
+        )}
       >
         {clone(this.prev, prevClasses)}
         {clone(this.current, currentClasses)}
