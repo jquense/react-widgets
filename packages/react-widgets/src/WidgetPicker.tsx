@@ -4,8 +4,9 @@ import React from 'react'
 function WidgetPicker({
   className,
   hideCaret = false,
+  busy = false,
   ...props
-}: React.HTMLProps<HTMLDivElement> & { hideCaret?: boolean }) {
+}: React.HTMLProps<HTMLDivElement> & { hideCaret?: boolean, busy?: boolean }) {
   return (
     <div
       {...props}
@@ -13,7 +14,7 @@ function WidgetPicker({
         className,
         'rw-widget-picker',
         'rw-widget-container',
-        hideCaret && 'rw-hide-caret',
+        (hideCaret && !busy) && 'rw-hide-caret',
       )}
     />
   )
