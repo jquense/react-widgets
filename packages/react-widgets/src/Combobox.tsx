@@ -407,29 +407,28 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
   let popupOpen = currentOpen && (!hideEmptyPopup || !!data.length)
   let inputReadOnly =
     // @ts-ignore
-    inputProps?.readOnly != null ? inputProps?.readOnly : readOnly
+    inputProps?.readOnly != null ? inputProps?.readOnly : readOnly;
 
-  const Addon = () => {
-    if (!hideCaret) {
-      return (
-        <InputAddon
-          busy={busy}
-          icon={selectIcon}
-          spinner={busySpinner}
-          onClick={handleClick}
-          disabled={!!isDisabled || isReadOnly}
-          // FIXME
-          label={messages.openCombobox()}
-        />
-      )
-    } else if (busy) {
-      return (
-        <span aria-hidden="true" className="rw-btn rw-picker-caret">
-          {busySpinner || Spinner}
-        </span>
-      )
-    }
-    return <></>
+  let inputAddon: React.ReactNode = false;
+
+  if (!hideCaret) {
+    inputAddon = (
+      <InputAddon
+        busy={busy}
+        icon={selectIcon}
+        spinner={busySpinner}
+        onClick={handleClick}
+        disabled={!!isDisabled || isReadOnly}
+        // FIXME
+        label={messages.openCombobox()}
+      />
+    );
+  } else if (busy) {
+    inputAddon = (
+      <span aria-hidden="true" className="rw-btn rw-picker-caret">
+        {busySpinner || Spinner}
+      </span>
+    );
   }
 
   return (
@@ -445,11 +444,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
       onKeyDown={handleKeyDown}
       className={cn(className, 'rw-combobox')}
     >
-      <WidgetPicker
-        className={containerClassName}
-        hideCaret={hideCaret}
-        busy={busy}
-      >
+      <WidgetPicker className={containerClassName} hideCaret={hideCaret} busy={busy}>
         <Input
           {...inputProps}
           role="combobox"
@@ -475,7 +470,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
           onKeyDown={handleInputKeyDown}
           ref={inputRef}
         />
-        <Addon />
+        {inputAddon}
       </WidgetPicker>
       <FocusListContext.Provider value={list.context}>
         {shouldRenderPopup && (
