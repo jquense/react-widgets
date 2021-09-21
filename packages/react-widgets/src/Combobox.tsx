@@ -445,9 +445,10 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
       className={cn(className, 'rw-combobox')}
     >
       <WidgetPicker
-        className={cn(containerClassName, hideCaret && 'rw-widget-input')}
-        hideCaret={hideCaret}
-        busy={busy}
+        className={cn(
+          containerClassName,
+          hideCaret && 'rw-widget-input',
+          (hideCaret && !busy) && 'rw-hide-caret')}
       >
         <Input
           {...inputProps}
