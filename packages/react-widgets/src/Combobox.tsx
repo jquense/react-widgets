@@ -444,7 +444,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
       onKeyDown={handleKeyDown}
       className={cn(className, 'rw-combobox')}
     >
-      <WidgetPicker className={containerClassName} hideCaret={hideCaret} busy={busy}>
+      <WidgetPicker className={cn(containerClassName, 'rw-widget-input')} hideCaret={hideCaret} busy={busy}>
         <Input
           {...inputProps}
           role="combobox"
@@ -453,7 +453,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
           className={cn(
             // @ts-ignore
             inputProps && inputProps.className,
-            'rw-widget-input rw-combobox-input',
+            'rw-combobox-input',
           )}
           autoFocus={autoFocus}
           tabIndex={tabIndex}
