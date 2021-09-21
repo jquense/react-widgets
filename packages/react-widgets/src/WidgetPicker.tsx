@@ -3,17 +3,15 @@ import React from 'react'
 
 function WidgetPicker({
   className,
-  hideCaret = false,
   ...props
-}: React.HTMLProps<HTMLDivElement> & { hideCaret?: boolean }) {
+}: React.HTMLProps<HTMLDivElement>) {
   return (
     <div
       {...props}
       className={cn(
         className,
         'rw-widget-picker',
-        'rw-widget-container',
-        hideCaret && 'rw-hide-caret',
+        'rw-widget-container'
       )}
     />
   )

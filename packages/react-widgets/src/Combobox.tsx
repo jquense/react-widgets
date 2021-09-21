@@ -29,6 +29,7 @@ import { useFilteredData } from './Filter'
 import useDropdownToggle from './useDropdownToggle'
 import useFocusManager from './useFocusManager'
 import { notify, useFirstFocusedRender, useInstanceId } from './WidgetHelpers'
+import { Spinner } from './Icon'
 
 function indexOf<TDataItem>(
   data: readonly TDataItem[],
@@ -106,10 +107,10 @@ export type ComboboxHandle = WidgetHandle
 
 export interface ComboboxProps<TDataItem = DataItem>
   extends WidgetHTMLProps,
-    WidgetProps,
-    PopupWidgetProps,
-    Filterable<TDataItem>,
-    BaseListboxInputProps<TDataItem, string | TDataItem> {
+  WidgetProps,
+  PopupWidgetProps,
+  Filterable<TDataItem>,
+  BaseListboxInputProps<TDataItem, string | TDataItem> {
   name?: string
 
   /**
@@ -405,9 +406,31 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
 
   let popupOpen = currentOpen && (!hideEmptyPopup || !!data.length)
   let inputReadOnly =
-  // @ts-ignore
-      inputProps?.readOnly != null ? inputProps?.readOnly : readOnly;
-      
+    // @ts-ignore
+    inputProps?.readOnly != null ? inputProps?.readOnly : readOnly;
+
+  let inputAddon: React.ReactNode = false;
+
+  if (!hideCaret) {
+    inputAddon = (
+      <InputAddon
+        busy={busy}
+        icon={selectIcon}
+        spinner={busySpinner}
+        onClick={handleClick}
+        disabled={!!isDisabled || isReadOnly}
+        // FIXME
+        label={messages.openCombobox()}
+      />
+    );
+  } else if (busy) {
+    inputAddon = (
+      <span aria-hidden="true" className="rw-btn rw-picker-caret">
+        {busySpinner || Spinner}
+      </span>
+    );
+  }
+
   return (
     <Widget
       {...elementProps}
@@ -421,7 +444,12 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
       onKeyDown={handleKeyDown}
       className={cn(className, 'rw-combobox')}
     >
-      <WidgetPicker className={containerClassName} hideCaret={hideCaret}>
+      <WidgetPicker
+        className={cn(
+          containerClassName,
+          hideCaret && 'rw-widget-input',
+          (hideCaret && !busy) && 'rw-hide-caret')}
+      >
         <Input
           {...inputProps}
           role="combobox"
@@ -430,7 +458,8 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
           className={cn(
             // @ts-ignore
             inputProps && inputProps.className,
-            'rw-widget-input rw-combobox-input',
+            'rw-combobox-input',
+            !hideCaret && 'rw-widget-input'
           )}
           autoFocus={autoFocus}
           tabIndex={tabIndex}
@@ -447,17 +476,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
           onKeyDown={handleInputKeyDown}
           ref={inputRef}
         />
-        {!hideCaret && (
-          <InputAddon
-            busy={busy}
-            icon={selectIcon}
-            spinner={busySpinner}
-            onClick={handleClick}
-            disabled={!!isDisabled || isReadOnly}
-            // FIXME
-            label={messages.openCombobox()}
-          />
-        )}
+        {inputAddon}
       </WidgetPicker>
       <FocusListContext.Provider value={list.context}>
         {shouldRenderPopup && (
@@ -496,7 +515,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
           </Popup>
         )}
       </FocusListContext.Provider>
-    </Widget>
+    </Widget >
   )
 })
 
