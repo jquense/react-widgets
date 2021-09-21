@@ -14,8 +14,6 @@ module.exports = function (widgetName) {
     <>
       <${widgetName} busy />
       <br/>
-      <${widgetName} busy hideCaret />
-      <br/>
       <${widgetName} busy busySpinner={
         <span className="fas fa-sync fa-spin" />
       }/>
