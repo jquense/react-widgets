@@ -48,17 +48,17 @@ describe('DatePicker', () => {
     expect(wrapper.find('Calendar').props().defaultView).to.equal('year')
   })
 
-  it('sets aria-owns relationship for Calendar', () => {
-    const inst = shallow(<ControlledDateTimePicker open="date" time={false} />)
-    const dateId = inst.find(Calendar).props().id
-    inst.assertSingle(`[aria-owns='${dateId}']`)
-  })
+  // it('sets aria-owns relationship for Calendar', () => {
+  //   const inst = shallow(<ControlledDateTimePicker open="date" time={false} />)
+  //   const dateId = inst.find(Calendar).props().id
+  //   inst.assertSingle(`[aria-owns='${dateId}']`)
+  // })
 
-  it('sets aria-owns relationship for TimePicker', () => {
-    const inst = shallow(<ControlledDateTimePicker open="time" date={false} time={true} />)
-    const listId = inst.find(TimeList).props().id
-    inst.assertSingle(`[aria-owns='${listId}']`)
-  })
+  // it('sets aria-owns relationship for TimePicker', () => {
+  //   const inst = shallow(<ControlledDateTimePicker open="time" date={false} time={true} />)
+  //   const listId = inst.find(TimeList).props().id
+  //   inst.assertSingle(`[aria-owns='${listId}']`)
+  // })
 
   it('should change when selecting a date', () => {
     let change = sinon.spy()
@@ -138,7 +138,6 @@ describe('DatePicker', () => {
     let input = wrapper.find('input.rw-input').getDOMNode()
 
     expect(input.hasAttribute('disabled')).to.equal(true)
-    expect(input.getAttribute('aria-owns')).to.equal('')
 
     wrapper.find('.rw-i-calendar').simulate('click').update()
 
@@ -154,7 +153,6 @@ describe('DatePicker', () => {
     let input = wrapper.find('input.rw-input').getDOMNode()
 
     expect(input.hasAttribute('readonly')).to.equal(true)
-    expect(input.getAttribute('aria-owns')).to.equal('')
 
     wrapper.find('.rw-i-calendar').simulate('click').update()
 

@@ -17,7 +17,6 @@ import dates from './dates'
 import useAutoFocus from './useAutoFocus'
 import useFocusManager from './useFocusManager'
 import { notify, useInstanceId } from './WidgetHelpers'
-import { Messages } from './messages'
 
 type Direction = 'DOWN' | 'UP' | 'LEFT' | 'RIGHT'
 

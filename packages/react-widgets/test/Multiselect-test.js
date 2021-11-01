@@ -3,8 +3,6 @@ import React from 'react'
 import Multiselect from '../src/Multiselect'
 import MultiselectTag from '../src/MultiselectTag'
 import MultiselectTagList from '../src/MultiselectTagList'
-import SlideDownTransition from "../src/SlideDownTransition";
-import Popup from "../src/Popup";
 
 describe('Multiselect', function () {
   let dataList = [

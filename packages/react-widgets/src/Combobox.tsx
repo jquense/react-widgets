@@ -107,10 +107,10 @@ export type ComboboxHandle = WidgetHandle
 
 export interface ComboboxProps<TDataItem = DataItem>
   extends WidgetHTMLProps,
-  WidgetProps,
-  PopupWidgetProps,
-  Filterable<TDataItem>,
-  BaseListboxInputProps<TDataItem, string | TDataItem> {
+    WidgetProps,
+    PopupWidgetProps,
+    Filterable<TDataItem>,
+    BaseListboxInputProps<TDataItem, string | TDataItem> {
   name?: string
 
   /**
@@ -407,9 +407,9 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
   let popupOpen = currentOpen && (!hideEmptyPopup || !!data.length)
   let inputReadOnly =
     // @ts-ignore
-    inputProps?.readOnly != null ? inputProps?.readOnly : readOnly;
+    inputProps?.readOnly != null ? inputProps?.readOnly : readOnly
 
-  let inputAddon: React.ReactNode = false;
+  let inputAddon: React.ReactNode = false
 
   if (!hideCaret) {
     inputAddon = (
@@ -422,13 +422,13 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
         // FIXME
         label={messages.openCombobox()}
       />
-    );
+    )
   } else if (busy) {
     inputAddon = (
       <span aria-hidden="true" className="rw-btn rw-picker-caret">
         {busySpinner || Spinner}
       </span>
-    );
+    )
   }
 
   return (
@@ -448,7 +448,8 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
         className={cn(
           containerClassName,
           hideCaret && 'rw-widget-input',
-          (hideCaret && !busy) && 'rw-hide-caret')}
+          hideCaret && !busy && 'rw-hide-caret',
+        )}
       >
         <Input
           {...inputProps}
@@ -459,7 +460,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
             // @ts-ignore
             inputProps && inputProps.className,
             'rw-combobox-input',
-            !hideCaret && 'rw-widget-input'
+            !hideCaret && 'rw-widget-input',
           )}
           autoFocus={autoFocus}
           tabIndex={tabIndex}
@@ -515,7 +516,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
           </Popup>
         )}
       </FocusListContext.Provider>
-    </Widget >
+    </Widget>
   )
 })
 
