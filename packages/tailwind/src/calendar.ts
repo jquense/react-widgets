@@ -2,11 +2,6 @@ import css from 'style-convert/macro'
 import colors from 'tailwindcss/colors'
 import { PluginApi, ThemeFn } from 'tailwindcss/plugin'
 
-const opts = {
-  respectImportant: false,
-  respectPrefix: false,
-}
-
 export const theme = {
   rwCalendar: (theme: ThemeFn) => {
     const core = theme('rwCore')

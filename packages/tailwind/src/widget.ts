@@ -20,9 +20,6 @@ function hasAlpha(color: string) {
   )
 }
 
-theme: {
-}
-
 export const theme = {
   rwCore: (theme: any) => ({
     fontWeight: null,
