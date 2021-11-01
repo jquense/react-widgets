@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.5.0](https://github.com/jquense/react-widgets/compare/react-widgets@5.4.0...react-widgets@5.5.0) (2021-11-01)
+
+
+### Features
+
+* better multiselect a11y ([92ba51b](https://github.com/jquense/react-widgets/commit/92ba51bcf27e9fe76577a2b16c436e1bb9f9a052))
+* pass searchTerm to renderOption ([98e001d](https://github.com/jquense/react-widgets/commit/98e001d94e295c6e8bd7c6170109076088d77994))
+
+
+
+
+
 # [5.4.0](https://github.com/jquense/react-widgets/compare/react-widgets@5.3.0...react-widgets@5.4.0) (2021-09-21)
 
 
