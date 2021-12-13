@@ -115,6 +115,7 @@ const isComplete = (value: string, part: TimePart, use12HourClock: boolean) =>
 export interface TimeInputProps
   extends Omit<WidgetProps, 'value' | 'onChange'> {
   value?: Date | null
+  defaultValue?: Date | null
   onChange?: (date: Date | null, ctx?: any) => void
   datePart?: Date
   use12HourClock?: boolean
