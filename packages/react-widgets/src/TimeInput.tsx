@@ -138,6 +138,11 @@ const propTypes = {
   value: PropTypes.instanceOf(Date),
 
   /**
+   * @example ['valuePicker', [ ['new Date()'] ]]
+   */
+   defaultValue: PropTypes.instanceOf(Date),
+
+  /**
    * @example ['onChangePicker', [ ['new Date()'] ]]
    */
   onChange: PropTypes.func,
@@ -475,6 +480,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
   return (
     <Widget
       {...props}
+      defaultValue={undefined}
       role="group"
       ref={ref}
       {...focusEvents}
