@@ -38,5 +38,4 @@ function Button({
   )
 }
 
-const f = [...new Set()]
 export default Button

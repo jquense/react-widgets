@@ -20,9 +20,6 @@ function hasAlpha(color: string) {
   )
 }
 
-theme: {
-}
-
 export const theme = {
   rwCore: (theme: any) => ({
     fontWeight: null,
@@ -55,6 +52,7 @@ export const theme = {
     color: theme('rwCore.color'),
     borderColor: null,
     backgroundColor: null,
+    backgroundClip: theme('rwCore.backgroundClip'),
 
     borderRadius: theme('borderRadius.DEFAULT', '4px'),
     disabledBackgroundColor: theme('colors.gray.200', colors.gray[200]),
@@ -176,7 +174,7 @@ export const plugin = ({
     .rw-btn {
       @apply rw-btn-input-reset inline-flex items-center justify-center cursor-pointer focus:outline-none;
 
-      background-clip: ${theme('rwCore.backgroundClip')};
+      background-clip: ${theme('rwButton.backgroundClip')};
 
       &:disabled,
       fieldset[disabled] &,

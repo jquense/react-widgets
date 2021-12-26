@@ -1,6 +1,6 @@
 {
   "name": "react-widgets",
-  "version": "5.3.0",
+  "version": "5.5.1",
   "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -69,8 +69,7 @@
     "prop-types-extra": "^1.1.1",
     "react-transition-group": "^4.4.1",
     "tiny-warning": "^1.0.3",
-    "uncontrollable": "^7.2.1",
-    "warning": "^4.0.3"
+    "uncontrollable": "^7.2.1"
   },
   "devDependencies": {
     "@4c/build": "^2.2.8",

@@ -22,6 +22,8 @@ const MultiselectInput = React.forwardRef(
 
     return (
       <input
+        spellCheck="false"
+        autoCapitalize="off"
         {...props}
         size={size}
         ref={ref}

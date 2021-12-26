@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.5.1](https://github.com/jquense/react-widgets/compare/react-widgets@5.5.0...react-widgets@5.5.1) (2021-11-15)
+
+**Note:** Version bump only for package react-widgets
+
+
+
+
+
+# [5.5.0](https://github.com/jquense/react-widgets/compare/react-widgets@5.4.0...react-widgets@5.5.0) (2021-11-01)
+
+
+### Features
+
+* better multiselect a11y ([92ba51b](https://github.com/jquense/react-widgets/commit/92ba51bcf27e9fe76577a2b16c436e1bb9f9a052))
+* pass searchTerm to renderOption ([98e001d](https://github.com/jquense/react-widgets/commit/98e001d94e295c6e8bd7c6170109076088d77994))
+
+
+
+
+
+# [5.4.0](https://github.com/jquense/react-widgets/compare/react-widgets@5.3.0...react-widgets@5.4.0) (2021-09-21)
+
+
+### Features
+
+* adds a busy spinner to combobox even when caret is hidden ([#1102](https://github.com/jquense/react-widgets/issues/1102)) ([c553abc](https://github.com/jquense/react-widgets/commit/c553abc1983329e54da999d76cc9fdeb83aeaa4a))
+
+
+
+
+
 # [5.3.0](https://github.com/jquense/react-widgets/compare/react-widgets@5.2.0...react-widgets@5.3.0) (2021-09-07)
 
 

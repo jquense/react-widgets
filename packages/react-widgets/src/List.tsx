@@ -245,6 +245,7 @@ const List: List = React.forwardRef(function List<TDataItem>(
       <Option
         dataItem={item}
         key={`item_${idx}`}
+        searchTerm={searchTerm}
         onSelect={handleSelect}
         disabled={itemIsDisabled}
         selected={itemIsSelected}

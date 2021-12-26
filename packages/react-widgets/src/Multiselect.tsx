@@ -302,7 +302,6 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
 
   const inputId = useInstanceId(id, '_input')
   const tagsId = useInstanceId(id, '_taglist')
-  const notifyId = useInstanceId(id, '_notify_area')
   const listId = useInstanceId(id, '_listbox')
   const createId = useInstanceId(id, '_createlist_option')
   const activeTagId = useInstanceId(id, '_taglist_active_tag')
@@ -590,10 +589,9 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
 
   let shouldRenderPopup = useFirstFocusedRender(focused, currentOpen!)
 
-  let itemLabels = dataItems.map((item) => accessors.text(item))
   let shouldRenderTags = !!dataItems.length
   let inputOwns =
-    `${listId} ${notifyId} ` +
+    `${listId} ` +
     (shouldRenderTags ? tagsId : '') +
     (showCreateOption ? createId : '')
 
@@ -610,20 +608,6 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
       {...focusEvents}
       className={cn(className, 'rw-multiselect')}
     >
-      <span
-        id={notifyId}
-        role="status"
-        className="rw-sr"
-        aria-live="assertive"
-        aria-atomic="true"
-        aria-relevant="all"
-      >
-        {focused &&
-          (dataItems.length
-            ? messages.selectedItems(itemLabels)
-            : messages.noneSelected())}
-      </span>
-
       <WidgetPicker
         onClick={handleClick}
         onTouchEnd={handleClick}
@@ -645,13 +629,15 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
           >
             <MultiselectInput
               {...inputProps}
-              aria-haspopup
-              role="listbox"
+              role="combobox"
               autoFocus={autoFocus}
               tabIndex={tabIndex || 0}
               aria-expanded={!!currentOpen}
               aria-busy={!!busy}
               aria-owns={inputOwns}
+              aria-controls={listId}
+              aria-haspopup="listbox"
+              aria-autocomplete="list"
               value={currentSearch}
               disabled={isDisabled}
               readOnly={isReadOnly}

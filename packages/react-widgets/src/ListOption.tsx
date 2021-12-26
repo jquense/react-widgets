@@ -16,6 +16,7 @@ export interface ListOptionProps<TDataItem>
   dataItem: TDataItem
   focused?: boolean
   selected: boolean
+  searchTerm?: string
   disabled?: boolean
   onSelect: (dataItem: TDataItem, event: React.MouseEvent) => void
   component?: React.ElementType | null
@@ -29,6 +30,7 @@ function ListOption<TDataItem>({
   selected,
   disabled,
   onSelect,
+  searchTerm: _,
   ...props
 }: ListOptionProps<TDataItem>) {
   const [ref, focused, id] = useListOption<TDataItem, HTMLDivElement>(dataItem)

@@ -2,11 +2,6 @@ import css from 'style-convert/macro'
 import colors from 'tailwindcss/colors'
 import { PluginApi, ThemeFn } from 'tailwindcss/plugin'
 
-const opts = {
-  respectImportant: false,
-  respectPrefix: false,
-}
-
 export const theme = {
   rwCalendar: (theme: ThemeFn) => {
     const core = theme('rwCore')
@@ -20,30 +15,33 @@ export const theme = {
       btnBackgroundColor: theme('colors.white', colors.white),
       btnColor: button.color,
       btnBorderColor: null,
+      btnBackgroundClip: button.backgroundClip,
       btnMutedColor: theme('colors.gray.400', colors.gray[400]),
       btnBorderRadius: button.borderRadius,
 
       btnHoverBackgroundColor: button.hoverBackgroundColor,
-      btnHoverBorderColor: button.hoverBackgroundColor,
-      btnHoverColor: button.hoverBackgroundColor,
+      btnHoverBorderColor: button.hoverBorderColor,
+      btnHoverColor: button.hoverColor,
 
       btnActiveBackgroundColor: null,
       btnActiveBorderColor: null,
       btnActiveColor: null,
 
       btnFocusBackgroundColor: null,
+
       btnFocusBorderColor: null,
       btnFocusColor: null,
 
       cellAlign: 'center',
       cellPadding: theme('padding.2'),
+      cellBackgroundClip: core.backgroundClip,
       cellColor: button.color,
       cellBorderColor: null,
       cellBorderRadius: button.borderRadius,
 
       cellHoverBackgroundColor: button.hoverBackgroundColor,
       cellHoverBorderColor: button.hoverBackgroundColor,
-      cellHoverColor: button.hoverBackgroundColor,
+      cellHoverColor: button.hoverColor,
 
       cellActiveBackgroundColor: null,
       cellActiveBorderColor: null,
@@ -116,9 +114,13 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
       border-color: ${cal.btnBorderColor};
 
       &:hover {
+        color: ${cal.btnHoverColor};
+        border-color: ${cal.btnHoverBorderColor};
         background-color: ${cal.btnHoverBackgroundColor};
       }
       &:active {
+        color: ${cal.btnActiveColor};
+        border-color: ${cal.btnActiveBorderColor};
         background-color: ${cal.btnActiveBackgroundColor};
       }
     }
@@ -184,10 +186,11 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
 
     .rw-cell {
       display: table-cell;
-      color: $cell-color;
+      color: ${cal.cellColor};
       vertical-align: middle;
       border-color: ${cal.cellBorderColor};
       border-radius: ${cal.cellBorderRadius};
+      background-clip: ${core.backgroundClip};
       cursor: pointer;
       line-height: normal;
       text-align: center;
@@ -196,9 +199,13 @@ export const plugin = ({ theme, addComponents }: PluginApi) => {
       outline: none;
 
       &:hover {
+        color: ${cal.cellHoverColor};
+        border-color: ${cal.cellHoverBorderColor};
         background-color: ${cal.cellHoverBackgroundColor};
       }
       &:active {
+        color: ${cal.cellActiveColor};
+        border-color: ${cal.cellActiveBorderColor};
         background-color: ${cal.cellActiveBackgroundColor};
       }
 

@@ -44,6 +44,8 @@ function MultiselectTagList<TDataItem>({
       id={id}
       role="listbox"
       aria-label={label}
+      aria-multiselectable="true"
+      aria-orientation="horizontal"
       className="rw-multiselect-taglist"
     >
       {value.map((item, i) => {

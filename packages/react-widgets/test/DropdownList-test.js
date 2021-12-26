@@ -2,7 +2,6 @@ import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import DropdownList from '../src/DropdownList'
-import SlideDownTransition from '../src/SlideDownTransition'
 import Popup from '../src/Popup'
 
 describe('DropdownList', function () {
@@ -231,52 +230,9 @@ describe('DropdownList', function () {
     ).to.equal(data[0].label)
   })
 
-  it('should render with a custom PopupComponent if one is provided', () => {
-    class CustomPopupComponent extends React.PureComponent {
-      render() {
-        return <div id="custom-popup-component" />
-      }
-    }
-
-    let inst = mount(
-        <ControlledDropdownList
-            open
-            dropUp
-            popupTransition={SlideDownTransition}
-            popupComponent={CustomPopupComponent}
-            popupProps={{
-              customProp: 'custom-prop'
-            }} />
-    );
-
-
-    const props = inst.find(CustomPopupComponent).props();
-
-    expect(props.open).to.equal(true);
-    expect(props.dropUp).to.equal(true);
-    expect(props.customProp).to.equal('custom-prop');
-    expect(props.transition).to.equal(SlideDownTransition);
-
-    const focus = sinon.stub(inst.instance(), 'focus');
-    expect(focus.notCalled).to.equal(true);
-    props.onEntered()
-    expect(focus.calledOnce).to.equal(true);
-
-    const forceUpdate = sinon.stub();
-
-    inst.instance().listRef = {
-      forceUpdate
-    }
-    expect(forceUpdate.notCalled).to.equal(true);
-    props.onEntering();
-    expect(forceUpdate.calledOnce).to.equal(true);
-  })
-
   it('defaults to using a Popup component', () => {
-    let inst = mount(
-        <ControlledDropdownList open/>
-    );
+    let inst = mount(<DropdownList open />)
 
-    expect(inst.find(Popup).exists()).to.equal(true);
+    expect(inst.find(Popup).exists()).to.equal(true)
   })
 })

@@ -2,11 +2,6 @@ import css from 'style-convert/macro'
 import colors from 'tailwindcss/colors'
 import { PluginApi } from 'tailwindcss/plugin'
 
-const opts = {
-  respectImportant: false,
-  respectPrefix: false,
-}
-
 export const theme = {
   rwList: (theme: any) => {
     const core = theme('rwCore')
@@ -33,7 +28,7 @@ export const theme = {
       optionMutedColor: theme('colors.gray.400'),
 
       optionCreateBackgroundColor: core.backgroundColor,
-
+      optionBackgroundClip: core.backgroundClip,
       optgroupColor: null,
       optgroupFontWeight: theme('fontWeight.bold'),
     }

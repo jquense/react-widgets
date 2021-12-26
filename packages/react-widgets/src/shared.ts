@@ -1,5 +1,6 @@
 import React, {
   AnimationEventHandler,
+  AriaRole,
   ComponentType,
   DragEventHandler,
   FocusEventHandler,
@@ -58,7 +59,7 @@ export interface WidgetHTMLProps<T = HTMLDivElement>
   style?: React.CSSProperties
   tabIndex?: number
   title?: string
-  role?: string
+  role?: AriaRole
 
   // events
   onFocus?: FocusEventHandler<T>

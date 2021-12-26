@@ -36,10 +36,13 @@ function removeEmpty(value: any): any {
   return value
 }
 
-function wrap<T extends (d: any, ...args: any[]) => any>(fn: T): T {
+function wrap<T extends (d: any, ...args: any[]) => any>(
+  fn: T,
+  options?: Parameters<T>[1],
+): T {
   return ((decls: any, ...args: any[]) => {
     // console.log(removeEmpty(decls))
-    return fn(removeEmpty(decls), ...args)
+    return fn(removeEmpty(decls), options, ...args)
   }) as any
 }
 
@@ -100,7 +103,7 @@ export default plugin.withOptions(
     return ({ addBase, addComponents, addUtilities, ...args }) => {
       const api = {
         addBase: wrap(addBase),
-        addUtilities: wrap(addUtilities),
+        addUtilities: wrap(addUtilities, { respectImportant: false }),
         addComponents: wrap(addComponents),
         ...args,
       }
