@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, { useMemo, useRef, useState } from 'react'
 import Input, { InputProps } from './Input'
 import { Localizer, RequiredDateMethods } from './Localization'
@@ -84,7 +85,7 @@ const DatePickerInput = React.forwardRef(
         {...props}
         type="text"
         ref={ref}
-        className="rw-widget-input"
+        className={cn('rw-widget-input', props.className)}
         value={textValue}
         disabled={disabled}
         readOnly={readOnly}
