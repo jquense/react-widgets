@@ -107,10 +107,10 @@ export type ComboboxHandle = WidgetHandle
 
 export interface ComboboxProps<TDataItem = DataItem>
   extends WidgetHTMLProps,
-  WidgetProps,
-  PopupWidgetProps,
-  Filterable<TDataItem>,
-  BaseListboxInputProps<TDataItem, string | TDataItem> {
+    WidgetProps,
+    PopupWidgetProps,
+    Filterable<TDataItem>,
+    BaseListboxInputProps<TDataItem, string | TDataItem> {
   name?: string
 
   /**
@@ -423,7 +423,6 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
         label={messages.openCombobox()}
       />
     )
-
   } else if (busy) {
     inputAddon = (
       <span aria-hidden="true" className="rw-btn rw-picker-caret">
@@ -517,7 +516,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
           </Popup>
         )}
       </FocusListContext.Provider>
-    </Widget >
+    </Widget>
   )
 })
 
