@@ -8,7 +8,7 @@ const { act } = require('react-dom/test-utils')
 const { configure, ShallowWrapper, ReactWrapper } = require('enzyme')
 const Adapter = require('enzyme-adapter-react-16')
 
-const widgetHelpers = require('../src/widgetHelpers')
+const widgetHelpers = require('../src/WidgetHelpers')
 
 global.chai = chai
 global.sinon = sinon
