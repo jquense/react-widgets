@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.6.0](https://github.com/jquense/react-widgets/compare/react-widgets@5.5.1...react-widgets@5.6.0) (2022-01-14)
+
+
+### Bug Fixes
+
+* **DatePicker:** invalid dates prevent selecting new date ([d506e98](https://github.com/jquense/react-widgets/commit/d506e9889ac4e015451b64fbaab4ec85fee36283))
+
+
+### Features
+
+* **multiselect:** show selected items in list ([0cf4fd8](https://github.com/jquense/react-widgets/commit/0cf4fd88e85ad0bb46683dd2b218df13301ceb67))
+
+
+
+
+
 ## [5.5.1](https://github.com/jquense/react-widgets/compare/react-widgets@5.5.0...react-widgets@5.5.1) (2021-11-15)
 
 **Note:** Version bump only for package react-widgets
