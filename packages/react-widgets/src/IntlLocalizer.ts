@@ -67,14 +67,17 @@ class IntlDateLocalizer implements DateLocalizer<Intl.DateTimeFormatOptions> {
     const formats: Formatters = {
       date: getFormatter(
         culture,
+        // @ts-ignore
         supportStyles ? { dateStyle: 'short' } : dateShort,
       ),
       time: getFormatter(
         culture,
+        // @ts-ignore
         supportStyles ? { timeStyle: 'short' } : timeShort,
       ),
       datetime: getFormatter(
         culture,
+        // @ts-ignore
         supportStyles
           ? { dateStyle: 'short', timeStyle: 'short' }
           : { ...dateShort, ...timeShort },
@@ -109,7 +112,8 @@ class IntlDateLocalizer implements DateLocalizer<Intl.DateTimeFormatOptions> {
   }
 
   parse(value: string) {
-    return new Date(value)
+    const date = new Date(value)
+    return isNaN(+date) ? null : date
   }
 }
 
@@ -131,7 +135,7 @@ class IntlNumberLocalizer implements NumberLocalizer<Intl.NumberFormatOptions> {
     const decimal =
       'formatToParts' in Intl.NumberFormat(culture)
         ? Intl.NumberFormat(culture).formatToParts(1.1)[1].value
-        : (1.1).toLocaleString(culture).match(/[^\d]/)?.[0] || '.'
+        : 1.1.toLocaleString(culture).match(/[^\d]/)?.[0] || '.'
 
     const formatter = Intl.NumberFormat(culture).format
 

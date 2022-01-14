@@ -1,4 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react'
+import { isNullOrInvalid } from './dates'
 import Input, { InputProps } from './Input'
 import { Localizer, RequiredDateMethods } from './Localization'
 
@@ -64,7 +65,7 @@ const DatePickerInput = React.forwardRef(
       if (needsFlush.current) {
         let date = parse(event.target.value)
 
-        const dateIsInvalid = event.target.value != '' && date == null
+        const dateIsInvalid = event.target.value != '' && isNullOrInvalid(date)
         if (dateIsInvalid) {
           setTextValue('')
         }
