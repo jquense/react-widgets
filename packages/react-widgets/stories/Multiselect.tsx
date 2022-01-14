@@ -12,6 +12,7 @@ export const Default = () => (
   <Multiselect
     {...props}
     focusFirstItem
+    showSelectedItemsInList
     placeholder="Hello there"
     defaultValue={props.data.slice(1, 4)}
   />

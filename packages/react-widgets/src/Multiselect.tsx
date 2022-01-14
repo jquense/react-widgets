@@ -127,6 +127,9 @@ let propTypes = {
   /** Continue to show the input placeholder even if tags are selected */
   showPlaceholderWithValues: PropTypes.bool,
 
+  /** Continue to show the selected items in the dropdown list */
+  showSelectedItemsInList: PropTypes.bool,
+
   disabled: CustomPropTypes.disabled.acceptsArray,
   readOnly: CustomPropTypes.disabled,
 
@@ -151,10 +154,14 @@ function useMultiselectData<TDataItem>(
   accessors: Accessors,
   filter?: Filter<TDataItem>,
   searchTerm?: string,
+  showSelectedItemsInList?: boolean,
 ) {
   data = useMemo(
-    () => data.filter((i) => !value.some((v) => accessors.matches(i, v))),
-    [data, value, accessors],
+    () =>
+      showSelectedItemsInList
+        ? data
+        : data.filter((i) => !value.some((v) => accessors.matches(i, v))),
+    [data, showSelectedItemsInList, value, accessors],
   )
 
   return [
@@ -189,6 +196,7 @@ export interface MultiselectProps<TDataItem = DataItem>
   renderTagValue?: RenderTagProp<TDataItem>
   clearTagIcon?: React.ReactNode
   tagOptionComponent?: TagComponentProp
+  showSelectedItemsInList?: boolean
 }
 
 declare interface Multiselect {
@@ -259,6 +267,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     tabIndex,
     popupTransition,
     showPlaceholderWithValues = false,
+    showSelectedItemsInList = false,
     onSelect,
     onCreate,
     onKeyDown,
@@ -340,6 +349,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     accessors,
     currentOpen ? filter : false,
     currentSearch,
+    showSelectedItemsInList,
   )
 
   const list = useFocusList<TDataItem>({
@@ -347,6 +357,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     scopeSelector: '.rw-popup',
     focusFirstItem,
     activeId: activeOptionId,
+    anchorItem: currentOpen ? dataItems[dataItems.length - 1] : undefined,
   })
   const tagList = useFocusList<TDataItem>({
     scope: ref,
@@ -439,7 +450,11 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
 
     notify(onSelect, [dataItem, { originalEvent }])
 
-    change(dataItem, originalEvent, INSERT)
+    if (!showSelectedItemsInList || !dataItems.includes(dataItem)) {
+      change(dataItem, originalEvent, INSERT)
+    } else {
+      change(dataItem, originalEvent, REMOVE)
+    }
     focus()
   }
 
@@ -678,6 +693,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
               accessors={accessors}
               renderItem={renderListItem}
               renderGroup={renderListGroup}
+              value={dataItems}
               groupBy={groupBy}
               optionComponent={optionComponent}
               onChange={(d, meta) =>
