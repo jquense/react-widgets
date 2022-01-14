@@ -14,7 +14,7 @@
     "build": "4c build src",
     "prepublishOnly": "yarn run build",
     "tdd": "jest --watch",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "typecheck": "tsc --noEmit"
   },
   "publishConfig": {

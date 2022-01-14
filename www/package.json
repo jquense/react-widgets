@@ -7,7 +7,7 @@
     "start": "docusaurus start",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
-    "deploy": "BASE_URL=/react-widgets/ docusaurus deploy",
+    "build:deploy": "BASE_URL=/react-widgets/ docusaurus build",
     "serve": "docusaurus serve",
     "clear": "docusaurus clear"
   },

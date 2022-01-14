@@ -9378,7 +9378,7 @@ react-transition-group@^4.4.1:
     prop-types "^15.6.2"
 
 "react-widgets@file:../packages/react-widgets":
-  version "5.0.0-beta.24"
+  version "5.6.0"
   dependencies:
     "@restart/hooks" "^0.3.26"
     "@types/classnames" "^2.2.11"
@@ -9390,7 +9390,6 @@ react-transition-group@^4.4.1:
     react-transition-group "^4.4.1"
     tiny-warning "^1.0.3"
     uncontrollable "^7.2.1"
-    warning "^4.0.3"
 
 react@^16.8.4:
   version "16.14.0"
@@ -11241,7 +11240,7 @@ wait-on@^5.2.0, wait-on@^5.2.1:
     minimist "^1.2.5"
     rxjs "^6.6.3"
 
-warning@^4.0.0, warning@^4.0.3:
+warning@^4.0.0:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
   integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==

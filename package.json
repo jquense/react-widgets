@@ -12,7 +12,7 @@
     "tdd": "npm run rw tdd",
     "start": "yarn --cwd ./www start",
     "bootstrap": "yarn && lerna run prepublishOnly",
-    "deploy-docs": "yarn build && yarn --cwd ./www && GIT_USER=jquense yarn --cwd ./www deploy",
+    "deploy-docs": "yarn build && yarn --cwd ./www && GIT_USER=jquense yarn --cwd ./www build:deploy",
     "build": "lerna run build",
     "release": "lerna publish"
   },
