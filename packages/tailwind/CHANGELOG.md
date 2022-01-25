@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/jquense/react-widgets/compare/react-widgets-tailwind@1.1.2...react-widgets-tailwind@1.1.3) (2022-01-25)
+
+
+### Bug Fixes
+
+* tailwind plugin and add v3 support ([bd0631a](https://github.com/jquense/react-widgets/commit/bd0631a95c1303403b6341e090516e3068661014))
+
+
+
+
+
 ## [1.1.2](https://github.com/jquense/react-widgets/compare/react-widgets-tailwind@1.1.1...react-widgets-tailwind@1.1.2) (2021-11-15)
 
 
