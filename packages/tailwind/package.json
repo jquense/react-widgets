@@ -27,13 +27,13 @@
   "devDependencies": {
     "@4c/jest-preset": "^1.4.5",
     "jest": "^27.0.4",
-    "style-convert": "^1.0.1"
+    "style-convert": "^1.0.1",
+    "tailwindcss": "^3.0.15"
   },
   "peerDependencies": {
-    "tailwindcss": "^2.2.7"
+    "tailwindcss": ">=2.2.7"
   },
   "dependencies": {
-    "@types/tailwindcss": "^2.2.1",
-    "tailwindcss": "^2.2.7"
+    "@types/tailwindcss": ">=2.2.1"
   }
 }

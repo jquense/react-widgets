@@ -50,6 +50,9 @@
     "rimraf": "^3.0.0",
     "typescript": "^3.7.2"
   },
+  "resolutions": {
+    "tailwindcss": "^3.0.16"
+  },
   "prettier": {
     "trailingComma": "all",
     "singleQuote": true,
