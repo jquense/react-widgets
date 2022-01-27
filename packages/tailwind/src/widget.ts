@@ -286,18 +286,9 @@ export const plugin = ({
     }
 
     .rw-input {
-      @apply rw-input-base;
+      @apply rw-btn-input-reset rw-input-base;
 
       padding: 0 ${theme('rwInput.paddingX')};
-      margin: 0;
-      border: none;
-      color: inherit;
-      box-shadow: none;
-      background: none;
-      font: inherit;
-      line-height: inherit;
-      touch-action: manipulation;
-      outline: 0;
 
       &[type='text']::-ms-clear {
         display: none;
