@@ -184,6 +184,7 @@ fieldset[disabled] .rw-widget {
   background-color: $input-bg;
   box-shadow: $input-box-shadow;
   background-clip: $widget-background-clip;
+  width: inherit;
 
   // Listbox is also the rw-widget
   &.rw-state-disabled,
