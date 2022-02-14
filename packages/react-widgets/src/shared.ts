@@ -172,7 +172,7 @@ export interface PopupWidgetProps {
   containerClassName?: string
 
   dropUp?: boolean
-  popupProps: Record<string, any>
+  popupProps?: Record<string, any>
   popupTransition?: React.ComponentType<TransitionProps>
   popupComponent?: React.ComponentType<PopupProps>
 
