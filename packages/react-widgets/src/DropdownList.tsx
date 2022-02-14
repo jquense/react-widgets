@@ -14,7 +14,6 @@ import { FocusListContext, useFocusList } from './FocusListContext'
 import BasePopup from './Popup'
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
-import { useMessagesWithDefaults } from './messages'
 import {
   BaseListboxInputProps,
   Filterable,
@@ -32,6 +31,7 @@ import { useAccessors } from './Accessors'
 import useAutoFocus from './useAutoFocus'
 import useDropdownToggle from './useDropdownToggle'
 import useFocusManager from './useFocusManager'
+import { useLocalizer } from './Localization'
 import { notify, useFirstFocusedRender, useInstanceId } from './WidgetHelpers'
 import PickerCaret from './PickerCaret'
 
@@ -250,7 +250,7 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
   const activeId = useInstanceId(id, '_listbox_active_option')
 
   const accessors = useAccessors(textField, dataKey)
-  const messages = useMessagesWithDefaults(userMessages)
+  const localizer = useLocalizer(userMessages)
 
   useAutoFocus(!!autoFocus, ref)
 
@@ -604,13 +604,13 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
               ref={listRef}
               messages={{
                 emptyList: rawData.length
-                  ? messages.emptyFilter
-                  : messages.emptyList,
+                  ? localizer.messages.emptyFilter
+                  : localizer.messages.emptyList,
               }}
             />
             {showCreateOption && (
               <AddToListOption onSelect={handleCreate}>
-                {messages.createOption(currentValue, currentSearch || '')}
+                {localizer.messages.createOption(currentValue, currentSearch || '')}
               </AddToListOption>
             )}
           </Popup>

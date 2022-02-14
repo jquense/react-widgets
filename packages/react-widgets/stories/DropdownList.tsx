@@ -1,5 +1,6 @@
 import React from 'react'
 import DropdownList from '../src/DropdownList'
+import Localization from '../src/Localization'
 
 let props = {
   data: generateNames(),
@@ -133,4 +134,16 @@ export const autofill = () => (
       </label>
     </div>
   </form>
+)
+
+export const localized_messages = () => (
+  <Localization messages={{emptyFilter: 'Geen resultaten na filter', emptyList: 'Geen items in de lijst', createOption: (v,s) => `Maak optie '${s}'`}}>
+    <DropdownList {...props} filter="contains" allowCreate/>
+
+    <DropdownList {...props} data={[]} />
+
+    <DropdownList {...props} messages={{emptyFilter: 'Nada'}}/>
+    
+  </Localization>
+ 
 )
