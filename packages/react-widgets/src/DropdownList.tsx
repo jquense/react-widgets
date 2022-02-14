@@ -519,9 +519,14 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
     //tab index when there is no filter input to take focus
     tabIndex: filter ? -1 : tabIndex || 0,
     // FIXME: only when item exists
-    'aria-owns': listId,
+    'aria-owns': elementProps['aria-owns']
+      ? `${listId} ${elementProps['aria-owns']}`
+      : listId,
+    'aria-controls': elementProps['aria-controls']
+      ? `${listId} ${elementProps['aria-controls']}`
+      : listId,
     'aria-expanded': !!currentOpen,
-    'aria-haspopup': true,
+    'aria-haspopup': 'listbox',
     'aria-busy': !!busy,
     'aria-live': currentOpen ? 'polite' : undefined,
     'aria-autocomplete': 'list',
