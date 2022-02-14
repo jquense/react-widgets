@@ -190,6 +190,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
     onFocus,
     inputProps,
     listProps,
+    popupProps,
     groupBy,
     renderListItem,
     renderListGroup,
@@ -482,6 +483,7 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
       <FocusListContext.Provider value={list.context}>
         {shouldRenderPopup && (
           <Popup
+            {...popupProps}
             dropUp={dropUp}
             open={popupOpen}
             transition={popupTransition}

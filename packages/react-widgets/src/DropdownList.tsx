@@ -210,6 +210,7 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
     onClick,
     inputProps,
     listProps,
+    popupProps,
     renderListItem,
     renderListGroup,
     optionComponent,
@@ -576,6 +577,7 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
         </WidgetPicker>
         {shouldRenderPopup && (
           <Popup
+            {...popupProps}
             dropUp={dropUp}
             open={currentOpen}
             transition={popupTransition}
@@ -610,7 +612,10 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
             />
             {showCreateOption && (
               <AddToListOption onSelect={handleCreate}>
-                {localizer.messages.createOption(currentValue, currentSearch || '')}
+                {localizer.messages.createOption(
+                  currentValue,
+                  currentSearch || '',
+                )}
               </AddToListOption>
             )}
           </Popup>

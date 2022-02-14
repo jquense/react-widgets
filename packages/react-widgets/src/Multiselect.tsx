@@ -281,6 +281,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     onFocus,
     inputProps,
     listProps,
+    popupProps,
     renderListItem,
     renderListGroup,
     renderTagValue,
@@ -685,6 +686,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
       <FocusListContext.Provider value={list.context}>
         {shouldRenderPopup && (
           <Popup
+            {...popupProps}
             dropUp={dropUp}
             open={currentOpen}
             transition={popupTransition}

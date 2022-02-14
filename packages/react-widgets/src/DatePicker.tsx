@@ -250,6 +250,7 @@ export interface DatePickerProps<TLocalizer = unknown>
    */
   dropUp?: boolean
 
+  popupProps: object
   popupTransition?: React.ComponentType<TransitionProps>
   popupComponent?: React.ComponentType<PopupProps>
 
@@ -333,6 +334,7 @@ const DatePicker = React.forwardRef(
       inputProps,
       calendarProps,
       timeInputProps,
+      popupProps,
       autoFocus,
       tabIndex,
       disabled,
@@ -573,6 +575,7 @@ const DatePicker = React.forwardRef(
 
         {!!shouldRenderList && (
           <Popup
+            {...popupProps}
             dropUp={dropUp}
             open={open}
             role="dialog"
