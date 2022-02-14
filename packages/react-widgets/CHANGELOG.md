@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.7.1](https://github.com/jquense/react-widgets/compare/react-widgets@5.7.0...react-widgets@5.7.1) (2022-02-14)
+
+
+### Bug Fixes
+
+* localized dropdownlist ([#1123](https://github.com/jquense/react-widgets/issues/1123)) ([d3cbc0f](https://github.com/jquense/react-widgets/commit/d3cbc0f23c9b09de75bf96beb1fc597731fb285f))
+* popup passes through props correctly ([2ab5878](https://github.com/jquense/react-widgets/commit/2ab5878d5de20a62023f4db17737f8159a164de5))
+
+
+
+
+
 # [5.7.0](https://github.com/jquense/react-widgets/compare/react-widgets@5.6.1...react-widgets@5.7.0) (2022-02-14)
 
 
