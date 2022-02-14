@@ -87,10 +87,11 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
   }
 
   render() {
-    const { children, className, dropUp } = this.props
+    const { children, className, dropUp, ...props } = this.props
 
     return (
       <Transition
+        {...props}
         appear
         in={this.props.in}
         onEnter={this.setContainerHeight}

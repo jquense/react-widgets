@@ -1,34 +1,17 @@
 import cn from 'classnames'
-import PropTypes from 'prop-types'
 import React from 'react'
 import SlideDownTransition from './SlideDownTransition'
-import { elementType } from './PropTypes'
 import { TransitionProps } from 'react-transition-group/Transition'
 
-interface StaticContainerProps {
+export interface StaticContainerProps {
   children: React.ReactNode
   shouldUpdate?: boolean
 }
 
-const StaticContainer = React.memo(
+export const StaticContainer = React.memo(
   ({ children }: StaticContainerProps) => children as React.ReactElement,
   (_, { shouldUpdate }: StaticContainerProps) => !shouldUpdate,
 )
-
-const defaultProps = {
-  open: false,
-  transition: SlideDownTransition,
-}
-
-const propTypes = {
-  open: PropTypes.bool,
-  dropUp: PropTypes.bool,
-  onEntering: PropTypes.func,
-  onEntered: PropTypes.func,
-  transition: elementType,
-  role: PropTypes.string,
-  id: PropTypes.string,
-}
 
 export interface PopupProps {
   className?: string
@@ -44,18 +27,19 @@ export interface PopupProps {
   role?: string
   id?: string
   children: React.ReactNode
+  [prop: string]: unknown
 }
 
 const Popup = React.forwardRef(
   (
     {
-      className,
-      dropUp,
-      open,
-      role,
       id,
-      transition,
+      role,
+      dropUp,
+      className,
       children,
+      open = false,
+      transition = SlideDownTransition as any,
       ...props
     }: PopupProps,
     ref: React.Ref<HTMLDivElement>,
@@ -77,8 +61,7 @@ const Popup = React.forwardRef(
     )
   },
 )
-;(Popup as any).displayName = 'Popup'
-;(Popup as any).propTypes = propTypes
-;(Popup as any).defaultProps = defaultProps
+
+Popup.displayName = 'Popup'
 
 export default Popup
