@@ -250,7 +250,7 @@ export interface DatePickerProps<TLocalizer = unknown>
    */
   dropUp?: boolean
 
-  popupProps: object
+  popupProps?: object
   popupTransition?: React.ComponentType<TransitionProps>
   popupComponent?: React.ComponentType<PopupProps>
 
