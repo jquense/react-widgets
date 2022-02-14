@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.19](https://github.com/jquense/react-widgets/compare/react-widgets-date-fns@5.0.18...react-widgets-date-fns@5.0.19) (2022-02-14)
+
+**Note:** Version bump only for package react-widgets-date-fns
+
+
+
+
+
 ## [5.0.18](https://github.com/jquense/react-widgets/compare/react-widgets-date-fns@5.0.17...react-widgets-date-fns@5.0.18) (2022-02-14)
 
 **Note:** Version bump only for package react-widgets-date-fns

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.8.3](https://github.com/jquense/react-widgets/compare/react-widgets@5.8.2...react-widgets@5.8.3) (2022-02-14)
+
+
+### Bug Fixes
+
+* don't override user aria props ([c31a264](https://github.com/jquense/react-widgets/commit/c31a2644ab7384291b8bd76700604555d27593f7))
+
+
+
+
+
 ## [5.8.2](https://github.com/jquense/react-widgets/compare/react-widgets@5.8.1...react-widgets@5.8.2) (2022-02-14)
 
 
