@@ -7,7 +7,7 @@ export type RenderTagProp<TDataItem> = RenderProp<{ item: TDataItem }>
 
 export type TagComponentProp = React.ComponentType<MultiselectTagProps>
 
-interface MultiselectTagListProps<TDataItem> {
+export interface MultiselectTagListProps<TDataItem> {
   id: string
   label?: string
   value: readonly TDataItem[]

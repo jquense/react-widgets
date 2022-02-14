@@ -14,7 +14,11 @@ import { times } from './Icon'
 import List, { ListHandle } from './List'
 import { FocusListContext, useFocusList } from './FocusListContext'
 import MultiselectInput from './MultiselectInput'
-import TagList, { RenderTagProp, TagComponentProp } from './MultiselectTagList'
+import MultiselectTagList, {
+  MultiselectTagListProps,
+  RenderTagProp,
+  TagComponentProp,
+} from './MultiselectTagList'
 import BasePopup from './Popup'
 import Widget from './Widget'
 import WidgetPicker from './WidgetPicker'
@@ -196,6 +200,8 @@ export interface MultiselectProps<TDataItem = DataItem>
   renderTagValue?: RenderTagProp<TDataItem>
   clearTagIcon?: React.ReactNode
   tagOptionComponent?: TagComponentProp
+  tagListComponent?: React.ComponentType<MultiselectTagListProps<DataItem>>
+
   showSelectedItemsInList?: boolean
 }
 
@@ -283,6 +289,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     groupBy,
     listComponent: ListComponent = List,
     popupComponent: Popup = BasePopup,
+    tagListComponent: TagList = MultiselectTagList,
     data: rawData = [],
     messages: userMessages,
     ...elementProps
@@ -630,7 +637,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
         className={cn(containerClassName, 'rw-widget-input')}
       >
         <FocusListContext.Provider value={tagList.context}>
-          <TagList<TDataItem>
+          <TagList
             id={tagsId}
             textAccessor={accessors.text}
             clearTagIcon={clearTagIcon}
