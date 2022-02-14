@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.8.2](https://github.com/jquense/react-widgets/compare/react-widgets@5.8.1...react-widgets@5.8.2) (2022-02-14)
+
+
+### Bug Fixes
+
+* **types:** popupProps ([07f99f6](https://github.com/jquense/react-widgets/commit/07f99f6dfb5ee939c65076a5417f64f8cae05255))
+
+
+
+
+
 ## [5.8.1](https://github.com/jquense/react-widgets/compare/react-widgets@5.8.0...react-widgets@5.8.1) (2022-02-14)
 
 
