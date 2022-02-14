@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.16](https://github.com/jquense/react-widgets/compare/react-widgets-moment@5.0.15...react-widgets-moment@5.0.16) (2022-02-14)
+
+**Note:** Version bump only for package react-widgets-moment
+
+
+
+
+
 ## [5.0.15](https://github.com/jquense/react-widgets/compare/react-widgets-moment@5.0.14...react-widgets-moment@5.0.15) (2022-02-14)
 
 **Note:** Version bump only for package react-widgets-moment
