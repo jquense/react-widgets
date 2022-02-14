@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/jquense/react-widgets/compare/react-widgets-tailwind@1.1.3...react-widgets-tailwind@1.1.4) (2022-02-14)
+
+
+### Bug Fixes
+
+* add back btn input reset class and remove styles ([#1118](https://github.com/jquense/react-widgets/issues/1118)) ([e9cddb8](https://github.com/jquense/react-widgets/commit/e9cddb899a4ed7346162100e14824822c49b1c83))
+
+
+
+
+
 ## [1.1.3](https://github.com/jquense/react-widgets/compare/react-widgets-tailwind@1.1.2...react-widgets-tailwind@1.1.3) (2022-01-25)
 
 

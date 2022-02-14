@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.7.0](https://github.com/jquense/react-widgets/compare/react-widgets@5.6.1...react-widgets@5.7.0) (2022-02-14)
+
+
+### Bug Fixes
+
+* make rw-widget-input class inherit width ([#1120](https://github.com/jquense/react-widgets/issues/1120)) ([3350e9e](https://github.com/jquense/react-widgets/commit/3350e9e165bc82ac4e6ce73a9f2707eca55cfd71))
+
+
+### Features
+
+* add TagListComponent escape hatch ([783d75d](https://github.com/jquense/react-widgets/commit/783d75d726af7f6cf48f5f8ff9a5ed1e660c066b))
+
+
+
+
+
 ## [5.6.1](https://github.com/jquense/react-widgets/compare/react-widgets@5.6.0...react-widgets@5.6.1) (2022-01-25)
 
 
