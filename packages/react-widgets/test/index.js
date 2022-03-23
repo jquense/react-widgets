@@ -6,7 +6,7 @@ const chai = require('chai')
 const { format } = require('util')
 const { act } = require('react-dom/test-utils')
 const { configure, ShallowWrapper, ReactWrapper } = require('enzyme')
-const Adapter = require('enzyme-adapter-react-16')
+const Adapter = require('@wojtekmaj/enzyme-adapter-react-17')
 
 const widgetHelpers = require('../src/WidgetHelpers')
 
