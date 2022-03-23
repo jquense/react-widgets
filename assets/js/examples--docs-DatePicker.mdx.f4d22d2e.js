@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{2015:function(e,t,n){"use strict";t.__esModule=!0,t.getTimeList=function(){let e=0,t=[];for(;e<1440;)t.push({minutes:e,label:o.format(i+60*e*1e3)}),e+=30;return t};const o=Intl.DateTimeFormat("en",{timeStyle:"short"}),i=new Date(1,16,1987).getTime()}}]);
