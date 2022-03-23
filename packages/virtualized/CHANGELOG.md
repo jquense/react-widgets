@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.20](https://github.com/jquense/react-widgets/compare/react-widgets-virtualized@5.0.19...react-widgets-virtualized@5.0.20) (2022-03-23)
+
+
+### Bug Fixes
+
+* stale DatePicker value ([75674c0](https://github.com/jquense/react-widgets/commit/75674c0365f910656586f56a7d41cf3aadf7ff1a))
+
+
+
+
+
 ## [5.0.19](https://github.com/jquense/react-widgets/compare/react-widgets-virtualized@5.0.18...react-widgets-virtualized@5.0.19) (2022-02-14)
 
 **Note:** Version bump only for package react-widgets-virtualized

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/jquense/react-widgets/compare/react-widgets-tailwind@1.1.4...react-widgets-tailwind@1.1.5) (2022-03-23)
+
+
+### Bug Fixes
+
+* stale DatePicker value ([75674c0](https://github.com/jquense/react-widgets/commit/75674c0365f910656586f56a7d41cf3aadf7ff1a))
+
+
+
+
+
 ## [1.1.4](https://github.com/jquense/react-widgets/compare/react-widgets-tailwind@1.1.3...react-widgets-tailwind@1.1.4) (2022-02-14)
 
 

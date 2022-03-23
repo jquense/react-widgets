@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.8.4](https://github.com/jquense/react-widgets/compare/react-widgets@5.8.3...react-widgets@5.8.4) (2022-03-23)
+
+
+### Bug Fixes
+
+* stale DatePicker value ([75674c0](https://github.com/jquense/react-widgets/commit/75674c0365f910656586f56a7d41cf3aadf7ff1a))
+
+
+
+
+
 ## [5.8.3](https://github.com/jquense/react-widgets/compare/react-widgets@5.8.2...react-widgets@5.8.3) (2022-02-14)
 
 
