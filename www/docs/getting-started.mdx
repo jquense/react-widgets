@@ -42,6 +42,7 @@ and don't require additional configuration.
   values={[
     { label: 'CSS', value: 'css' },
     { label: 'Sass', value: 'scss', },
+    { label: 'TailwindCSS', value: 'talwind', },
   ]
 }>
 <TabItem value="css">
@@ -55,6 +56,22 @@ import "react-widgets/styles.css";
 
 ```js
 import "react-widgets/scss/styles.scss";
+```
+
+</TabItem>
+<TabItem value="talwind">
+
+```js
+// in your tailwind.config.js
+{
+  content: [
+    // point the JIT to the fully compiled css file
+    // to ensure all classes are included
+    require.resolve('react-widgets/styles.css'),
+  ],
+
+  plugins: [require('react-widgets-tailwind')];
+}
 ```
 
 </TabItem>
