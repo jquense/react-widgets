@@ -51,7 +51,7 @@ const DatePickerInput = React.forwardRef(
       [value, formatter, localizer, displayFormat, editing, editFormat],
     )
 
-    const [prevValue, setPrevValue] = useState(nextTextValue)
+    const [prevValue, setPrevValue] = useState<string | null>(nextTextValue)
     const [textValue, setTextValue] = useState(nextTextValue)
 
     if (prevValue !== nextTextValue) {
@@ -71,6 +71,7 @@ const DatePickerInput = React.forwardRef(
         }
         needsFlush.current = false
 
+        setPrevValue(null)
         onChange(date, event.target.value)
       }
     }

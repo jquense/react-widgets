@@ -33,8 +33,8 @@
     "format-number-with-string": "^0.0.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.13",
-    "@babel/core": "^7.12.13",
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.7",
     "cross-env": "^7.0.3",
     "react-widgets": "^5.8.3",
     "rimraf": "^3.0.2"

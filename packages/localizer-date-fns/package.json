@@ -33,10 +33,10 @@
     "react-widgets": "^5.0.0-0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.13",
-    "@babel/core": "^7.9.0",
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.7",
     "cross-env": "^7.0.3",
-    "date-fns": "^2.16.1",
+    "date-fns": "^2.28.0",
     "react-widgets": "^5.8.3",
     "rimraf": "^3.0.2"
   }
