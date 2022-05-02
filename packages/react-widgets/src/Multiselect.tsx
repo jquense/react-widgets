@@ -244,7 +244,7 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     defaultSearchTerm = '',
     onSearch,
 
-    filter = 'startsWith',
+    filter = 'contains',
     allowCreate = false,
     className,
     containerClassName,
