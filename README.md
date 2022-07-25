@@ -4,12 +4,9 @@
 [![Downloads][downloads-image]][downloads-url]
 
 An à la carte set of polished, extensible, and accessible form inputs built for React.
+Get going quickly with the low friction setup!
 
 **Demos and Documentation [here](http://jquense.github.io/react-widgets/)**
-
-### Install
-
-`npm install react-widgets`
 
 ### Local development and contributing
 
@@ -19,6 +16,10 @@ workspaces. To get everything setup and dependencies installed:
 
 - make sure you have the **latest** version of yarn installed
 - run `yarn run bootstrap` in the repo root directory
+
+### Install
+
+`npm install react-widgets`
 
 #### Running the doc site locally
 
