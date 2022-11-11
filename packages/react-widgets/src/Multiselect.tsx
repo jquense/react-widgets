@@ -235,8 +235,8 @@ declare interface Multiselect {
  *
  * @public
  */
-const Multiselect: Multiselect = React.forwardRef(function Multiselect<
-  TDataItem
+const Multiselect: Multiselect = React.forwardRef(function MultiselectImpl<
+  TDataItem,
 >(
   {
     dataKey,
@@ -335,8 +335,8 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     ref,
     { disabled: isDisabled, onBlur, onFocus },
     {
-      didHandle(focused, event) {
-        if (focused) return focus()
+      didHandle(nextFocused, event) {
+        if (nextFocused) return focus()
 
         toggle.close()
         clearSearch(event)

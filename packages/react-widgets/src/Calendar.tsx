@@ -22,7 +22,7 @@ type Direction = 'DOWN' | 'UP' | 'LEFT' | 'RIGHT'
 
 type SlideDirection = 'bottom' | 'top' | 'left' | 'right'
 
-let last: <T>(array: T[]) => T = (a) => a[a.length - 1]
+let getLast: <T>(array: T[]) => T = (a) => a[a.length - 1]
 
 const CELL_CLASSNAME = 'rw-cell'
 const FOCUSED_CELL_SELECTOR = `.${CELL_CLASSNAME}[tabindex]`
@@ -489,7 +489,7 @@ function Calendar({
     if (!date)
       date =
         ['LEFT', 'RIGHT'].indexOf(direction) !== -1
-          ? nextDate(direction)
+          ? getNextDate(direction)
           : currentDate
 
     if (dates.inRange(date!, min, max, nextView)) {
@@ -530,7 +530,7 @@ function Calendar({
     notify(handleCurrentDateChange, [inRangeDate!])
   }
 
-  function nextDate(direction: Direction) {
+  function getNextDate(direction: Direction) {
     let method = direction === 'LEFT' ? 'subtract' : 'add'
 
     let unit = currentView === 'month' ? currentView : 'year'
@@ -569,10 +569,10 @@ function Calendar({
   // let viewProps = pick(uncontrolledProps, View)
 
   const prevDisabled =
-    isDisabled || !dates.inRange(nextDate('LEFT'), min, max, currentView!)
+    isDisabled || !dates.inRange(getNextDate('LEFT'), min, max, currentView!)
 
   const nextDisabled =
-    isDisabled || !dates.inRange(nextDate('RIGHT'), min, max, currentView!)
+    isDisabled || !dates.inRange(getNextDate('RIGHT'), min, max, currentView!)
 
   return (
     <Widget
@@ -593,7 +593,7 @@ function Calendar({
         label={getHeaderLabel()}
         labelId={labelId}
         localizer={localizer}
-        upDisabled={isDisabled || currentView === last(views)}
+        upDisabled={isDisabled || currentView === getLast(views)}
         prevDisabled={prevDisabled}
         todayDisabled={isDisabled || todayNotInRange}
         nextDisabled={nextDisabled}

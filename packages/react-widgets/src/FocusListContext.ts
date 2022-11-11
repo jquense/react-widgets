@@ -26,7 +26,7 @@ export interface FocusProps {
 }
 
 export interface FocusList<TDataItem = unknown> {
-  size(): number;
+  size(): number
   focus: (el: HTMLElement | null | undefined) => void
   first: () => HTMLElement | undefined
   last: () => HTMLElement | undefined
@@ -105,8 +105,8 @@ export const useFocusList = <TDataItem>({
   const list: any = useMemo(() => {
     return {
       size() {
-        const [items] = get();
-        return items.length;
+        const [items] = get()
+        return items.length
       },
       get,
       toDataItem: (el: HTMLElement) => map.get(el),
@@ -124,25 +124,25 @@ export const useFocusList = <TDataItem>({
       },
 
       next({ behavior }: FocusOptions = defaultOpts) {
-        const [items, focusedItem] = get()
-        let nextIdx = items.indexOf(focusedItem!) + 1
+        const [items, currentFocusedItem] = get()
+        let nextIdx = items.indexOf(currentFocusedItem!) + 1
 
         if (nextIdx >= items.length) {
           if (behavior === 'loop') return items[0]
           if (behavior === 'clear') return undefined
-          return focusedItem
+          return currentFocusedItem
         }
         return items[nextIdx]
       },
 
       prev({ behavior }: FocusOptions = defaultOpts) {
-        const [items, focusedItem] = get()
-        let nextIdx = Math.max(0, items.indexOf(focusedItem!)) - 1
+        const [items, currentFocusedItem] = get()
+        let nextIdx = Math.max(0, items.indexOf(currentFocusedItem!)) - 1
 
         if (nextIdx < 0) {
           if (behavior === 'loop') return items[items.length - 1]
           if (behavior === 'clear') return undefined
-          return focusedItem
+          return currentFocusedItem
         }
         return items[nextIdx]
       },

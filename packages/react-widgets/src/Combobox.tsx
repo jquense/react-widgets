@@ -255,8 +255,8 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
     ref,
     { disabled: isDisabled, onBlur, onFocus },
     {
-      didHandle(focused) {
-        if (!focused) {
+      didHandle(nextFocused) {
+        if (!nextFocused) {
           shouldFilter.current = false
           toggle.close()
           setSuggestion(null)
@@ -285,15 +285,15 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
   }
 
   const handleSelect = (
-    data: string | TDataItem,
+    dataItem: string | TDataItem,
     originalEvent: React.SyntheticEvent,
   ) => {
     toggle.close()
     shouldFilter.current = false
 
     setSuggestion(null)
-    notify(onSelect, [data, { originalEvent }])
-    change(data, originalEvent, true)
+    notify(onSelect, [dataItem, { originalEvent }])
+    change(dataItem, originalEvent, true)
     focus({ preventScroll: true })
   }
 

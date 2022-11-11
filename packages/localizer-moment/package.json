@@ -30,8 +30,8 @@
     "react-widgets": "^5.0.0-0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.6",
-    "@babel/core": "^7.17.7",
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.20.2",
     "cross-env": "^7.0.3",
     "moment": "^2.29.1",
     "react-widgets": "^5.8.4",

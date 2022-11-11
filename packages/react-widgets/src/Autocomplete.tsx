@@ -15,12 +15,12 @@ function Autocomplete<TDataItem>(props: ComboboxProps<TDataItem>) {
   )
 
   const handleChange: ComboboxProps['onChange'] = (
-    value: TDataItem | string,
+    nextValue: TDataItem | string,
     meta,
   ) => {
-    onChange(value, meta)
+    onChange(nextValue, meta)
 
-    if (!value && open) {
+    if (!nextValue && open) {
       onToggle(false)
     }
   }

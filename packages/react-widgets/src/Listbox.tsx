@@ -127,7 +127,7 @@ declare interface Listbox {
   displayName?: string
   propTypes?: any
 }
-const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
+const Listbox: Listbox = React.forwardRef(function ListboxImpl<TDataItem>(
   {
     defaultValue,
     value: propsValue,
@@ -185,8 +185,8 @@ const Listbox: Listbox = React.forwardRef(function Listbox<TDataItem>(
     ref,
     { disabled: isDisabled, onBlur, onFocus },
     {
-      didHandle(focused) {
-        if (!focused) {
+      didHandle(nextFocused) {
+        if (!nextFocused) {
           list.focus(undefined)
         } else {
           focus({ preventScroll: true })

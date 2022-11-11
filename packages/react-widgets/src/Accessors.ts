@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import { useMemo } from 'react'
 import { DataItem, Value } from './types'
 

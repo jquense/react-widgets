@@ -5,6 +5,7 @@ function uniqueId(prefix?: string) {
   return '' + ((prefix == null ? '' : prefix) + ++idCount)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-shadow
 export function notify<T extends (...args: any) => any>(
   handler: T | undefined,
   args: Parameters<T>,

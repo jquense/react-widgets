@@ -54,15 +54,15 @@ const DropdownListInput = React.forwardRef(function <TDataItem>(
   const handleAutofillDetect = ({
     animationName,
   }: React.AnimationEvent<HTMLInputElement>) => {
-    let autofilling: boolean
+    let nextAutofilling: boolean
 
-    if (animationName === 'react-widgets-autofill-start') autofilling = true
+    if (animationName === 'react-widgets-autofill-start') nextAutofilling = true
     else if (animationName === 'react-widgets-autofill-cancel')
-      autofilling = false
+      nextAutofilling = false
     else return
 
-    setAutofilling(autofilling)
-    onAutofill(autofilling)
+    setAutofilling(nextAutofilling)
+    onAutofill(nextAutofilling)
   }
 
   const handleAutofill = (e: React.ChangeEvent<HTMLInputElement>) => {

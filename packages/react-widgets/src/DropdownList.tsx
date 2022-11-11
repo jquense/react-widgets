@@ -164,7 +164,7 @@ declare interface DropdownList {
  * @public
  */
 const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
-  TDataItem
+  TDataItem,
 >(
   {
     id,
@@ -265,8 +265,8 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
     ref,
     { disabled: isDisabled, onBlur, onFocus },
     {
-      didHandle(focused) {
-        if (focused) {
+      didHandle(nextFocused) {
+        if (nextFocused) {
           if (filter) focus()
           return
         }
@@ -410,9 +410,9 @@ const DropdownListImpl: DropdownList = React.forwardRef(function DropdownList<
           word.toLowerCase(),
         )
 
-      const [items, focusedItem] = list.get()
+      const [items, nextFocusedItem] = list.get()
       const len = items.length
-      const startIdx = items.indexOf(focusedItem!) + 1
+      const startIdx = items.indexOf(nextFocusedItem!) + 1
       const offset = startIdx >= len ? 0 : startIdx
 
       let idx = 0

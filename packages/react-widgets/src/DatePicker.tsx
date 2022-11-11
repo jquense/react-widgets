@@ -383,8 +383,8 @@ const DatePicker = React.forwardRef(
     const toggle = useDropdownToggle(open, onToggle!)
 
     const [focusEvents, focused] = useFocusManager(ref, uncontrolledProps, {
-      didHandle(focused) {
-        if (!focused) {
+      didHandle(nextFocused) {
+        if (!nextFocused) {
           toggle.close()
           tabTrap.stop()
         } else if (open) {
@@ -504,10 +504,10 @@ const DatePicker = React.forwardRef(
       else ref.current?.focus()
     }
 
-    function inRangeValue(value: Date | null | undefined) {
-      if (value == null) return value
+    function inRangeValue(dateValue: Date | null | undefined) {
+      if (dateValue == null) return dateValue
 
-      return dates.max(dates.min(value, max!), min!)
+      return dates.max(dates.min(dateValue, max!), min!)
     }
 
     function formatDate(date: Date) {

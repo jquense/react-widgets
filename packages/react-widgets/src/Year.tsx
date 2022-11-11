@@ -4,10 +4,10 @@ import { Localizer } from './Localization'
 import { chunk } from './_'
 import dates from './dates'
 
-const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+const MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 function monthsInYear(year: number) {
   let date = new Date(year, 0, 1)
-  return months.map(i => dates.month(date, i))
+  return MONTHS.map((i) => dates.month(date, i))
 }
 
 interface YearProps extends CalendarViewProps {

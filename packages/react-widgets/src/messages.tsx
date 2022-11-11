@@ -58,6 +58,7 @@ const messages = {
 export type UserProvidedMessages = Partial<Messages>
 
 export type ProcessedMessages = {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   [P in keyof Messages]: Messages[P] extends Function
     ? Messages[P]
     : () => string

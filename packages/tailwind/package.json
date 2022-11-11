@@ -25,7 +25,7 @@
     "testEnvironment": "jsdom"
   },
   "devDependencies": {
-    "@4c/jest-preset": "^1.7.0",
+    "@4c/jest-preset": "^1.8.1",
     "jest": "^27.5.1",
     "style-convert": "^1.1.0",
     "tailwindcss": "^3.0.23"
@@ -34,6 +34,6 @@
     "tailwindcss": ">=2.2.7"
   },
   "dependencies": {
-    "@types/tailwindcss": ">=3.0.9"
+    "@types/tailwindcss": ">=3.1.0"
   }
 }

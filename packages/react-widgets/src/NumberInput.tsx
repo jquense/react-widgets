@@ -122,7 +122,7 @@ class NumberPickerInput extends React.Component<
 
   componentDidUpdate(
     _: NumberPickerInputProps,
-    __: NumberPickerInputState,
+    _1: NumberPickerInputState,
     { reselectText }: NumberPickerInputSnapshot,
   ) {
     if (reselectText) (findDOMNode(this) as HTMLInputElement).select()
@@ -206,13 +206,11 @@ class NumberPickerInput extends React.Component<
       disabled,
       readOnly,
       placeholder,
-      // eslint-disable-next-line react/prop-types
       innerRef,
       min,
       max,
       localizer: _,
-      // eslint-disable-next-line no-unused-vars
-      editing: __,
+      editing: _1,
       ...props
     } = this.props
 
@@ -226,7 +224,7 @@ class NumberPickerInput extends React.Component<
         className="rw-widget-input"
         onChange={this.handleChange}
         onBlur={this.handleBlur}
-        aria-valuenow={(value as any) as number /*HACK*/}
+        aria-valuenow={value as any as number /*HACK*/}
         aria-valuemin={isFinite(min!) ? min : undefined}
         aria-valuemax={isFinite(max!) ? max : undefined}
         disabled={disabled}

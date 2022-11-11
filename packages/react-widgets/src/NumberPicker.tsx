@@ -289,8 +289,8 @@ function NumberPicker(uncontrolledProps: NumberPickerProps) {
   const repeaterRef = useRef<(() => void) | null>(null)
 
   const [focusEvents, focused] = useFocusManager(ref, uncontrolledProps, {
-    willHandle(focused) {
-      if (focused) focus()
+    willHandle(nextFocused) {
+      if (nextFocused) focus()
     },
   })
 
@@ -305,9 +305,9 @@ function NumberPicker(uncontrolledProps: NumberPickerProps) {
 
       let method = direction === 'UP' ? increment : decrement
 
-      let value = method(event),
-        atTop = direction === 'UP' && value === max,
-        atBottom = direction === 'DOWN' && value === min
+      let nextValue = method(event)
+      let atTop = direction === 'UP' && nextValue === max
+      let atBottom = direction === 'DOWN' && nextValue === min
 
       if (atTop || atBottom) handleMouseUp()
       else if (!repeaterRef.current) {

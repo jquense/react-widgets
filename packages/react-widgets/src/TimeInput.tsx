@@ -12,14 +12,6 @@ import useFocusManager from './useFocusManager'
 
 type Meridiem = 'AM' | 'PM'
 
-interface DateParts {
-  era: Meridiem
-  hours?: number
-  minutes?: number
-  seconds?: number
-  milliseconds?: number
-}
-
 interface TimeParts {
   meridiem: Meridiem
   hours?: number
@@ -282,8 +274,8 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
     ref,
     { disabled, onBlur, onFocus },
     {
-      didHandle: (focused, e: React.FocusEvent<HTMLElement>) => {
-        if (!focused) return
+      didHandle: (nextFocused, e: React.FocusEvent<HTMLElement>) => {
+        if (!nextFocused) return
         if (!e.target.dataset.focusable) hourRef.current?.focus()
         else select(e.target as HTMLInputElement)
       },
