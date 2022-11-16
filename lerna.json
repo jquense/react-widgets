@@ -3,5 +3,6 @@
   "version": "independent",
   "hoist": true,
   "npmClient": "yarn",
+  "useWorkspaces": true,
   "packages": ["packages/*"]
 }

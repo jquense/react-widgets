@@ -33,7 +33,7 @@
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.20.2",
     "cross-env": "^7.0.3",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "react-widgets": "^5.8.4",
     "rimraf": "^3.0.2"
   }
