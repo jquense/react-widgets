@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import cn from 'classnames'
+import cn from 'clsx'
 import PropTypes from 'prop-types'
 import React, {
   useContext,

@@ -17,7 +17,8 @@
     "react-widgets": "^5.0.0-0.0"
   },
   "dependencies": {
-    "react-list": "^0.8.17"
+    "react-list": "^0.8.17",
+    "clsx": "^1.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",

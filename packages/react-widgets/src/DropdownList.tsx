@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 import PropTypes from 'prop-types'
 import React, { useImperativeHandle, useMemo, useRef, useState } from 'react'
 import { useUncontrolledProp } from 'uncontrollable'

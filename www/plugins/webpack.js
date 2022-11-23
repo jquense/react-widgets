@@ -1,18 +1,27 @@
 const path = require('path')
+
 module.exports = () => {
+  const TAILWIND_CONFIG = require.resolve('../tailwind.config.js')
+
   return {
     name: 'tailwindcss-loader',
-    configureWebpack(_, isServer, { getStyleLoaders, getBabelLoader }) {
+    configurePostCss(postcssOptions) {
+      console.log('ASFASfasfsfs')
+      postcssOptions.plugins.push(require('tailwindcss')(TAILWIND_CONFIG))
+      postcssOptions.plugins.push(require('autoprefixer'))
+      return postcssOptions
+    },
+    configureWebpack(_, isServer, { getStyleLoaders, getJSLoader }) {
+      const isProd = process.env.NODE_ENV === 'production'
       return {
-        devtool: 'inline-module-source-map',
-
+        devtool: isProd ? 'source-map' : 'inline-source-map',
         module: {
           rules: [
             {
               test: /\.(j|t)sx?$/,
               include: [/packages\/react-widgets\/src/],
               use: [
-                getBabelLoader(
+                getJSLoader(
                   isServer,
                   path.resolve(__dirname, '../babel.config.js'),
                 ),
@@ -21,17 +30,6 @@ module.exports = () => {
             {
               test: /\.s[ca]ss$/,
               use: [...getStyleLoaders(isServer), 'sass-loader'],
-            },
-            {
-              test: /\.css$/,
-              use: [
-                {
-                  loader: 'postcss-loader',
-                  options: {
-                    plugins: () => [require('tailwindcss')],
-                  },
-                },
-              ],
             },
           ],
         },

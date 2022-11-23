@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 import css from 'dom-helpers/css'
 import getHeight from 'dom-helpers/height'
 import transitionEnd from 'dom-helpers/transitionEnd'

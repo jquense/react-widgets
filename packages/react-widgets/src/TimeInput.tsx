@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import clsx from 'clsx'
 import qsa from 'dom-helpers/querySelectorAll'
 import PropTypes from 'prop-types'
 import React, { useCallback, useRef, useState } from 'react'
@@ -472,7 +472,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
       focused={focused}
       disabled={disabled}
       readOnly={readOnly}
-      className={classNames(className, 'rw-time-input rw-widget-input')}
+      className={clsx(className, 'rw-time-input rw-widget-input')}
     >
       <DateTimePartInput
         size={2}
@@ -577,7 +577,7 @@ function TimeInput(uncontrolledProps: TimeInputProps) {
           label={'clear input'}
           onClick={handleClear}
           disabled={disabled || readOnly}
-          className={classNames('rw-time-input-clear', showClear && 'rw-show')}
+          className={clsx('rw-time-input-clear', showClear && 'rw-show')}
         >
           {times}
         </Button>

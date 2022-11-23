@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 import React, { useImperativeHandle, useRef, useState } from 'react'
 import { RenderProp, Value, WidgetHandle } from './types'
 import { TextAccessorFn, DataKeyAccessorFn } from './Accessors'

@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 import React from 'react'
 
 function WidgetPicker({
@@ -8,11 +8,7 @@ function WidgetPicker({
   return (
     <div
       {...props}
-      className={cn(
-        className,
-        'rw-widget-picker',
-        'rw-widget-container'
-      )}
+      className={cn(className, 'rw-widget-picker', 'rw-widget-container')}
     />
   )
 }

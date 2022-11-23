@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import { useImperativeHandle, useMemo, useRef, useState } from 'react'

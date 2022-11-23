@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 import React, { ReactNode, useEffect, useRef } from 'react'
 import dates from './dates'
 import useFocusManager from './useFocusManager'

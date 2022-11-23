@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 import closest from 'dom-helpers/closest'
 import PropTypes from 'prop-types'
 import React, {

@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 import * as React from 'react'
 import { ReactNode } from 'react'
 import { Spinner } from './Icon'

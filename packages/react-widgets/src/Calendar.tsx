@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 import { DateUnit } from 'date-arithmetic'
 import PropTypes from 'prop-types'
 import React, { useEffect, useRef } from 'react'

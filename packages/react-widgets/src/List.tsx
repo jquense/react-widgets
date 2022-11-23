@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import cn from 'classnames'
+import cn from 'clsx'
 import PropTypes from 'prop-types'
 import React, {
   useCallback,

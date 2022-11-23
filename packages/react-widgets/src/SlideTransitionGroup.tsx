@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 import transitionEnd from 'dom-helpers/transitionEnd'
 import PropTypes from 'prop-types'
 import React from 'react'

@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 import React from 'react'
 import SlideDownTransition from './SlideDownTransition'
 import { TransitionProps } from 'react-transition-group/Transition'

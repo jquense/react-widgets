@@ -1,16 +1,13 @@
 import BasePlayground from '@theme-original/Playground'
 import React from 'react'
 import styles from './styles.module.css'
+import clsx from 'clsx'
 
 function Playground2(props) {
-  const ref = React.useRef(null)
-  const [inline, setInline] = React.useState(false)
-
   return (
     <BasePlayground
-      inline={inline}
       {...props}
-      className={props.className}
+      className={clsx(props.className, 'mb-4')}
       editorClassName={styles.editor}
       previewClassName={styles.preview}
     />

@@ -28,6 +28,9 @@
   --ifm-color-info-lighter: #a7469c;
   --ifm-color-info-lightest: #b755ad;
 
+  --ifm-color-info-contrast-foreground: white;
+  --ifm-color-info-contrast-background: var(--ifm-color-info);
+
   --ifm-code-font-size: 95%;
 }
 

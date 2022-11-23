@@ -1,4 +1,4 @@
-import cn from 'classnames'
+import cn from 'clsx'
 import React, { useState } from 'react'
 import useGlobalListener from '@restart/hooks/useGlobalListener'
 

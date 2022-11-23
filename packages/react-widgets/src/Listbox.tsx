@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import PropTypes from 'prop-types'
-import cn from 'classnames'
+import cn from 'clsx'
 import React, { useMemo, useRef } from 'react'
 import { useUncontrolledProp } from 'uncontrollable'
 import List, { GroupBy, useHandleSelect } from './List'

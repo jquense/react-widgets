@@ -1,11 +1,10 @@
 module.exports = {
-  purge: [
-    './docs/**/*.{js,ts,tsx,mdx}',
-    './src/**/*.{js,ts,tsx}',
-    './src/**/*.html',
-    '../react-widgets/src/**/*.tsx',
+  content: [
+    `${__dirname}/docs/**/*.{js,ts,tsx,mdx}`,
+    `${__dirname}/src/**/*.{js,ts,tsx}`,
+    `${__dirname}/src/**/*.html`,
+    `${__dirname}/../react-widgets/src/**/*.tsx`,
   ],
-  darkMode: false, // or 'media' or 'class'
   theme: {
     colors: {},
     flexGrow: {
@@ -20,6 +19,7 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  darkMode: ['class', '[data-theme="dark"]'],
   corePlugins: {
     preflight: false,
     container: false,
