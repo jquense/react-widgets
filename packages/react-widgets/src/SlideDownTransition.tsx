@@ -39,6 +39,13 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
     onEntered: PropTypes.func,
   }
 
+  private readonly nodeRef: React.RefObject<any>
+
+  constructor(props: SlideDownTransitionProps) {
+    super(props);
+    this.nodeRef = React.createRef();
+  }
+
   getHeight(container: HTMLElement) {
     let content = container.firstChild as HTMLElement
     let margin =
@@ -88,12 +95,11 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
 
   render() {
     const { children, className, dropUp, ...props } = this.props
-    const nodeRef = React.useRef(null)
 
     return (
       <Transition
         {...props}
-        nodeRef={nodeRef}
+        nodeRef={this.nodeRef}
         appear
         in={this.props.in}
         onEnter={this.setContainerHeight}
