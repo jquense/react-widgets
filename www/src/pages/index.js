@@ -18,6 +18,7 @@ function Home() {
   const context = useDocusaurusContext()
   const { siteConfig = {} } = context
   return (
+    <React.StrictMode>
     <Layout title={siteConfig.title} className="flex">
       <main className="flex md:flex-row flex-col h-100 md:space-x-10 space-y-6 mt-10 pb-20 items-center justify-around self-center">
         <div>
@@ -55,6 +56,7 @@ function Home() {
         </div>
       </main>
     </Layout>
+    </React.StrictMode>
   )
 }
 
