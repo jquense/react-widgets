@@ -1,11 +1,11 @@
 import activeElement from 'dom-helpers/activeElement'
 import canUseDOM from 'dom-helpers/canUseDOM'
 import PropTypes from 'prop-types'
-import React, { FocusEvent, SyntheticEvent } from 'react'
-import { findDOMNode } from 'react-dom'
+import React, { createRef, FocusEvent, SyntheticEvent } from 'react'
 import Input from './Input'
 import * as CustomPropTypes from './PropTypes'
 import { Localizer } from './Localization'
+import { mergeRefs } from '@restart/hooks/useMergedRefs'
 
 let isSign = (val: string) => (val || '').trim() === '-'
 
@@ -88,6 +88,8 @@ class NumberPickerInput extends React.Component<
 
   state: NumberPickerInputState = {}
 
+  input = createRef<HTMLInputElement>()
+
   getSnapshotBeforeUpdate({
     editing,
   }: NumberPickerInputProps): NumberPickerInputSnapshot {
@@ -125,7 +127,7 @@ class NumberPickerInput extends React.Component<
     __: NumberPickerInputState,
     { reselectText }: NumberPickerInputSnapshot,
   ) {
-    if (reselectText) (findDOMNode(this) as HTMLInputElement).select()
+    if (reselectText) this.input.current?.select()
   }
 
   // this intermediate state is for when one runs into
@@ -184,9 +186,10 @@ class NumberPickerInput extends React.Component<
   }
 
   isSelectingAllText() {
-    const node = canUseDOM && (findDOMNode(this) as HTMLInputElement)
+    const node = canUseDOM && this.input.current
+
     return (
-      canUseDOM &&
+      !!node &&
       activeElement() === node &&
       node.selectionStart === 0 &&
       node.selectionEnd === node.value.length
@@ -213,6 +216,7 @@ class NumberPickerInput extends React.Component<
       localizer: _,
       // eslint-disable-next-line no-unused-vars
       editing: __,
+      parse: _a,
       ...props
     } = this.props
 
@@ -221,12 +225,12 @@ class NumberPickerInput extends React.Component<
     return (
       <Input
         {...props}
-        ref={innerRef}
+        ref={mergeRefs(innerRef, this.input)}
         inputMode="numeric"
         className="rw-widget-input"
         onChange={this.handleChange}
         onBlur={this.handleBlur}
-        aria-valuenow={(value as any) as number /*HACK*/}
+        aria-valuenow={value as any as number /*HACK*/}
         aria-valuemin={isFinite(min!) ? min : undefined}
         aria-valuemax={isFinite(max!) ? max : undefined}
         disabled={disabled}

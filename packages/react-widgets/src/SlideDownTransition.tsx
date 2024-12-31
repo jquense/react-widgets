@@ -39,6 +39,8 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
     onEntered: PropTypes.func,
   }
 
+  nodeRef = React.createRef<HTMLElement>()
+
   getHeight(container: HTMLElement) {
     let content = container.firstChild as HTMLElement
     let margin =
@@ -54,16 +56,17 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
     return height
   }
 
-  setContainerHeight = (elem: HTMLElement) => {
-    elem.style.height = this.getHeight(elem) + 'px'
+  setContainerHeight = () => {
+    this.nodeRef.current!.style.height =
+      this.getHeight(this.nodeRef.current!) + 'px'
   }
 
   clearContainerHeight = (elem: HTMLElement) => {
     elem.style.height = ''
   }
 
-  handleEntered = (elem: HTMLElement) => {
-    this.clearContainerHeight(elem)
+  handleEntered = () => {
+    this.clearContainerHeight(this.nodeRef.current!)
 
     if (this.props.onEntered) this.props.onEntered()
   }
@@ -72,18 +75,19 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
     if (this.props.onEntering) this.props.onEntering()
   }
 
-  handleExit = (elem: HTMLElement) => {
-    this.setContainerHeight(elem)
+  handleExit = () => {
+    this.setContainerHeight()
 
     if (this.props.onExit) this.props.onExit()
   }
-  handleExited = (elem: HTMLElement) => {
-    this.clearContainerHeight(elem)
+  handleExited = () => {
+    this.clearContainerHeight(this.nodeRef.current!)
+
     if (this.props.onExited) this.props.onExited()
   }
 
-  handleTransitionEnd = (el: HTMLElement, done: () => void) => {
-    transitionEnd(el.firstChild as HTMLElement, done)
+  handleTransitionEnd = (done: () => void) => {
+    transitionEnd(this.nodeRef.current!.firstChild as HTMLElement, done)
   }
 
   render() {
@@ -94,6 +98,7 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
         {...props}
         appear
         in={this.props.in}
+        nodeRef={this.nodeRef}
         onEnter={this.setContainerHeight}
         onEntering={this.handleEntering}
         onEntered={this.handleEntered}
@@ -105,6 +110,7 @@ class SlideDownTransition extends React.Component<SlideDownTransitionProps> {
         {(status: TransitionStatus, innerProps: any) => (
           <div
             {...innerProps}
+            ref={this.nodeRef}
             className={cn(
               className,
               dropUp && 'rw-dropup',
