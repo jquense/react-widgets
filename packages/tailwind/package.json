@@ -1,6 +1,6 @@
 {
   "name": "react-widgets-tailwind",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "main": "lib/index.js",
   "module": "lib/es/index.js",
   "repository": {
