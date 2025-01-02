@@ -27,5 +27,6 @@
     "react-widgets": "^5.8.5"
   },
   "author": "Jason Quense",
-  "license": "MIT"
+  "license": "MIT",
+  "gitHead": "e651972ab4eeec2eeb19aff984a198b8576df0be"
 }

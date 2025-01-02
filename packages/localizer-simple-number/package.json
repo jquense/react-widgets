@@ -38,5 +38,6 @@
     "cross-env": "^7.0.3",
     "react-widgets": "^5.8.5",
     "rimraf": "^3.0.2"
-  }
+  },
+  "gitHead": "e651972ab4eeec2eeb19aff984a198b8576df0be"
 }
