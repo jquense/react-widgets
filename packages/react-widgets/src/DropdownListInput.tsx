@@ -26,6 +26,7 @@ interface Props<TDataItem> {
   onAutofill(autofilling: boolean): void
   onAutofillChange(e: React.ChangeEvent<HTMLInputElement>): void
   renderValue?: RenderValueProp<TDataItem>
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement>
 }
 
 const DropdownListInput = React.forwardRef(function <TDataItem>(
@@ -44,6 +45,7 @@ const DropdownListInput = React.forwardRef(function <TDataItem>(
     renderValue,
     disabled,
     readOnly,
+    inputProps,
   }: Props<TDataItem>,
   ref: React.Ref<DropdownInputHandle>,
 ) {
@@ -99,6 +101,7 @@ const DropdownListInput = React.forwardRef(function <TDataItem>(
     <div className="rw-dropdown-list-input">
       {autoComplete !== 'off' && (
         <input
+          {...inputProps}
           name={name}
           tabIndex={-1}
           disabled={disabled}
@@ -114,6 +117,7 @@ const DropdownListInput = React.forwardRef(function <TDataItem>(
       <>
         {allowSearch && (
           <input
+            {...inputProps}
             ref={searchRef}
             disabled={disabled}
             readOnly={readOnly}
