@@ -181,4 +181,46 @@ describe('Combobox', function () {
       source: 'listbox',
     })
   })
+
+  it('should keep the list filtered after blur when the input still has a search term', () => {
+    let blur = sinon.spy()
+    let inst = mount(
+      <Combobox
+        data={dataList}
+        textField="label"
+        dataKey="id"
+        onBlur={blur}
+      />,
+    )
+
+    inst.find('div.rw-combobox').simulateWithTimers('focus')
+
+    inst.find('input.rw-input').simulate('change', {
+      target: { value: 'asdf' },
+    })
+    inst.update()
+
+    expect(inst.find('input.rw-input').getDOMNode().value).to.equal('asdf')
+    expect(inst.find('List').prop('data')).to.have.length(0)
+    expect(inst.find('.rw-list-empty').text()).to.equal(
+      'The filter returned no results',
+    )
+
+    inst.find('div.rw-combobox').simulateWithTimers('blur')
+    inst.update()
+
+    expect(blur.calledOnce).to.equal(true)
+    expect(inst.find('Popup').prop('open')).to.not.equal(true)
+
+    inst.find('button').first().simulate('click')
+    inst.update()
+
+    expect(inst.find('input.rw-input').getDOMNode().value).to.equal('asdf')
+    expect(inst.find('Popup').prop('open')).to.equal(true)
+    expect(inst.find('List').prop('data')).to.have.length(0)
+    expect(inst.find('[role="option"]').length).to.equal(0)
+    expect(inst.find('.rw-list-empty').text()).to.equal(
+      'The filter returned no results',
+    )
+  })
 })

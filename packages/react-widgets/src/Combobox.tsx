@@ -257,7 +257,10 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
     {
       didHandle(focused) {
         if (!focused) {
-          shouldFilter.current = false
+          const term = inputRef.current?.value ?? accessors.text(currentValue)
+          if (!term.trim()) {
+            shouldFilter.current = false
+          }
           toggle.close()
           setSuggestion(null)
           list.focus(undefined)
