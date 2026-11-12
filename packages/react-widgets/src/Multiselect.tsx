@@ -447,6 +447,8 @@ const Multiselect: Multiselect = React.forwardRef(function Multiselect<
     dataItem: TDataItem | undefined,
     originalEvent: React.SyntheticEvent,
   ) => {
+    if (isDisabled) return
+
     if (dataItem === undefined) return
 
     originalEvent.preventDefault()

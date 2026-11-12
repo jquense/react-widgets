@@ -10,6 +10,34 @@ describe('Combobox', function () {
     { label: 'suzy smith', id: 3 },
   ]
 
+  it('ignores option clicks after the open widget becomes disabled', () => {
+    const onChange = sinon.spy()
+    const onSelect = sinon.spy()
+    const widget = mount(
+      <Combobox
+        data={['Apple', 'Orange']}
+        defaultValue="Apple"
+        onChange={onChange}
+        onSelect={onSelect}
+        open
+      />,
+    )
+
+    expect(
+      widget
+        .find('[role="option"]')
+        .someWhere((option) => option.text() === 'Orange'),
+    ).to.equal(true)
+    widget.setProps({ disabled: true })
+    widget
+      .find('[role="option"]')
+      .filterWhere((option) => option.text() === 'Orange')
+      .simulate('click')
+
+    expect(onChange.called).to.equal(false)
+    expect(onSelect.called).to.equal(false)
+  })
+
   it('should set initial values', function () {
     mount(<Combobox value={'hello'} onChange={() => {}} />)
       .find('input.rw-input')

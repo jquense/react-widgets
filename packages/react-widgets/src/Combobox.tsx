@@ -288,6 +288,8 @@ const ComboboxImpl: Combobox = React.forwardRef(function Combobox<TDataItem>(
     data: string | TDataItem,
     originalEvent: React.SyntheticEvent,
   ) => {
+    if (isDisabled) return
+
     toggle.close()
     shouldFilter.current = false
 
